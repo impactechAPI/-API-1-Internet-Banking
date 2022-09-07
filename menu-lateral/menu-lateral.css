@@ -1,0 +1,29 @@
+.container {
+    max-width: 15vw;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+}
+
+img {
+    width: 50%;
+}
+
+a {
+    border: 2px solid #000000;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #000000;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+label {
+    cursor: pointer;
+    font-size: 20px;
+}
+

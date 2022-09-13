@@ -1,12 +1,9 @@
-body {
-    width: 100vw;
-    height: 100vh;
-}
-
 .container {
     max-width: 15vw;
     display: flex;
     flex-direction: column;
+    width: 100vw;
+    height: 80vh;
     justify-content: center;
 }
 
@@ -30,3 +27,39 @@ label {
     font-size: 20px;
 }
 
+.telaInterativa{
+    display: flex;
+    width: 80vw;
+    height: 80vh;
+    border: 2px solid #000000;
+    flex-direction:column;
+}
+
+.visualizadorBorda{
+    display: flex;
+    /* border: 2px solid red; */
+    width: 80vw;
+    height: 20vh;
+    justify-content: center;
+}
+
+.visualizadorTitulo{
+    display: flex;
+    /* border: 2px solid red; */
+    width: 80vw;
+    height: 10vh;
+    justify-content: center;
+}
+
+.visualizadorDeposito{
+    display: flex;
+    /* border: 2px solid red; */
+    width: 80vw;
+    height: 50vh;
+    justify-content: center;
+}
+
+body{
+    display: flex;
+    justify-content: space-evenly;
+}

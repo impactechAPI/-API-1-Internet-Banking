@@ -6,21 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+    <!-- link CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-cadastro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
 </head>
 
-<body class="container">
-
-    <!-- Cabeçalho -->
-
+<body>
+    <!-- componente cabeçalho -->
     <header>
+        <span class="logo">Logo</span>
+    </header>
+    <!-- fim -->
+
+    <!-- Formulário--> 
+    <main class="container">
         <h1>Novo Cliente</h1>
         <hr>
-    </header>
-
-    <!-- Formulário-->
-
-    <main>
         <form action="#">
             <div class="linha-inteira">
                 <label>Nome: <br>
@@ -39,7 +40,7 @@
 
                 <label>Gênero: <br>
                     <select name="genero" id="genero" class="genero">
-                        <option value="selecione">Selecione</option>
+                        <option value="selecione" disabled>Selecione</option>
                         <option value="feminino">Feminino</option>
                         <option value="masculino">Masculino</option>
                     </select>
@@ -57,12 +58,17 @@
                     <input type="password" placeholder="Informe sua senha">
                 </label>
                 <label  class="input-senha">Confirmação de senha: <br>
-                    <input type="text" placeholder="Confirme sua senha">
+                    <input type="password" placeholder="Confirme sua senha">
                 </label>
             </div>
         </form>
         <button type="submit">Cadastrar</button>
     </main>
+    <!-- fim -->
+
+    <!-- componente rodapé -->
+    <footer>© 2022 Nome da Empresa</footer>
+    <!-- fim -->
 </body>
 
 </html>

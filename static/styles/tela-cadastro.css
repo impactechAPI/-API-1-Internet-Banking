@@ -1,7 +1,12 @@
+body {
+    margin: 0;
+    width: 100vw;
+}
+
 .container {
     max-width: 60vw;
-    margin: auto;
-    min-height: 100vh;
+    margin: 0 auto;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,7 +37,7 @@ hr {
 .mesma-linha input, select {
     display: flex;
     width: 17vw;
-    height: 30px;
+    height: 2.3em;
 }
 
 select {
@@ -40,6 +45,7 @@ select {
     height: 33px;
     border: 1px solid #000000;
     margin-top: 7px;
+    outline: none;
 }
 
 input {
@@ -48,6 +54,7 @@ input {
     border: 1px solid #000000;
     border-radius: 3px;
     margin-top: 7px;
+    outline: none;
 }
 
 .senha {

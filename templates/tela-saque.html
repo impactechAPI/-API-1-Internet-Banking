@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saque</title>
+
+    <!-- links CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-saque.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
+</head>
+
+<body>
+
+    <!-- componente cabeçalho -->
+    <header>
+        <span class="logo">Logo</span>
+        <div class="sair">
+            <span>Sair</span>
+            <a href="#"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
+        </div>
+    </header>
+    <!-- fim -->
+
+    <div class="body">
+
+        <!-- componente menu lateral -->
+        <div class="menu">
+            <a class="link-menu" href="home.html">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+                </label>
+                <label>Home</label>
+            </a>
+
+            <a class="link-menu" href="deposito.html">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}"
+                        alt="depósito">
+                </label>
+                <label>Depósito</label>
+            </a>
+
+            <a class="link-menu" href="saque.html">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
+                </label>
+                <label>Saque</label>
+            </a>
+
+            <a class="link-menu" href="tranferencia.html">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}"
+                        alt="transferência">
+                </label>
+                <label>Transferência</label>
+            </a>
+
+            <a class="link-menu" href="extrato.html">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
+                </label>
+                <label>Extrato</label>
+            </a>
+
+            <a class="link-menu" href="configuracoes.html">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}"
+                        alt="configurações">
+                </label>
+                <label>Configurações</label>
+            </a>
+        </div>
+        <!-- fim -->
+
+        <div class="container">
+
+            <!-- componente dados usuário -->
+            <div class="conteudo-dados-usuario">
+                <div class="dados-usuario">
+                    <div class="dados">
+                        <span class="usuario">Olá, {{nome_usuario}}</span>
+                        <label>Agência: {{num_agencia}}</label>
+                        <label>Conta: {{num_conta}}</label>
+                    </div>
+                    <div class="dados">
+                        <label>Saldo disponível</label>
+                        <span class="saldo">{{saldo_disponivel}}</span>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <!-- fim -->
+
+            <!-- Saque -->
+            <div>
+            <h1>Saque</h1>
+            <form action="#">
+                <div class="numero-agencia">
+                    <label>Número da conta:<br>
+                        <input type="number" placeholder="Número da conta">
+                    </label>
+                    <label>Agência:<br>
+                        <input type="number" placeholder="Número da agência">
+                    </label>
+                </div>
+                <label class="valor">Valor:<br>
+                    <input type="number" placeholder="R$ 0,00">
+                </label>
+                <button type="submit" class="button">Sacar</button>
+            </form>
+            </div>
+            <!-- fim -->
+        </div>
+    </div>
+
+    <!-- componente rodapé -->
+    <footer>© 2022 Nome da Empresa</footer>
+    <!-- fim -->
+</body>
+
+</html>

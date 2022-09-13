@@ -1,0 +1,24 @@
+<head>
+    <!-- link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
+    <!-- fim -->
+</head>
+
+<body>
+    <!-- componente dados do usuário -->
+    <div>
+        <div class="dados-usuario">
+            <div class="dados">
+                <h1 class="usuario">Olá, {{nome_usuario}}</h1>
+                <label>Agência: {{num_agencia}}</label>
+                <label>Conta: {{num_conta}}</label>
+            </div>
+            <div class="dados">
+                <h1>Saldo disponível</h1>
+                <span class="saldo">{{saldo_disponivel}}</span>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <!-- fim -->
+</body>

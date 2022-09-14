@@ -1,30 +1,34 @@
-.container {
-    max-width: 15vw;
+.menu {
     display: flex;
     flex-direction: column;
     width: 100vw;
     height: 80vh;
     justify-content: center;
+    height: 80vh;
+    margin-left: 2em;
 }
 
-img {
-    width: 50%;
+.icone-menu {
+    width: 1.5em;
 }
 
-a {
+.menu a {
+    width: 7em;
+    height: 3.5em;
     border: 2px solid #000000;
-    border-radius: 20px;
+    border-radius: 10px;
     text-decoration: none;
     color: #000000;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
-label {
+.menu label {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 1em;
 }
 
 .telaInterativa{

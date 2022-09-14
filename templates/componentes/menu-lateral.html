@@ -1,55 +1,52 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Lateral</title>
+    <!-- link CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
+    <!-- fim -->
 </head>
 <body>
-    <main class="container">
-        <a href="">
-            <label for="">
-                <img src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+    <!-- componente menu lateral -->
+    <div class="menu">
+        <a href="home.html">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
             </label>
-            <label for="">Home</label>
+            <label>Home</label>
         </a>
 
-        <a href="">
-            <label for="">
-                <img src="{{ url_for('static', filename='icones/deposito.png') }}" alt="depósito">
+        <a href="deposito.html">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}" alt="depósito">
             </label>
-            <label for="">Depósito</label>
+            <label>Depósito</label>
         </a>
 
-        <a href="">
-            <label for="">
-                <img src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
+        <a href="saque.html">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
             </label>
-            <label for="">Saque</label>
+            <label>Saque</label>
         </a>
 
-        <a href="">
-            <label for="">
-                <img src="{{ url_for('static', filename='icones/transferencia.png') }}" alt="transferência">
+        <a href="tranferencia.html">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}" alt="transferência">
             </label>
-            <label for="">Transferência</label>
+            <label>Transferência</label>
         </a>
 
-        <a href="">
-            <label for="">
-                <img src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
+        <a href="extrato.html">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
             </label>
-            <label for="">Extrato</label>
+            <label>Extrato</label>
         </a>
 
-        <a href="">
-            <label for="">
-                <img src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
+        <a href="configuracoes.html">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
             </label>
-            <label for="">Configurações</label>
+            <label>Configurações</label>
         </a>
-    </main>
+    </div>
+    <!-- fim -->
 </body>
-</html>

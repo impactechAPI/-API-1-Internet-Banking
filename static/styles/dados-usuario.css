@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+}
+
+.conteudo-dados-usuario {
+    width: 100%;
+    margin-top: 2em;
+}
+
+.dados-usuario, .conteudo-dados-usuario hr {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5em;
+}
+
+.dados {
+    display: flex;
+    flex-direction: column;
+}
+
+.dados span {
+    margin-bottom: 0.5em;
+}
+
+.dados label {
+    margin-bottom: 0.2em;
+}
+
+.usuario, .saldo {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.dados label {
+    font-size: 1.2em;
+}

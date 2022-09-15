@@ -1,0 +1,17 @@
+<head>
+    <!-- link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
+</head>
+<body>
+    <!-- componente cabeçalho -->
+    <header>
+        <span class="logo">Logo</span>
+        <div class="sair">
+            <span>Sair</span>
+            <a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
+        </div>
+    </header>
+
+    <!-- componente rodapé -->
+    <footer>© 2022 Nome da Empresa</footer>
+</body>

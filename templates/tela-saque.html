@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saque</title>
+
+    <!-- links CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-saque.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
+</head>
+
+<body>
+
+    <!-- componente cabeçalho -->
+    <header>
+        <span class="logo">Logo</span>
+        <div class="sair">
+            <span>Sair</span>
+            <a href="{{ url_for('indexHome') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
+        </div>
+    </header>
+    <!-- fim -->
+
+    <div class="body">
+
+        <!-- componente menu lateral -->
+        <div class="menu">
+            <a href="{{ url_for('home') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+                </label>
+                <label>Home</label>
+            </a>
+    
+            <a href="{{ url_for('deposito') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}" alt="depósito">
+                </label>
+                <label>Depósito</label>
+            </a>
+    
+            <a href="{{ url_for('saque') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
+                </label>
+                <label>Saque</label>
+            </a>
+    
+            <a href="{{ url_for('transferencia') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}" alt="transferência">
+                </label>
+                <label>Transferência</label>
+            </a>
+    
+            <a href="{{ url_for('extrato') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
+                </label>
+                <label>Extrato</label>
+            </a>
+    
+            <a href="{{ url_for('configuracoes') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
+                </label>
+                <label>Configurações</label>
+            </a>
+        </div>
+        <!-- fim -->
+
+        <div class="container">
+
+            <!-- componente dados usuário -->
+            <div>
+                <div class="dados-usuario">
+                    <div class="dados">
+                        <h1 class="usuario">Olá, {{ session['nomeUsuario'] }}</h1>
+                        <label>Agência: {{ session['agenciaUsuario'] }}</label>
+                        <label>Conta: {{ session['contaUsuario'] }}</label>
+                    </div>
+                    <div class="dados">
+                        <h1>Saldo disponível</h1>
+                        <span class="saldo">{{ session['saldoUsuario'] }}</span>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <!-- fim -->
+
+            <!-- Saque -->
+            <div>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class=flashes>
+                        {% for message in messages %}
+                            <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">{{ message }}</div>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+                {% if error %}
+                    <p class=error><strong>Erro:</strong> {{ error }}
+                {% endif %} 
+            <h1>Saque</h1>
+            <form method="post" action="#">
+                <label class="valor">Valor:<br>
+                    <input type="number" name="valorSaque" placeholder="R$ 0,00">
+                </label>
+                <button type="submit" name="sacar" class="button">Sacar</button>
+            </form>
+            </div>
+            <!-- fim -->
+        </div>
+    </div>
+
+    <!-- componente rodapé -->
+    <footer>© 2022 Nome da Empresa</footer>
+    <!-- fim -->
+</body>
+
+</html>

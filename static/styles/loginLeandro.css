@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+header {
+
+    padding: 50px;
+    background-color: rgb(199, 199, 199);
+}
+
+section .titulo1 {
+
+    font-size: 60px;
+    text-align: left;
+    max-width: 30%;
+    margin-top: 5%;
+    margin-left: 5%;
+
+}
+
+section .titulo2 {
+
+    font-size: 40px;
+    text-align: left;
+    max-width: 30%;
+    margin-top: 3%;
+    margin-left: 5%;
+}
+
+.button{
+
+    margin-top: 3%;
+    font-size: 30px;
+    margin-right: 68%;
+    background-color: rgb(199, 199, 199);
+    text-align: end;
+    padding: 20px; 
+}
+
+.button a{
+    transition: 0.6s;
+}
+
+.button a:visited{
+    color: black
+}
+
+.button a:hover, a:active{
+
+    font-size: 32px;
+    color: rgb(14, 76, 100);
+
+}
+
+
+
+aside {
+
+    float: right;
+    margin-right: 25%;
+    margin-top: -20%;
+}
+
+aside p {
+
+    text-align: center;
+    margin-bottom: 10%;
+    font-size: 20px;
+}
+
+.text, .password {
+
+    padding: 12px 50px;
+    border-radius: 10px;
+}
+
+.submit {
+
+    padding: 12px 12px;
+    margin-top: 10%;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    width: 35%;
+    margin-left: 32%;
+    transition: 0.6s;
+}
+
+.submit:hover, :active{
+
+    font-size: 17px;
+    
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <!-- link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-cadastro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
+</head>
+
+<body>
+    <!-- componente cabeçalho -->
+    <header>
+        <span class="logo">Logo</span>
+    </header>
+    <!-- fim -->
+
+    <!-- Formulário-->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">{{ message }}</div>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+{% if error %}
+    <p class=error><strong>Erro:</strong> {{ error }}
+{% endif %} 
+    <main class="container">
+        <h1>Novo Cliente</h1>
+        <hr>
+        <form method="post" action="">
+            <div class="linha-inteira">
+                <label>Nome: <br>
+                    <input type="text" name="nome" placeholder="Informe seu nome">
+                </label>
+            </div>
+
+            <div class="mesma-linha">
+                <label>CPF (Apenas números): <br>
+                    <input type="number" name="cpf" placeholder="Informe seu CPF">
+                </label>
+
+                <label>Data de nascimento: <br>
+                    <input type="date" class="data" name="dataAniversario">
+                </label>
+
+                <label>Gênero: <br>
+                    <select name="genero" id="genero" class="genero">
+                        <option value="selecione" disabled>Selecione</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="masculino">Masculino</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="linha-inteira">
+                <label>Endereço: <br>
+                    <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
+                </label>
+            </div>
+
+            <div class="senha">
+                <label  class="input-senha">Senha: <br>
+                    <input type="password" placeholder="Informe sua senha" name="senha">
+                </label>
+                <label  class="input-senha">Confirmação de senha: <br>
+                    <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
+                </label>
+            </div>
+            <input type="submit" class="submit" value="Cadastrar">
+        </form>
+        
+    </main>
+    <!-- fim -->
+
+    <!-- componente rodapé -->
+    <footer>© 2022 Nome da Empresa</footer>
+    <!-- fim -->
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem vindo! Faça o login para acessar sua conta.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/loginLeandro.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+
+    </header>
+
+    <section>
+        <h1 class="titulo1">Gerencie suas finanças de uma forma eficiente</h1>
+        <h2 class ="titulo2">Crie sua conta agora e comece a ter o controle da sua vida financeira.</h2>
+        <div class = "button">
+            <a href="{{ url_for('indexCadastro') }}">Abra sua conta</a>
+        </div>
+    </section>
+
+    <aside>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">{{ message }}</div>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% if error %}
+            <p class=error><strong>Erro:</strong> {{ error }}
+        {% endif %}
+        <form method="post" action="">
+            <p>Faça seu login</p>
+            <label for="cpf">CPF:</label><br>
+            <input class="text" type="text" name="cpfLogin" id=""><br>
+            <label for="senha">Senha:</label><br>
+            <input class="password" type="password" name="senhaLogin" id=""><br>
+            <input type="submit" class="submit" value="Entrar">
+        </form>
+    </aside>
+    
+    <!-- componente rodapé -->
+    <footer>© 2022 Nome da Empresa</footer>
+    <!-- fim -->
+</body>
+</html>

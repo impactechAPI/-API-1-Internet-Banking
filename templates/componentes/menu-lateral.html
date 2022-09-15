@@ -1,0 +1,52 @@
+<head>
+    <!-- link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
+    <!-- fim -->
+</head>
+<body>
+    <!-- componente menu lateral -->
+    <div class="menu">
+        <a href="{{ url_for('home') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+            </label>
+            <label>Home</label>
+        </a>
+
+        <a href="{{ url_for('deposito') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}" alt="depósito">
+            </label>
+            <label>Depósito</label>
+        </a>
+
+        <a href="{{ url_for('saque') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
+            </label>
+            <label>Saque</label>
+        </a>
+
+        <a href="{{ url_for('tranferencia') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}" alt="transferência">
+            </label>
+            <label>Transferência</label>
+        </a>
+
+        <a href="{{ url_for('extrato') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
+            </label>
+            <label>Extrato</label>
+        </a>
+
+        <a href="{{ url_for('configuracoes') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
+            </label>
+            <label>Configurações</label>
+        </a>
+    </div>
+    <!-- fim -->
+</body>

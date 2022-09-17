@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <title>Abra sua conta</title>
     <!-- link CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-cadastro.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
@@ -14,43 +14,46 @@
 <body>
     <!-- componente cabeçalho -->
     <header>
-        <span class="logo">Logo</span>
+        <a href="{{ url_for('indexHome') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo"
+                class="logo"></a>
     </header>
     <!-- fim -->
 
     <!-- Formulário-->
-{% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <ul class=flashes>
+    <ul class=flashes>
         {% for message in messages %}
-            <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">{{ message }}</div>
+        <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">
+            {{ message }}</div>
         {% endfor %}
-        </ul>
+    </ul>
     {% endif %}
-{% endwith %}
-{% if error %}
+    {% endwith %}
+    {% if error %}
     <p class=error><strong>Erro:</strong> {{ error }}
-{% endif %} 
+        {% endif %}
+
     <main class="container">
-        <h1>Novo Cliente</h1>
+        <h1>Abra sua conta</h1>
         <hr>
         <form method="post" action="">
             <div class="linha-inteira">
-                <label>Nome: <br>
+                <label>Nome<br>
                     <input type="text" name="nome" placeholder="Informe seu nome">
                 </label>
             </div>
 
             <div class="mesma-linha">
-                <label>CPF (Apenas números): <br>
-                    <input type="number" name="cpf" placeholder="Informe seu CPF">
+                <label>CPF (Apenas números)<br>
+                    <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
                 </label>
 
-                <label>Data de nascimento: <br>
+                <label>Data de nascimento<br>
                     <input type="date" class="data" name="dataAniversario">
                 </label>
 
-                <label>Gênero: <br>
+                <label>Gênero<br>
                     <select name="genero" id="genero" class="genero">
                         <option value="selecione" disabled>Selecione</option>
                         <option value="feminino">Feminino</option>
@@ -60,27 +63,33 @@
             </div>
 
             <div class="linha-inteira">
-                <label>Endereço: <br>
+                <label>Endereço<br>
                     <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
                 </label>
             </div>
 
             <div class="senha">
-                <label  class="input-senha">Senha: <br>
+                <label class="input-senha">Senha<br>
                     <input type="password" placeholder="Informe sua senha" name="senha">
                 </label>
-                <label  class="input-senha">Confirmação de senha: <br>
+                <label class="input-senha">Confirmação de senha<br>
                     <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
                 </label>
             </div>
+
+            <label class="checkbox">
+                <input type="checkbox" name="consentimentoUsuario"> Li e estou de acordo com os <a href="">Termos de Uso</a> e <a href="">Política
+                    de Privacidade</a>.
+                <span></span>
+            </label>
             <input type="submit" class="submit" value="Cadastrar">
         </form>
-        
+
     </main>
     <!-- fim -->
 
     <!-- componente rodapé -->
-    <footer>© 2022 Nome da Empresa</footer>
+    <footer>© 2022 SiriusBank</footer>
     <!-- fim -->
 </body>
 

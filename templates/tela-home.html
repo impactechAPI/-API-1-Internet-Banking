@@ -5,23 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Home</title>
 
     <!-- links CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-saque.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-home.css') }}">
 </head>
 
 <body>
 
     <!-- componente cabeçalho -->
     <header>
-        <span class="logo">Logo</span>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo" class="logo"></a>
         <div class="sair">
             <span>Sair</span>
-            <a href="{{ url_for('indexHome') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
+            <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
         </div>
     </header>
     <!-- fim -->
@@ -51,21 +51,21 @@
                 <label>Saque</label>
             </a>
     
-            <a href="{{ url_for('transferencia') }}">
+            <a href=""><!-- {{ url_for('transferencia') }} -->
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}" alt="transferência">
                 </label>
                 <label>Transferência</label>
             </a>
     
-            <a href="{{ url_for('extrato') }}">
+            <a href=""><!-- {{ url_for('extrato') }} -->
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
                 </label>
                 <label>Extrato</label>
             </a>
     
-            <a href="{{ url_for('configuracoes') }}">
+            <a href=""><!-- {{ url_for('configuracoes') }} -->
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
                 </label>
@@ -77,33 +77,33 @@
         <div class="container">
 
             <!-- componente dados usuário -->
-            <div>
+            <div class="fundo">
                 <div class="dados-usuario">
                     <div class="dados">
-                        <h1 class="usuario">Olá, {{ session['nomeUsuario'] }}</h1>
+                        <h1>Olá, {{ session['nomeUsuario'] }}</h1>
                         <label>Agência: {{ session['agenciaUsuario'] }}</label>
                         <label>Conta: {{ session['contaUsuario'] }}</label>
                     </div>
                     <div class="dados">
                         <h1>Saldo disponível</h1>
-                        <span class="saldo">{{ session['saldoUsuario'] }}</span>
+                        <span class="saldo">R$ {{ session['saldoUsuario'] }}</span>
                     </div>
                 </div>
-                <hr>
+                <hr class="hr">
             </div>
             <!-- fim -->
 
-            <!-- Saque -->
-            <div>
+            <!-- home -->
+            <div class="home">
                 <h1>Home</h1>
-                Fique à vontade! Navegue pelo menu lateral!
+                <p>Fique à vontade! Navegue pelo menu lateral!</p>
             </div>
             <!-- fim -->
         </div>
     </div>
 
     <!-- componente rodapé -->
-    <footer>© 2022 Nome da Empresa</footer>
+    <footer>© 2022 SiriusBank</footer>
     <!-- fim -->
 </body>
 

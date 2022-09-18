@@ -1,31 +1,35 @@
 .menu {
     display: flex;
     flex-direction: column;
-    justify-content: top;
-    margin-top: 2em;
-    height: 80vh;
-    margin-left: 2em;
+    height: 84vh;
+    box-shadow: 0px 2px 50px 0.1px #00000012;
+    justify-content: left;
+    padding: 0.5em 2em 0 2em;
+    bottom: 0;
+    background-color: white;
 }
 
 .icone-menu {
     width: 1.5em;
+    margin-right: 0.5em;
 }
 
 .menu a {
-    width: 7em;
+    width: 11em;
     height: 3.5em;
-    border: 2px solid #000000;
     border-radius: 10px;
     text-decoration: none;
     color: #000000;
     margin-bottom: 10px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+}
+
+.menu a:hover {
+    color: #08C746;
 }
 
 .menu label {
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.2em;
 }

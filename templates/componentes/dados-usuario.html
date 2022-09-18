@@ -6,7 +6,7 @@
 
 <body>
     <!-- componente dados do usuário -->
-    <div>
+    <div class="fundo">
         <div class="dados-usuario">
             <div class="dados">
                 <h1 class="usuario">Olá, {{ session['nomeUsuario'] }}</h1>
@@ -15,10 +15,10 @@
             </div>
             <div class="dados">
                 <h1>Saldo disponível</h1>
-                <span class="saldo">{{ session['saldoUsuario'] }}</span>
+                <span class="saldo">R$ {{ session['saldoUsuario'] }}</span>
             </div>
         </div>
-        <hr>
+        <hr class="hr">
     </div>
     <!-- fim -->
 </body>

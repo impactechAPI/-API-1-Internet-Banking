@@ -2,15 +2,34 @@
     margin: 0;
 }
 
+.fundo {
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+    height: 40%;
+}
+
+.dados-usuario {
+    width: 70%;
+    color: white;
+    margin: 0 auto;
+    padding-top: 3em;
+}
+
+.hr {
+    width: 70%;
+    color: white;
+    margin: 0 auto;
+}
+
 .conteudo-dados-usuario {
     width: 100%;
     margin-top: 2em;
 }
 
-.dados-usuario, .conteudo-dados-usuario hr {
+.dados-usuario {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5em;
+    width: 70%;
 }
 
 .dados {
@@ -26,9 +45,10 @@
     margin-bottom: 0.2em;
 }
 
-.usuario, .saldo {
+.dados-usuario h1, .saldo {
     font-size: 2em;
-    font-weight: bold;
+    font-weight: normal;
+    margin-bottom: 1em;
 }
 
 .dados label {

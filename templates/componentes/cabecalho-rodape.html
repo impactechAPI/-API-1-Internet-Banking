@@ -5,13 +5,13 @@
 <body>
     <!-- componente cabeçalho -->
     <header>
-        <span class="logo">Logo</span>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo" class="logo"></a>
         <div class="sair">
             <span>Sair</span>
-            <a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
+            <a href="{{ url_for('indexHome') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
         </div>
     </header>
 
     <!-- componente rodapé -->
-    <footer>© 2022 Nome da Empresa</footer>
+    <footer>© 2022 SiriusBank</footer>
 </body>

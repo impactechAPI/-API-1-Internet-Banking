@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}"">
+    <link rel=" stylesheet" href="{{ url_for('static', filename='styles/tela-login.css') }}">
+</head>
+
+<body>
+    <!-- componente cabeçalho -->
+    <header>
+        <img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo" class="logo">
+    </header>
+    <!-- fim -->
+
+    <main class="container">
+        <div class="abra-conta">
+            <h1 class="titulo">Gerencie suas finanças <br> de forma inteligente</h1>
+            <img src="{{ url_for('static', filename='icones/capa.png') }}" alt="capa" class="capa">
+            <div class="button-abra-conta">
+                <a href="{{ url_for('indexCadastro') }}"><span>Abra sua conta</span></a>
+            </div>
+        </div>
+
+        <div class="login">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                        <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">{{ message }}</div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+            {% if error %}
+            <p class=error><strong>Erro:</strong> {{ error }}
+                {% endif %}
+            <form method="post" action="" class="formulario">
+                <h2>Faça seu login</h2>
+                <input class="conta" type="number" name="numContaUsuario" id="" placeholder="Informe sua conta"><br>
+                <input class="password" type="password" name="senhaLogin" id="" placeholder="Informe sua senha"><br>
+                <input type="submit" class="submit" value="Entrar">
+            </form>
+        </div>
+    </main>
+
+    <!-- componente rodapé -->
+    <footer>© 2022 SiriusBank</footer>
+    <!-- fim -->
+</body>
+
+</html>

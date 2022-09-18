@@ -1,60 +1,82 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
     margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
     width: 100vw;
+    background-image: linear-gradient(#1A20BD, #22D6C3);
 }
 
 .container {
     max-width: 60vw;
-    margin: 0 auto;
-    min-height: 80vh;
+    margin: 7vh auto;
+    min-height: 71vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: white;
+    padding: 0 4em;
+    border-radius: 10px;
+    box-shadow: 5px 5px 50px 1px #00000038;
 }
 
-main, header {
+.container h1 {
+    font-weight: normal;
+}
+
+main,
+header {
     display: block;
 }
 
 hr {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 4em;
 }
 
 /* Formatação das linhas do formulário */
 
-.linha-inteira input{
+.linha-inteira input {
     display: flex;
-    width: 59.5vw;
+    width: 99%;
 }
 
 .mesma-linha {
     display: flex;
     justify-content: space-between;
-    min-width: 100%;
+    width: 100%;
 }
 
-.mesma-linha input, select {
+.mesma-linha input,
+select {
     display: flex;
     width: 17vw;
-    height: 2.3em;
 }
 
 select {
     width: 17vw;
     height: 33px;
     border: 1px solid #000000;
+    border-radius: 3px;
     margin-top: 7px;
-    outline: none;
+    outline-color: #08C746;
+    accent-color: #08C746;
+    height: 4em;
 }
 
 input {
-    height: 30px;
+    padding: 1em 0 1em 1em;
     margin-bottom: 15px;
     border: 1px solid #000000;
     border-radius: 3px;
     margin-top: 7px;
-    outline: none;
+    outline-color: #08C746;
+    accent-color: #08C746;
 }
 
 .senha {
@@ -69,16 +91,23 @@ input {
 
 /* botão */
 
-button {
-    height: 35px;
-    width: 100px;
-    margin: 20px auto;
-    justify-content: center;
-    align-items: center;
+.submit {
+    background-color: #08C746;
+    width: 40%;
+    color: white;
+    font-size: 1.2em;
+    height: 3em;
+    cursor: pointer;
     display: flex;
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 3px;
+    margin: 0 auto;
+    justify-content: center;
+    border: none;
+    margin-top: 2em;
+}
+
+.submit:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
 }
 
 /* media queries */
@@ -93,11 +122,13 @@ button {
         min-width: 90vw;
     }
 
-    .mesma-linha, .senha {
+    .mesma-linha,
+    .senha {
         display: block;
     }
 
-    .genero, .data {
+    .genero,
+    .data {
         width: 100%;
     }
 }

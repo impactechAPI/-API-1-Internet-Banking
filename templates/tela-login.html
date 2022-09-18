@@ -27,23 +27,23 @@
         </div>
 
         <div class="login">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                        <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">{{ message }}</div>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            {% endwith %}
-            {% if error %}
-            <p class=error><strong>Erro:</strong> {{ error }}
-                {% endif %}
             <form method="post" action="" class="formulario">
                 <h2>Faça seu login</h2>
                 <input class="conta" type="number" name="numContaUsuario" id="" placeholder="Informe sua conta"><br>
                 <input class="password" type="password" name="senhaLogin" id="" placeholder="Informe sua senha"><br>
-                <input type="submit" class="submit" value="Entrar">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <div class="error">{{ message }}</div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                {% if error %}
+                <p class=error><strong>Erro:</strong> {{ error }}
+                    {% endif %}
+                    <input type="submit" class="submit" value="Entrar">
             </form>
         </div>
     </main>

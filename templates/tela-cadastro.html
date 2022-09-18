@@ -20,20 +20,6 @@
     <!-- fim -->
 
     <!-- Formulário-->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <div style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">
-            {{ message }}</div>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% if error %}
-    <p class=error><strong>Erro:</strong> {{ error }}
-        {% endif %}
-
     <main class="container">
         <h1>Abra sua conta</h1>
         <hr>
@@ -82,6 +68,19 @@
                     de Privacidade</a>.
                 <span></span>
             </label>
+            {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <div class="error">
+            {{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% if error %}
+    <p class=error><strong>Erro:</strong> {{ error }}
+        {% endif %}
             <input type="submit" class="submit" value="Cadastrar">
         </form>
 

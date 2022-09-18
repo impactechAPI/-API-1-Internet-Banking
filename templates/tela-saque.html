@@ -36,7 +36,7 @@
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
                 </label>
-                <label>Home</label>
+                <label class="ativo">Home</label>
             </a>
 
             <a href="{{ url_for('deposito') }}">
@@ -44,14 +44,14 @@
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}"
                         alt="depósito">
                 </label>
-                <label>Depósito</label>
+                <label class="ativo">Depósito</label>
             </a>
 
             <a href="{{ url_for('saque') }}">
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
                 </label>
-                <label>Saque</label>
+                <label class="ativo">Saque</label>
             </a>
 
             <a href=""><!-- {{ url_for('transferencia') }} -->
@@ -59,14 +59,14 @@
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}"
                         alt="transferência">
                 </label>
-                <label>Transferência</label>
+                <label class="inativo">Transferência</label>
             </a>
 
             <a href=""><!-- {{ url_for('extrato') }} -->
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
                 </label>
-                <label>Extrato</label>
+                <label class="inativo">Extrato</label>
             </a>
 
             <a href=""><!-- {{ url_for('configuracoes') }} -->
@@ -74,7 +74,7 @@
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}"
                         alt="configurações">
                 </label>
-                <label>Configurações</label>
+                <label class="inativo">Configurações</label>
             </a>
         </div>
         <!-- fim -->
@@ -88,12 +88,16 @@
 
             <!-- saque -->
             <div class="deposito">
-                {% with messages = get_flashed_messages() %}
+                <h2>Quanto você quer sacar?</h2>
+                <form method="post" action="">
+                    <label class="valor">Valor<br>
+                        <input type="text" name="valorSaque" placeholder="R$ 0,00" step="0.01" maxlength="5">
+                    </label>
+                    {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <ul class=flashes>
                     {% for message in messages %}
-                    <div
-                        style="background-color: firebrick; color: white; border-radius: 10px; text-align: center; width: 300px;">
+                    <div class="error">
                         {{ message }}</div>
                     {% endfor %}
                 </ul>
@@ -102,11 +106,6 @@
                 {% if error %}
                 <p class=error><strong>Erro:</strong> {{ error }}
                     {% endif %}
-                <h2>Quanto você quer sacar?</h2>
-                <form method="post" action="">
-                    <label class="valor">Valor<br>
-                        <input type="text" name="valorSaque" placeholder="R$ 0,00" step="0.01">
-                    </label>
                     <input type="submit" class="submit" value="Sacar">
                 </form>
             </div>

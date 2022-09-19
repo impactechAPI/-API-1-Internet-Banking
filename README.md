@@ -132,7 +132,7 @@ Essas foram as tecnologias utilizadas, até agora, para desenvolvimento da aplic
 | Scrum Master | Elaine Santos | [LinkedIn](https://www.linkedin.com/in/elaineads/) | [Github](https://github.com/elaineads)
 |   PO   | Leandro Ferraz Luz | [LinkedIn](https://www.linkedin.com/in/leandro-f-luz/) | [Github](https://github.com/l3androluz)
 |   Dev Team   | Jonas Ribeiro |[LinkedIn](https://www.linkedin.com/in/jonasrsribeiro/) | [Github](https://github.com/jonasrsribeiro)
-|   Dev Team   | Diego José |[
+|   Dev Team   | Diego José |
 |   Dev Team   | Tiago Souza | [LinkedIn](https://www.linkedin.com/in/tiagosouzadesenvolvedor) | [Github](https://github.com/Tiag-ctrl)
 |   Dev Team   | Bruno Marcondes | [LinkedIn](https://www.linkedin.com/in/bruno-marcondes-cardozo-a4b374225) | [Github](https://github.com/brunom4rcondes)
 |   Dev Team   | José Henninger |

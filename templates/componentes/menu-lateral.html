@@ -10,42 +10,42 @@
             <label>
                 <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
             </label>
-            <label class="titulo">Home</label>
+            <label class="ativo">Home</label>
         </a>
 
         <a href="{{ url_for('deposito') }}">
             <label>
                 <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}" alt="depósito">
             </label>
-            <label>Depósito</label>
+            <label class="ativo">Depósito</label>
         </a>
 
         <a href="{{ url_for('saque') }}">
             <label>
                 <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
             </label>
-            <label>Saque</label>
+            <label class="ativo">Saque</label>
         </a>
 
-        <a href="{{ url_for('tranferencia') }}">
+        <a href="#"> <!-- {{ url_for('tranferencia') }} -->
             <label>
                 <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}" alt="transferência">
             </label>
-            <label>Transferência</label>
+            <label class="inativo">Transferência</label>
         </a>
 
-        <a href="{{ url_for('extrato') }}">
+        <a href="#"> <!-- {{ url_for('extrato') }} -->
             <label>
                 <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
             </label>
-            <label>Extrato</label>
+            <label class="inativo">Extrato</label>
         </a>
 
-        <a href="{{ url_for('configuracoes') }}">
+        <a href="#"> <!-- {{ url_for('configuracoes') }} -->
             <label>
                 <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
             </label>
-            <label>Configurações</label>
+            <label class="inativo">Configurações</label>
         </a>
     </div>
     <!-- fim -->

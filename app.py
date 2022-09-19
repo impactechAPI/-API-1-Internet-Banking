@@ -137,6 +137,8 @@ def indexCadastro():
         contaBancaria="".join(map(str,numero))
         
         #Salvando dados no BD e finalizando operação
+        
+        
         cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
         mysql.connection.commit()
         cur.close()
@@ -179,15 +181,16 @@ def deposito():
         saldoFinal = saldoParcial[0]
 
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
-        if float(valorDeposito) > 0:
+        if valorDeposito and float(valorDeposito) > 0:
             saldoFinal = float(saldoFinal) + float(valorDeposito)
             #Para fazer UPDATES onde preciso que o duas variaveis precisam ser mudadas, basta utilizar o %s. Entretanto, no final como é uma Tupla, preciso informar o que substituir por meio de um parênteses EX:([x],[y]).
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
             mysql.connection.commit()
             cur.close()
+            flash("Depósito realizado com sucesso!")
         else:
-            flash("Apenas depósitos positivos e acima de R$: 0,00 são permitidos!")
-            return redirect (url_for("deposito"))
+            flash("Apenas depósitos positivos e acima de R$ 0,00 são permitidos!")
+            return redirect (url_for("deposito")) 
 
         #session.pop remove os dados de 'saldoUsuario'. Em seguida pedi para que o saldo final sofresse uma formatação e ficasse com duas casas após a vírgula. depois renovei o session 'saldoUsuario' para pegar o saldo formatado. Precisei excluir e pegar novamente para atualizar o cache.
         session.pop('saldoUsuario', None)
@@ -214,18 +217,22 @@ def saque():
         saldoFinal = saldoParcial[0]
 
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
-        if  float(valorSaque) > 0 and float(valorSaque) <= float(saldoFinal):
+        if  valorSaque and float(valorSaque) > 0 and float(valorSaque) <= float(saldoFinal):
             saldoFinal = float(saldoFinal) - float(valorSaque)
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
             mysql.connection.commit()
             cur.close()
+            flash("Saque realizado com sucesso!")
         else:
-            if float(valorSaque) <= 0:
-                flash('Apenas saques positivos e acima de R$: 0,00 são permitidos!')
+            if valorSaque and float(valorSaque) <= 0:
+                flash('Apenas saques positivos e acima de R$ 0,00 são permitidos!')
                 return redirect(url_for('saque'))
             
-            if float(valorSaque) > float(saldoFinal):
+            if valorSaque and float(valorSaque) > float(saldoFinal):
                 flash('Saldo indisponivel para esse valor')
+                return redirect(url_for('saque'))
+            else:
+                flash('Preencha o campo Valor, para realizar o saque!')
                 return redirect(url_for('saque'))
 
         session.pop('saldoUsuario', None)

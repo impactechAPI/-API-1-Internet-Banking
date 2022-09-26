@@ -10,7 +10,7 @@
     <!-- links CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-deposito.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-deposito-saque.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
 </head>
 
@@ -62,11 +62,11 @@
                 <label class="inativo">Transferência</label>
             </a>
 
-            <a href=""><!-- {{ url_for('extrato') }} -->
+            <a href="{{ url_for('extrato') }}">
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
                 </label>
-                <label class="inativo">Extrato</label>
+                <label class="ativo">Extrato</label>
             </a>
 
             <a href=""><!-- {{ url_for('configuracoes') }} -->

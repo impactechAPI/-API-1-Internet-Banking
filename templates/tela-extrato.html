@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saque</title>
+    <title>Extrato</title>
 
     <!-- links CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-deposito-saque.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-extrato.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
 </head>
 
@@ -54,7 +54,8 @@
                 <label class="ativo">Saque</label>
             </a>
 
-            <a href=""><!-- {{ url_for('transferencia') }} -->
+            <a href="">
+                <!-- {{ url_for('transferencia') }} -->
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}"
                         alt="transferência">
@@ -69,7 +70,8 @@
                 <label class="ativo">Extrato</label>
             </a>
 
-            <a href=""><!-- {{ url_for('configuracoes') }} -->
+            <a href="">
+                <!-- {{ url_for('configuracoes') }} -->
                 <label>
                     <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}"
                         alt="configurações">
@@ -82,34 +84,60 @@
         <div class="container">
 
             <div class="fundo">
-                <h1>Saque</h1>
+                <h1>Extrato</h1>
                 <hr>
             </div>
 
-            <!-- saque -->
-            <div class="deposito">
-                <h2>Quanto você quer sacar?</h2>
-                <form method="post" action="">
-                    <label class="valor">Valor<br>
-                        <input type="text" name="valorSaque" placeholder="R$ 0,00" step="0.01" maxlength="5">
-                    </label>
-                    {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <div class="error">
-                        {{ message }}</div>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
-                {% if error %}
-                <p class=error><strong>Erro:</strong> {{ error }}
-                    {% endif %}
-                    <input type="submit" class="submit" value="Sacar">
-                </form>
+            <!-- deposito -->
+            <!-- filtros -->
+            <div class="extrato">
+                <div class="filtros">
+                    <div class="periodo">
+                        <h2>Período</h2>
+                        <div>
+                            <input type="date">
+                            <span>à</span>
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="tipo-transacao">
+                        <h2>Tipo de transação</h2>
+                        <select name="tipo-transacao" id="tipo-transacao">
+                            <option value="todos">Todos</option>
+                            <option value="deposito">Depósito</option>
+                            <option value="saque">Saque</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- tabela -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Transação</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <!-- for -->
+                            <td>
+                                <!-- {{ session['data'] }} -->
+                            </td>
+                            <td>
+                                <!-- {{ session['transacao'] }} -->
+                            </td>
+                            <td>
+                                <!-- {{ session['valor'] }} -->
+                            </td>
+                            <!-- endfor-->
+                        </tr>
+                    </tbody>
+                </table>
+                <button><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button>
             </div>
-            <!-- fim -->
+            <!-- fim depósito -->
         </div>
     </div>
 

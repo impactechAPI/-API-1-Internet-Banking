@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.body {
+    display: flex;
+}
+
+.container {
+    width: 100%;
+}
+
+.fundo h1 {
+    width: 70%;
+    margin: 0 auto;
+    padding-top: 5rem;
+    color: white;
+    font-size: 3rem;
+}
+
+.fundo hr {
+    width: 70%;
+    margin: 1em auto 0 auto;
+}
+
+.extrato {
+    width: 70%;
+    margin: -6rem auto 0 auto;
+    background-color: white;
+    box-shadow: 5px 5px 50px 1px #00000038;
+    height: 30rem;
+    border-radius: 10px;
+}
+
+.extrato h1 {
+    font-weight: normal;
+    font-size: 2em;
+}
+
+.extrato h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    padding-top: 1em;
+}
+
+/* filtros */
+
+.filtros {
+    display: flex;
+    padding: 1rem 2rem;
+    justify-content: space-between;
+}
+
+.tipo-transacao {
+    text-align: right;
+}
+
+.filtros input, select {
+    padding: .5rem;
+    margin-top: .5rem;
+    width: 7rem;
+}
+
+.periodo span {
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+/* tabela */
+
+.table {
+    width: 90%;
+    margin: 1rem 2rem 0 2rem;
+    border-collapse: collapse;
+}
+
+.table th {
+    background-color: #22D6C3;
+    padding: .5rem;
+}
+
+tr:nth-child(even) {
+    background: lightgray;
+}
+
+/* botão */
+button {
+    background-color: #08C746;
+    width: 30%;
+    color: white;
+    font-size: 1.2em;
+    height: 3em;
+    cursor: pointer;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin-top: 2em;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}
+
+button img {
+    width: 1.5rem;
+    margin-right: .5rem;
+}
+
+.error {
+    color: rgb(252, 5, 5);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.9em;
+}

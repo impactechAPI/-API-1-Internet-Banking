@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrato</title>
+
+    <!-- links CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-extrato.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
+</head>
+
+<body>
+
+    <!-- componente cabeçalho -->
+    <header>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo"
+                class="logo"></a>
+        <div class="sair">
+            <span>Sair</span>
+            <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}"
+                    alt="sair"></a>
+        </div>
+    </header>
+    <!-- fim -->
+
+    <div class="body">
+
+        <!-- componente menu lateral -->
+        <div class="menu">
+            <a href="{{ url_for('home') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+                </label>
+                <label class="ativo">Home</label>
+            </a>
+
+            <a href="{{ url_for('deposito') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}"
+                        alt="depósito">
+                </label>
+                <label class="ativo">Depósito</label>
+            </a>
+
+            <a href="{{ url_for('saque') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
+                </label>
+                <label class="ativo">Saque</label>
+            </a>
+
+            <a href="">
+                <!-- {{ url_for('transferencia') }} -->
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}"
+                        alt="transferência">
+                </label>
+                <label class="inativo">Transferência</label>
+            </a>
+
+            <a href="{{ url_for('extrato') }}">
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
+                </label>
+                <label class="ativo">Extrato</label>
+            </a>
+
+            <a href="">
+                <!-- {{ url_for('configuracoes') }} -->
+                <label>
+                    <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}"
+                        alt="configurações">
+                </label>
+                <label class="inativo">Configurações</label>
+            </a>
+        </div>
+        <!-- fim -->
+
+        <div class="container">
+
+            <div class="fundo">
+                <h1>Extrato</h1>
+                <hr>
+            </div>
+
+            <!-- deposito -->
+            <!-- filtros -->
+            <div class="extrato">
+                <div class="filtros">
+                    <div class="periodo">
+                        <h2>Período</h2>
+                        <div>
+                            <input type="date">
+                            <span>à</span>
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="tipo-transacao">
+                        <h2>Tipo de transação</h2>
+                        <select name="tipo-transacao" id="tipo-transacao">
+                            <option value="todos">Todos</option>
+                            <option value="deposito">Depósito</option>
+                            <option value="saque">Saque</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- tabela -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Transação</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <!-- for -->
+                            <td>
+                                <!-- {{ session['data'] }} -->
+                            </td>
+                            <td>
+                                <!-- {{ session['transacao'] }} -->
+                            </td>
+                            <td>
+                                <!-- {{ session['valor'] }} -->
+                            </td>
+                            <!-- endfor-->
+                        </tr>
+                    </tbody>
+                </table>
+                <button><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button>
+            </div>
+            <!-- fim depósito -->
+        </div>
+    </div>
+
+    <!-- componente rodapé -->
+    <footer>© 2022 SiriusBank</footer>
+    <!-- fim -->
+</body>
+
+</html>

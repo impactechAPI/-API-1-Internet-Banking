@@ -48,11 +48,11 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 
 ### Requisitos Funcionais e Não Funcionais
 
-| User Story | Item | ID | 
-| -- | --- | --- | 
-| US 01 | Sistema de abertura de conta e cadastro de usuário comum | RF 3 |
-| US 02 | Sistema de saque e depósito | RF 3 |
-| US 03 | Sistema de login | ----- |
+| User Story | Item | ID | Sprint | 
+| -- | --- | --- | --- |
+| US 01 | Sistema de abertura de conta e cadastro de usuário comum | RF 3 | 01 |
+| US 02 | Sistema de saque e depósito | RF 3 | 01 |
+| US 03 | Sistema de login | ----- | 01 |
 | US 04 | Sistema de cheque especial | RF 12/13 |
 | US 05 | Autorizações de usuário gerente de agência | RF 02 |
 | US 06 | Autorizações de usuário gerente geral | RF 01 |

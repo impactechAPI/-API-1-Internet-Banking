@@ -53,15 +53,17 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 | US 01 | Sistema de abertura de conta e cadastro de usuário comum | RF 3 | 01 |
 | US 02 | Sistema de saque e depósito | RF 3 | 01 |
 | US 03 | Sistema de login | ----- | 01 |
-| US 04 | Sistema de cheque especial | RF 12/13 |
-| US 05 | Autorizações de usuário gerente de agência | RF 02 |
-| US 06 | Autorizações de usuário gerente geral | RF 01 |
-| US 07 | Implementar extrato e comprovantes | RF 13 |
-| US 08 | Sistema de transferência de valores | RF 03 |
-| US 09 | Consulta e alteração de informações pessoais | RF 03 |
-| US 10 | Sistema de fechamento de conta | RF 03 |
-| US 11 | Sistema responsivo e intuitivo | RN.U.01/03 |
-| US 12 | Juros ajustáveis | RF 13 |
+| US 05 | Autorizações de usuário gerente de agência | RF 02 | 02 |
+| US 07 | Implementar extrato e comprovantes | RF 13 | 02 |
+| US 08 | Sistema de transferência de valores | RF 03 | 02 |
+| US 09 | Consulta e alteração de informações pessoais | RF 03 | 02 |
+| US 10 | Sistema de fechamento de conta | RF 03 | 03 |
+| US 11 | Sistema responsivo e intuitivo | RN.U.01/03 | 03 |
+| US 06 | Autorizações de usuário gerente geral | RF 01 | 03 |
+| US 04 | Sistema de cheque especial | RF 12/13 | 04 |
+| US 12 | Juros ajustáveis | RF 13 | 04 |
+
+
 
 ### Backlog das Sprints
 
@@ -76,6 +78,19 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 | 05 | Desenvolvimento Back-End |
 | 06 | Repositório |
 
+#### Sprint 2
+
+| Item | Descrição                  |
+| - | :---------------------------- |
+| 01 | Interface Home Gerente de Agência |
+| 02 | Interface Gerenciar Usuários |
+| 03 | Interface Abertura de Conta |
+| 04 | Interface Confirmação Depósito |
+| 05 | Interface Extrato |
+| 06 | Backend das Interfaces |
+| 07 | BD relacional |
+| 08 | Correções de bugs |
+| 09 | Melhorias nas Interfaces |
 
 <span id="user-stories">
 
@@ -132,7 +147,6 @@ Essas foram as tecnologias utilizadas, até agora, para desenvolvimento da aplic
 | Scrum Master | Elaine Santos | [LinkedIn](https://www.linkedin.com/in/elaineads/) | [Github](https://github.com/elaineads)
 |   PO   | Leandro Ferraz Luz | [LinkedIn](https://www.linkedin.com/in/leandro-f-luz/) | [Github](https://github.com/l3androluz)
 |   Dev Team   | Jonas Ribeiro |[LinkedIn](https://www.linkedin.com/in/jonasrsribeiro/) | [Github](https://github.com/jonasrsribeiro)
-|   Dev Team   | Diego José |
 |   Dev Team   | Tiago Souza | [LinkedIn](https://www.linkedin.com/in/tiagosouzadesenvolvedor) | [Github](https://github.com/Tiag-ctrl)
 |   Dev Team   | Bruno Marcondes | [LinkedIn](https://www.linkedin.com/in/bruno-marcondes-cardozo-a4b374225) | [Github](https://github.com/brunom4rcondes)
-|   Dev Team   | José Henninger |
+|   Dev Team   | José Henninger | 

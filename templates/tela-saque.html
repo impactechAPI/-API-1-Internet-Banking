@@ -91,21 +91,17 @@
                 <h2>Quanto você quer sacar?</h2>
                 <form method="post" action="">
                     <label class="valor">Valor<br>
-                        <input type="text" name="valorSaque" placeholder="R$ 0,00" step="0.01" maxlength="5">
+                        <input type="text" name="valorSaque" placeholder="R$ 0,00" step="0.01">
                     </label>
                     {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <div class="error">
-                        {{ message }}</div>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
-                {% if error %}
-                <p class=error><strong>Erro:</strong> {{ error }}
-                    {% endif %}
+                        {% if messages %}
+                            <ul class=flashes>
+                            {% for message in messages %}
+                                <div class="error">{{ message }}</div>
+                            </ul>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                     <input type="submit" class="submit" value="Sacar">
                 </form>
             </div>

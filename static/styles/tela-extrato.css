@@ -7,10 +7,12 @@
 
 .body {
     display: flex;
+    height: fit-content;
 }
 
 .container {
     width: 100%;
+    height: fit-content;
 }
 
 .fundo h1 {
@@ -118,4 +120,30 @@ button img {
     border-radius: 10px;
     text-align: center;
     font-size: 0.9em;
+}
+
+body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;}
+h1, h2          { margin: 0; }
+h1              { border-bottom: 2px solid #eee; }
+h2              { font-size: 1.2em; }
+
+table.dataframe, .dataframe th, .dataframe td {
+    table-layout: fixed;
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align:center;
+    padding: 10px;
+    font-size: 0.9em;
+    margin: auto;
+    width: 80%;
+}
+
+th {
+    background-color: #22D6C3;
+    color: white;
+}
+
+tr:hover{ 
+    background-color: #ffff99;
 }

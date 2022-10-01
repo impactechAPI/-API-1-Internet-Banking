@@ -3,6 +3,9 @@ from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 import yaml
 import random
+import pandas as pd
+from datetime import datetime
+
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".
 app = Flask(__name__)
@@ -20,6 +23,11 @@ app.config["MYSQL_DB"] = db["mysql_db"]
 
 #Aqui inicializo o framework MySQL do flask_mysqldb e todas as suas funções pela varíavel "mysql".
 mysql = MySQL(app)
+
+#Configuração de Hora do Sistema - OBS: Tem que ser realocado para um arquivo JSON
+def dataAgora():
+    data = datetime.now().strftime("%d/%m/%Y")
+    return data
 
 #Rota de página web criada. Ela está localizada em localhost/ . Página principal, página de Login com link para redirecionar à página Cadastro. 
 #Utiliza os métodos GET para pegar informações do banco de dados. POST para mandar informações pro banco de dados.
@@ -45,7 +53,7 @@ def indexHome():
             flash("Preencha todos os campos!")
             return redirect (url_for('indexHome'))
 
-        #Aqui está um try, exception. Caso essas variáveis tenham resultado válido ao retornar do banco de dados, se estiver correto o código parte para testar a senha. Se não ele fica preso na tela de login.
+        #Aqui está um try, exception. Caso essas variáveis tenham resultado válido ao retornar do banco de dados, se estiver correto, o código parte para testar a senha. Se não, ele fica preso na tela de login.
         try:
             #Inicilizando o MySQL, através da variável cur. Se não iniciar ele retorna cursor fechado!
             cur = mysql.connection.cursor()
@@ -63,8 +71,9 @@ def indexHome():
              flash("Conta Bancária não existe no sistema! Cadastre-se para continuar.")
              return render_template("tela-login.html")
         
-        #Se o contaValidador e a senhaCriptografada estiverem corretos ele loga, se não fica preso na tela de Login:
+        #Se a senhaCriptografada estiverem corretos ele loga, se não fica preso na tela de Login:
         if check_password_hash(senhaCriptografada, senhaLogin):
+            #Session.pop apaga o conteúdo localizado dentro da variável que está entre aspas, dentro do parêntesis.
             session.pop('usuarioLogado', None)
             session["usuarioLogado"] = True
             return redirect (url_for('home'))
@@ -77,9 +86,10 @@ def indexHome():
 #Rota da página cadastro
 @app.route("/cadastro", methods=["GET", "POST"])
 def indexCadastro():
-    #Inicializando algumas variaveis importantes pro resto da função indexCadastro. A variável agenciaBancaria recebe por enquanto uma string "0001". O saldoBancario sempre começa com 0 Reias.
+    #Inicializando algumas variaveis importantes pro resto da função indexCadastro. A variável agenciaBancaria recebe por enquanto uma string "0001". O saldoBancario sempre começa com 0 Reais.
     agenciaBancaria = "0001"
-    saldoBancario = 0.00
+    # !! Talvez dê para mudar o ponto por vírgula usando replace() !!
+    saldoBancario = "0.00"
     cadastro = False
     voltarLogin = False
     
@@ -96,8 +106,10 @@ def indexCadastro():
         confirmacaoSenha = userDetails["confirmacaoSenha"]  
         senhaCriptografada = generate_password_hash(senha) 
         senhaCriptografada2 = None
+        #Pega o bool que retorna do checkbox do consentimento do usuário
         checkboxConsentimentoUsuario = request.form.get("consentimentoUsuario")
 
+        #app.logger.info printa a variável que está dentro do parêntesis.
         app.logger.info(checkboxConsentimentoUsuario)
 
         #Critério preenchimento campos do cadastro, incluindo as duas senhas, que precisam ser iguais para que ela seja transformada em Hash criptografado e seja mandado pro banco de dados protegida.
@@ -106,17 +118,20 @@ def indexCadastro():
             return redirect (url_for("indexCadastro"))
 
         try:
-            #Verificando se cpf já consta nos registros durante o cadastro
+            #Verificando se cpf já consta nos registros durante o cadastro !! Não deve ser feito mais !!
             cur = mysql.connection.cursor()
             cur.execute("SELECT cpf FROM users WHERE cpf = %s", [cpf])
             cpfUsuario = cur.fetchone()
             retornoCpfUsuario = cpfUsuario[0]
         except Exception as ex:
             retornoCpfUsuario = None
-            
-        if retornoCpfUsuario and retornoCpfUsuario != None:
+        
+        #trecho retirado
+        """         
+            if retornoCpfUsuario and retornoCpfUsuario != None:
             flash("CPF já cadastrado")
-            return redirect (url_for("indexCadastro"))
+            return redirect (url_for("indexCadastro")) 
+        """
 
 
         if senha == confirmacaoSenha:
@@ -137,8 +152,6 @@ def indexCadastro():
         contaBancaria="".join(map(str,numero))
         
         #Salvando dados no BD e finalizando operação
-        
-        
         cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
         mysql.connection.commit()
         cur.close()
@@ -169,7 +182,10 @@ def indexCadastro():
 def deposito():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
+
     error = None
+    tipoMovimentacao = "Depósito"
+
     if request.method == "POST":
 
         userDetails = request.form
@@ -183,8 +199,12 @@ def deposito():
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
         if valorDeposito and float(valorDeposito) > 0:
             saldoFinal = float(saldoFinal) + float(valorDeposito)
-            #Para fazer UPDATES onde preciso que o duas variaveis precisam ser mudadas, basta utilizar o %s. Entretanto, no final como é uma Tupla, preciso informar o que substituir por meio de um parênteses EX:([x],[y]).
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
+            #Para fazer UPDATES onde as duas variaveis precisam ser mudadas, basta utilizar o %s. Entretanto, no final como é uma Tupla, preciso informar o que substituir por meio de um parênteses EX:([x],[y]).
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
+            cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoMovimentacao], [valorDeposito], session['idUsuario']))
+            """ cur.execute("SELECT REPLACE(movimentacao, '.', ',') AS movimentacao FROM movimentacaoConta") """
             mysql.connection.commit()
             cur.close()
             flash("Depósito realizado com sucesso!")
@@ -201,37 +221,41 @@ def deposito():
     return render_template("tela-deposito.html", error = error)
 
 
-
+#Rota para página saque.
 @app.route("/saque", methods=["GET", "POST"])
 def saque():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
+
+
     error = None
+    tipoMovimentacao = "Saque"
+    
+
     if request.method == "POST":
         userDetails = request.form
         valorSaque = userDetails ['valorSaque']
 
-        cur=mysql.connection.cursor()
+        cur = mysql.connection.cursor()
         cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s",[session['contaUsuario']])
         saldoParcial = cur.fetchone()
         saldoFinal = saldoParcial[0]
 
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
-        if  valorSaque and float(valorSaque) > 0 and float(valorSaque) <= float(saldoFinal):
+        if  valorSaque and float(valorSaque) > 0:
             saldoFinal = float(saldoFinal) - float(valorSaque)
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
+            cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoMovimentacao], [valorSaque], session['idUsuario']))
             mysql.connection.commit()
             cur.close()
             flash("Saque realizado com sucesso!")
         else:
             if valorSaque and float(valorSaque) <= 0:
-                flash('Apenas saques positivos e acima de R$ 0,00 são permitidos!')
+                flash('Apenas saques acima de R$ 0,00 são permitidos!')
                 return redirect(url_for('saque'))
-            
-            if valorSaque and float(valorSaque) > float(saldoFinal):
-                flash('Saldo indisponivel para esse valor')
-                return redirect(url_for('saque'))
-            else:
+            if not valorSaque:
                 flash('Preencha o campo Valor, para realizar o saque!')
                 return redirect(url_for('saque'))
 
@@ -257,16 +281,123 @@ def logout():
 def home():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
+    session['horaSistema'] = dataAgora()
     return render_template("tela-home.html")
+
+
 
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
     return render_template("tela-transferencia.html")
 
+
+#Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])
 def extrato():
-    return render_template("tela-extrato.html")
+    #Se a sessão do Usuario for Falsa, a rota deve voltar para indexHome
+    if session["usuarioLogado"] == False:
+        return redirect (url_for("indexHome"))
+    
+    try:
+        #Se o usuario clicar em Pesquisar retorna ao HTML a tabela contendo o conteúdo pesquisado.
+        if request.method == "POST" and "pesquisar" in request.form:
+            #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
+            dataMovimentacaoInicial = request.form.get("data-inicial")
+            dataMovimentacaoInicial = dataMovimentacaoInicial[-2:] + dataMovimentacaoInicial[4:8] + dataMovimentacaoInicial[0:4]
+            dataMovimentacaoInicial = dataMovimentacaoInicial.replace("-","/")
+            #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
+            dataMovimentacaoLimite = request.form.get("data-limite")
+            dataMovimentacaoLimite = dataMovimentacaoLimite[-2:] + dataMovimentacaoLimite[4:8] + dataMovimentacaoLimite[0:4]
+            dataMovimentacaoLimite = dataMovimentacaoLimite.replace("-","/")
+            #Estava retornando deposito, sem acento, acrescentei o acento pois será feito um query no DB através dessa variável
+            tipoTransacao = request.form.get("tipo-transacao")
+            if tipoTransacao == "deposito":
+                tipoTransacao = tipoTransacao[0:3] + "ó" + tipoTransacao[4:]
+
+            #Pegando as variaveis do Banco de Dados segundo os dados informados pelo Usuário x
+
+            #Se houver dados em dataMovimentacao e não houver em tipoTransacao, mostrar a dataMovimentacao selecionada para todos os tipos de Transacao
+            if dataMovimentacaoInicial and dataMovimentacaoLimite and tipoTransacao == "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            #Se a dataMovimentacao e o tipoTransacao forem especificados, mostrar a dataMovimentacao e o tipo de Transacao especificado
+            elif dataMovimentacaoInicial and dataMovimentacaoLimite and tipoTransacao != "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite], [tipoTransacao]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            #Se não for especificado nenhum dado para dataMovimentacao, mas ser para o tipoTransacao, mostrar todos os dados do tipoTransacao em todas as datas
+            elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND tipoMovimentacao = %s", (session['idUsuario'], [tipoTransacao]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+        #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
+
+            app.logger.info(cur)
+
+            dataMovimentacao = []
+            movimentacao = []
+            tipoMovimentacao = []
+
+            for i in cur:
+                dataMovimentacao.append(i[0])
+                movimentacao.append(i[1])
+                tipoMovimentacao.append(i[2])
+
+            tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
+
+            """ if request.method == "POST" and "imprimir" in request.form: """
+            return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+            
+    except Exception as ex:
+        return render_template("tela-extrato.html")
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():

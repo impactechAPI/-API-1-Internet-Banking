@@ -403,6 +403,5 @@ def extrato():
 def configuracoes():
     return render_template("tela-configuracoes.html")
 
- 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

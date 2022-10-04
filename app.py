@@ -4,8 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import yaml
 import random
 import pandas as pd
+import numpy
 from datetime import datetime
-
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".
 app = Flask(__name__)
@@ -175,8 +175,6 @@ def indexCadastro():
 
     return render_template("tela-cadastro.html")
 
-
-
 #Rota home
 @app.route("/deposito", methods=["GET", "POST"])
 def deposito():
@@ -219,7 +217,6 @@ def deposito():
         return redirect (url_for('deposito'))
 
     return render_template("tela-deposito.html", error = error)
-
 
 #Rota para página saque.
 @app.route("/saque", methods=["GET", "POST"])
@@ -284,13 +281,10 @@ def home():
     session['horaSistema'] = dataAgora()
     return render_template("tela-home.html")
 
-
-
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
     return render_template("tela-transferencia.html")
-
 
 #Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])
@@ -299,21 +293,29 @@ def extrato():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
     
-    try:
-        #Se o usuario clicar em Pesquisar retorna ao HTML a tabela contendo o conteúdo pesquisado.
-        if request.method == "POST" and "pesquisar" in request.form:
+    #Se o usuario clicar em Pesquisar retorna ao HTML a tabela contendo o conteúdo pesquisado.
+    if request.method == "POST":
+        if "pesquisar" in request.form:
+            session.pop("cacheApagado", None)
+            session["cacheApagado"] = None
             #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
             dataMovimentacaoInicial = request.form.get("data-inicial")
             dataMovimentacaoInicial = dataMovimentacaoInicial[-2:] + dataMovimentacaoInicial[4:8] + dataMovimentacaoInicial[0:4]
             dataMovimentacaoInicial = dataMovimentacaoInicial.replace("-","/")
+            session["dataMovimentacaoInicialCache"] = dataMovimentacaoInicial
             #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
             dataMovimentacaoLimite = request.form.get("data-limite")
             dataMovimentacaoLimite = dataMovimentacaoLimite[-2:] + dataMovimentacaoLimite[4:8] + dataMovimentacaoLimite[0:4]
             dataMovimentacaoLimite = dataMovimentacaoLimite.replace("-","/")
+            session["dataMovimentacaoLimiteCache"] = dataMovimentacaoLimite
             #Estava retornando deposito, sem acento, acrescentei o acento pois será feito um query no DB através dessa variável
             tipoTransacao = request.form.get("tipo-transacao")
             if tipoTransacao == "deposito":
                 tipoTransacao = tipoTransacao[0:3] + "ó" + tipoTransacao[4:]
+                session["tipoTransacaoCache"] = tipoTransacao
+            session["tipoTransacaoCache"] = tipoTransacao
+            
+            app.logger.info(str(session["dataMovimentacaoInicialCache"]), str(session["dataMovimentacaoLimiteCache"]), str(session["tipoTransacaoCache"]))
 
             #Pegando as variaveis do Banco de Dados segundo os dados informados pelo Usuário x
 
@@ -354,6 +356,7 @@ def extrato():
                     tipoMovimentacao.append(i[2])
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+
                 return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             #Se não for especificado nenhum dado para dataMovimentacao, mas ser para o tipoTransacao, mostrar todos os dados do tipoTransacao em todas as datas
@@ -373,10 +376,186 @@ def extrato():
                     tipoMovimentacao.append(i[2])
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+
                 return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
-        #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
-        else:
+            elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == None:
+                #session.pop('saldoUsuario', None)
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], session["dataMovimentacaoInicialCache"], session["dataMovimentacaoLimiteCache"], session["tipoTransacaoCache"]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == True:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+        if "imprimir" in request.form:
+            #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
+            dataMovimentacaoInicial = request.form.get("data-inicial")
+            dataMovimentacaoInicial = dataMovimentacaoInicial[-2:] + dataMovimentacaoInicial[4:8] + dataMovimentacaoInicial[0:4]
+            dataMovimentacaoInicial = dataMovimentacaoInicial.replace("-","/")
+            session["dataMovimentacaoInicialCache"] = dataMovimentacaoInicial
+            #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
+            dataMovimentacaoLimite = request.form.get("data-limite")
+            dataMovimentacaoLimite = dataMovimentacaoLimite[-2:] + dataMovimentacaoLimite[4:8] + dataMovimentacaoLimite[0:4]
+            dataMovimentacaoLimite = dataMovimentacaoLimite.replace("-","/")
+            session["dataMovimentacaoLimiteCache"] = dataMovimentacaoLimite
+            #Estava retornando deposito, sem acento, acrescentei o acento pois será feito um query no DB através dessa variável
+            tipoTransacao = request.form.get("tipo-transacao")
+            session["tipoTransacaoCache"] = tipoTransacao
+            if tipoTransacao == "deposito":
+                tipoTransacao = tipoTransacao[0:3] + "ó" + tipoTransacao[4:]
+                session["tipoTransacaoCache"] = tipoTransacao
+            session["tipoTransacaoCache"] = tipoTransacao
+
+            app.logger.info(str(session["dataMovimentacaoInicialCache"]), str(session["dataMovimentacaoLimiteCache"]), str(session["tipoTransacaoCache"]))
+
+            #Pegando as variaveis do Banco de Dados segundo os dados informados pelo Usuário x
+
+            if dataMovimentacaoInicial and dataMovimentacaoLimite and tipoTransacao == "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
+
+                tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            elif dataMovimentacaoInicial and dataMovimentacaoLimite and tipoTransacao != "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite], [tipoTransacao]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
+
+                tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND tipoMovimentacao = %s", (session['idUsuario'], [tipoTransacao]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
+
+                tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == None:
+                #session.pop('saldoUsuario', None)
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], session["dataMovimentacaoInicialCache"], session["dataMovimentacaoLimiteCache"], session["tipoTransacaoCache"]))
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
+
+                tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+            elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == True:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
+
+                app.logger.info(cur)
+
+                dataMovimentacao = []
+                movimentacao = []
+                tipoMovimentacao = []
+
+                for i in cur:
+                    dataMovimentacao.append(i[0])
+                    movimentacao.append(i[1])
+                    tipoMovimentacao.append(i[2])
+
+                tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
+
+                tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
+
+                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+
+    #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
+    else:
+            session.pop("dataMovimentacaoInicialCache", None)
+            session.pop("dataMovimentacaoLimiteCache", None)
+            session.pop("tipoTransacaoCache", None)
+
+            session.pop("cacheApagado", None)
+            session["cacheApagado"] = True
+
             cur = mysql.connection.cursor()
             cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
 
@@ -393,16 +572,11 @@ def extrato():
 
             tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
 
-            """ if request.method == "POST" and "imprimir" in request.form: """
             return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
-            
-    except Exception as ex:
-        return render_template("tela-extrato.html")
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
     return render_template("tela-configuracoes.html")
 
- 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

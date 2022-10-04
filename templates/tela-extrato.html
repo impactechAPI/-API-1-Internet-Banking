@@ -111,17 +111,14 @@
                         </div>
                         <input type="submit" class="submit" value="Pesquisar" name="pesquisar">
                     </div>
-                </form>
-
-                <!-- tabela -->
+                    <!-- tabela -->
                     {% for tabela in tabelas %}
                         {{ titulos[loop.index] }}
                         {{ tabela|safe }}
                     {% endfor %}
-                <form method="post" name="imprimir">
-                    <button><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button>
-                </form>
-                
+                    <input type="submit" class="submit" value="Imprimir" name="imprimir">
+                    <!-- <button name="imprimir"><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button> -->
+                </form>     
             </div>
             <!-- fim depósito -->
         </div>

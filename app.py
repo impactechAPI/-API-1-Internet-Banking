@@ -106,6 +106,9 @@ def indexCadastro():
         confirmacaoSenha = userDetails["confirmacaoSenha"]  
         senhaCriptografada = generate_password_hash(senha) 
         senhaCriptografada2 = None
+        tipoSolicitacao = "Abertura"
+        linkVisualizacao = '''http://127.0.0.1:5000/saque'''
+        
         #Pega o bool que retorna do checkbox do consentimento do usuário
         checkboxConsentimentoUsuario = request.form.get("consentimentoUsuario")
 
@@ -150,6 +153,9 @@ def indexCadastro():
         for i in range(1, 10):
             numero.append(random.randint(0, 9))
         contaBancaria="".join(map(str,numero))
+
+        session.pop("horaSistema", None)
+        session["horaSistema"] = dataAgora()
         
         #Salvando dados no BD e finalizando operação
         cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
@@ -163,6 +169,13 @@ def indexCadastro():
             cur.execute("SELECT contaBancaria FROM users WHERE cpf = %s", [cpf])
             contaUsuario = cur.fetchone()
             session['contaUsuario'] = contaUsuario[0]
+
+            cur.execute("SELECT user_id FROM users WHERE cpf = %s", [cpf])
+            idUsuarioCadastro = cur.fetchone()
+            cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], [name], [linkVisualizacao], [idUsuarioCadastro]))
+            mysql.connection.commit()
+            cur.close()
+
             flash(f"Cadastro criado com sucesso!\nATENÇÃO! Para logar você precisa da sua Conta Bancária, anote-a:\n {str(session.get('contaUsuario'))}")
             if request.method == "POST":
                 voltarLogin = True
@@ -324,8 +337,6 @@ def extrato():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite]))
 
-                app.logger.info(cur)
-
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -344,8 +355,6 @@ def extrato():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite], [tipoTransacao]))
 
-                app.logger.info(cur)
-
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -363,9 +372,7 @@ def extrato():
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND tipoMovimentacao = %s", (session['idUsuario'], [tipoTransacao]))
-
-                app.logger.info(cur)
-
+                
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -384,8 +391,6 @@ def extrato():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], session["dataMovimentacaoInicialCache"], session["dataMovimentacaoLimiteCache"], session["tipoTransacaoCache"]))
 
-                app.logger.info(cur)
-
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -402,8 +407,6 @@ def extrato():
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == True:
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
-
-                app.logger.info(cur)
 
                 dataMovimentacao = []
                 movimentacao = []
@@ -445,8 +448,6 @@ def extrato():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite]))
 
-                app.logger.info(cur)
-
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -466,8 +467,6 @@ def extrato():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], [dataMovimentacaoInicial], [dataMovimentacaoLimite], [tipoTransacao]))
 
-                app.logger.info(cur)
-
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -486,8 +485,6 @@ def extrato():
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND tipoMovimentacao = %s", (session['idUsuario'], [tipoTransacao]))
-
-                app.logger.info(cur)
 
                 dataMovimentacao = []
                 movimentacao = []
@@ -509,8 +506,6 @@ def extrato():
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], session["dataMovimentacaoInicialCache"], session["dataMovimentacaoLimiteCache"], session["tipoTransacaoCache"]))
 
-                app.logger.info(cur)
-
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []
@@ -529,8 +524,6 @@ def extrato():
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == True:
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
-
-                app.logger.info(cur)
 
                 dataMovimentacao = []
                 movimentacao = []
@@ -559,8 +552,6 @@ def extrato():
             cur = mysql.connection.cursor()
             cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
 
-            app.logger.info(cur)
-
             dataMovimentacao = []
             movimentacao = []
             tipoMovimentacao = []
@@ -577,6 +568,181 @@ def extrato():
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
     return render_template("tela-configuracoes.html")
+
+@app.route("/gerenciar", methods=["GET", "POST"])
+def gerenciar():
+    #Se a sessão do Usuario for Falsa, a rota deve voltar para indexHome
+    if session["usuarioLogado"] == False:
+        return redirect (url_for("indexHome"))
+    
+    #Se o usuario clicar em Pesquisar retorna ao HTML a tabela contendo o conteúdo pesquisado.
+    if request.method == "POST":
+        if "pesquisar" in request.form:
+            session.pop("cacheApagado", None)
+            session["cacheApagado"] = None
+            #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
+            dataSolicitacaoInicial = request.form.get("data-inicial")
+            dataSolicitacaoInicial = dataSolicitacaoInicial[-2:] + dataSolicitacaoInicial[4:8] + dataSolicitacaoInicial[0:4]
+            dataSolicitacaoInicial = dataSolicitacaoInicial.replace("-","/")
+            session["dataSolicitacaoInicialCache"] = dataSolicitacaoInicial
+            #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
+            dataSolicitacaoLimite = request.form.get("data-limite")
+            dataSolicitacaoLimite = dataSolicitacaoLimite[-2:] + dataSolicitacaoLimite[4:8] + dataSolicitacaoLimite[0:4]
+            dataSolicitacaoLimite = dataSolicitacaoLimite.replace("-","/")
+            session["dataSolicitacaoLimiteCache"] = dataSolicitacaoLimite
+            #Estava retornando deposito, sem acento, acrescentei o acento pois será feito um query no DB através dessa variável
+            tipoSolicitacao = request.form.get("tipo-transacao")
+            if tipoSolicitacao == "deposito":
+                tipoSolicitacao = tipoSolicitacao[0:3] + "ó" + tipoSolicitacao[4:]
+                session["tipoSolicitacaoCache"] = tipoSolicitacao
+            session["tipoSolicitacaoCache"] = tipoSolicitacao
+            if tipoSolicitacao == "alteracao de dados":
+                tipoSolicitacao = tipoSolicitacao[0:6] + "çã" + tipoSolicitacao[7:]
+                session["tipoSolicitacaoCache"] = tipoSolicitacao
+            session["tipoSolicitacaoCache"] = tipoSolicitacao
+            
+            app.logger.info(str(session["dataSolicitacaoInicialCache"]), str(session["dataSolicitacaoLimiteCache"]), str(session["tipoSolicitacaoCache"]))
+
+            #Pegando as variaveis do Banco de Dados segundo os dados informados pelo Usuário x
+
+            #Se houver dados em dataMovimentacao e não houver em tipoTransacao, mostrar a dataMovimentacao selecionada para todos os tipos de Transacao
+            if dataSolicitacaoInicial and dataSolicitacaoLimite and tipoSolicitacao == "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao FROM gerenciamentoUsuarios WHERE dataHoraSolicitacao >= %s AND dataHoraSolicitacao <= %s", ([dataSolicitacaoInicial], [dataSolicitacaoLimite]))
+
+                dataSolicitacao = []
+                tipoSolicitacao = []
+                usuarioSolicitacao = []
+                linkVisualizacao = []
+
+
+                for i in cur:
+                    dataSolicitacao.append(i[0])
+                    tipoSolicitacao.append(i[1])
+                    usuarioSolicitacao.append(i[2])
+                    linkVisualizacao.append(i[3])
+
+                tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao)), columns =['Data','Usuário', 'Tipo de Soliticação', 'Visualizar'])
+
+                return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False)], titulos=tabelaSolicitacao.columns.values)
+
+            #Se a dataMovimentacao e o tipoTransacao forem especificados, mostrar a dataMovimentacao e o tipo de Transacao especificado
+            elif dataSolicitacaoInicial and dataSolicitacaoLimite and tipoSolicitacao != "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao FROM gerenciamentoUsuarios WHERE dataHoraSolicitacao >= %s AND dataHoraSolicitacao <= %s AND tipoSolicitacao = %s", ([dataSolicitacaoInicial], [dataSolicitacaoLimite], [tipoSolicitacao]))
+
+                dataSolicitacao = []
+                tipoSolicitacao = []
+                usuarioSolicitacao = []
+                linkVisualizacao = []
+
+                for i in cur:
+                    dataSolicitacao.append(i[0])
+                    tipoSolicitacao.append(i[1])
+                    usuarioSolicitacao.append(i[2])
+                    linkVisualizacao.append(i[3])
+
+                tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao)), columns =['Data','Usuário', 'Tipo de Solicitação', 'Visualizar'])
+
+                return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False)], titulos=tabelaSolicitacao.columns.values)
+
+            #Se não for especificado nenhum dado para dataMovimentacao, mas ser para o tipoTransacao, mostrar todos os dados do tipoTransacao em todas as datas
+            elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao != "todos":
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao FROM gerenciamentoUsuarios WHERE tipoSolicitacao = %s", ([tipoSolicitacao]))
+
+                dataSolicitacao = []
+                tipoSolicitacao = []
+                usuarioSolicitacao = []
+                linkVisualizacao = []
+
+                for i in cur:
+                    dataSolicitacao.append(i[0])
+                    tipoSolicitacao.append(i[1])
+                    usuarioSolicitacao.append(i[2])
+                    linkVisualizacao.append(i[3])
+
+                tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao)), columns =['Data','Usuário', 'Tipo de Solicitação', 'Visualizar'])
+
+                return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False)], titulos=tabelaSolicitacao.columns.values)
+
+            elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao == "todos" and session["cacheApagado"] == None:
+                #session.pop('saldoUsuario', None)
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraSolicitacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND dataHoraMovimentacao >= %s AND dataHoraMovimentacao <= %s AND tipoMovimentacao = %s", (session['idUsuario'], session["dataMovimentacaoInicialCache"], session["dataMovimentacaoLimiteCache"], session["tipoTransacaoCache"]))
+
+                dataSolicitacao = []
+                tipoSolicitacao = []
+                usuarioSolicitacao = []
+                linkVisualizacao = []
+
+                for i in cur:
+                    dataSolicitacao.append(i[0])
+                    tipoSolicitacao.append(i[1])
+                    usuarioSolicitacao.append(i[2])
+                    linkVisualizacao.append(i[3])
+
+                tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao)), columns =['Data','Usuário', 'Tipo de Solicitação', 'Visualizar'])
+
+                return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False)], titulos=tabelaSolicitacao.columns.values)
+
+            elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao == "todos" and session["cacheApagado"] == True:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao FROM gerenciamentoUsuarios WHERE tipoSolicitacao = %s", ([tipoSolicitacao]))
+
+                dataSolicitacao = []
+                tipoSolicitacao = []
+                usuarioSolicitacao = []
+                linkVisualizacao = []
+
+                for i in cur:
+                    dataSolicitacao.append(i[0])
+                    tipoSolicitacao.append(i[1])
+                    usuarioSolicitacao.append(i[2])
+                    linkVisualizacao.append(i[3])
+
+                tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao)), columns =['Data','Usuário', 'Tipo de Solicitação', 'Visualizar'])
+
+                return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False)], titulos=tabelaSolicitacao.columns.values)
+
+    #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
+    else:
+            session.pop("dataMovimentacaoInicialCache", None)
+            session.pop("dataMovimentacaoLimiteCache", None)
+            session.pop("tipoTransacaoCache", None)
+
+            session.pop("cacheApagado", None)
+            session["cacheApagado"] = True
+
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao, user_id FROM gerenciamentoUsuarios")
+
+            dataSolicitacao = []
+            tipoSolicitacao = []
+            usuarioSolicitacao = []
+            linkVisualizacao = []
+            userId = []
+
+            for i in cur:
+                dataSolicitacao.append(i[0])
+                tipoSolicitacao.append(i[1])
+                usuarioSolicitacao.append(i[2])
+                linkVisualizacao.append(i[3])
+                userId.append(i[4])
+
+
+            tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao, userId)), columns =['Data','Usuário', 'Tipo de Solicitação', 'Visualizar', 'User Id'])
+
+            retornoContaUsuarios = []
+
+            for x in range(len(tabelaSolicitacao.index)):
+                retornoContaUsuarios.append(tabelaSolicitacao.iloc[x,4])
+
+            app.logger.info(retornoContaUsuarios[0], retornoContaUsuarios[1])
+
+            session["retornoContaUsuario"] = retornoContaUsuarios[0] 
+
+            return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False, render_links=True)], titulos=tabelaSolicitacao.columns.values)
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

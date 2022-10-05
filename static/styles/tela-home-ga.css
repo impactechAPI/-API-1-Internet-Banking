@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.body {
+    display: flex;
+}
+
+.container {
+    width: 100%;
+}
+
+.home {
+    width: 70%;
+    margin: -3em auto 0 auto;
+    background-color: white;
+    box-shadow: 5px 5px 50px 1px #00000038;
+    height: 50vh;
+    border-radius: 10px;
+}
+
+.home h1 {
+    padding: 2em 2em 1em 2em;
+    font-weight: normal;
+    font-size: 2em;
+}
+
+.home p {
+    padding-left: 3em;
+    font-size: 1.3em;
+}

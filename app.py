@@ -108,7 +108,7 @@ def indexCadastro():
         senhaCriptografada2 = None
         tipoSolicitacao = "Abertura"
         linkVisualizacao = '''http://127.0.0.1:5000/saque'''
-
+        
         #Pega o bool que retorna do checkbox do consentimento do usuário
         checkboxConsentimentoUsuario = request.form.get("consentimentoUsuario")
 
@@ -372,7 +372,7 @@ def extrato():
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s AND tipoMovimentacao = %s", (session['idUsuario'], [tipoTransacao]))
-
+                
                 dataMovimentacao = []
                 movimentacao = []
                 tipoMovimentacao = []

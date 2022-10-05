@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home GA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-home-ga.css') }}">
+</head>
+<body>
+    
+    <header>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo" class="logo"></a>
+        <div class="sair">
+            <span>Sair</span>
+            <a href="{{ url_for('indexHome') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}" alt="sair"></a>
+        </div>
+    </header>
+    <div class="body">
+    <!-- componente menu lateral -->
+    <div class="menu">
+        <a href="{{ url_for('home') }}">
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+            </label>
+            <label class="ativo">Home</label>
+        </a>
+
+        <a href="#"> 
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/usuario.png') }}" alt="clientes">
+            </label>
+            <label class="ativo">Clientes</label>
+        </a>
+
+        <a href="#"> 
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/gerenciar.png') }}" alt="gerenciar-clientes">
+            </label>
+            <label class="ativo">Gerenciar  clientes</label>
+        </a>
+
+        <a href="#"> <!-- {{ url_for('configuracoes') }} -->
+            <label>
+                <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}" alt="configurações">
+            </label>
+            <label class="inativo">Configurações</label>
+        </a>
+    </div>
+    <div class="container">
+    <div class="fundo">
+        <div class="dados-usuario">
+            <div class="dados">
+                <h1 class="usuario">Olá, {{ session['nomeUsuario'] }}</h1>
+                <label>Número de matrícula: {{ session['matriculaUsuario'] }}</label>
+                <label>Função: {{ session['funcaoUsuario'] }}</label>
+            </div>
+        </div>
+        <hr class="hr">
+    </div>
+    <div class="home">
+        <h1>Agência: {{ session['agenciaGerente'] }}</h1>
+    </div>
+    </div>
+    </div>
+    <footer>© 2022 SiriusBank</footer>
+</body>
+</html>

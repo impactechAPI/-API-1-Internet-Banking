@@ -557,22 +557,32 @@ def extrato():
             session["cacheApagado"] = True
 
             cur = mysql.connection.cursor()
-            cur.execute("SELECT dataHoraMovimentacao, movimentacao, tipoMovimentacao FROM movimentacaoConta WHERE user_id = %s", [session['idUsuario']])
+            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, linkVisualizacao, user_id FROM gerenciamentoUsuarios")
 
-            app.logger.info(cur)
-
-            dataMovimentacao = []
-            movimentacao = []
-            tipoMovimentacao = []
+            dataSolicitacao = []
+            tipoSolicitacao = []
+            usuarioSolicitacao = []
+            linkVisualizacao = []
+            userId = []
 
             for i in cur:
-                dataMovimentacao.append(i[0])
-                movimentacao.append(i[1])
-                tipoMovimentacao.append(i[2])
+                dataSolicitacao.append(i[0])
+                tipoSolicitacao.append(i[1])
+                usuarioSolicitacao.append(i[2])
+                linkVisualizacao.append(i[3])
+                userId.append(i[4])
 
-            tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
 
-            return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+            tabelaSolicitacao = pd.DataFrame(list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, linkVisualizacao, userId)), columns =['Data','Usuário', 'Tipo de Solicitação', 'Visualizar', 'User Id'])
+
+            retornoContaUsuarios = []
+
+            for x in range(len(tabelaSolicitacao.index)):
+                retornoContaUsuarios.append(tabelaSolicitacao.iloc[x,4])
+
+            app.logger.info(retornoContaUsuarios[0], retornoContaUsuarios[1]) 
+
+            return render_template("tela-gerenciar.html", tabelas=[tabelaSolicitacao.to_html(index=False, render_links=True)], titulos=tabelaSolicitacao.columns.values)
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():

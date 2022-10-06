@@ -1,19 +1,22 @@
+/* menu lateral */
 .menu {
     display: flex;
     flex-direction: column;
     height: 84vh;
-    box-shadow: 0px 2px 50px 0.1px #00000012;
+    box-shadow: 0px 2px 50px 0.1px #00000012; /* sombra do container */
     justify-content: left;
     padding: 0.5em 2em 0 2em;
     bottom: 0;
     background-color: white;
 }
 
+/* menu lateral ícones */
 .icone-menu {
     width: 1.5em;
     margin-right: 0.5em;
 }
 
+/* menu lateral div ícone + texto */
 .menu a {
     width: 11em;
     height: 3.5em;
@@ -22,18 +25,31 @@
     color: #000000;
     margin-bottom: 10px;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-end; /* alinhado à direita */
 }
 
+/* link texto ao passar o mouse (links ativos) */
 .ativo:hover {
     color: #08C746;
 }
 
+/* link texto visitado */
+.ativo:visited {
+    color: #343434;
+}
+
+/* link texto visitado ao passar o mouse */
+.ativo:visited:hover {
+    color: #08C746;
+}
+
+/* menu lateral texto + ícone */
 .menu label {
     cursor: pointer;
     font-size: 1.2em;
 }
 
+/* menu lateral texto ao passar o mouse (links inativos) */
 .inativo:hover {
     color: gray;
 }

@@ -1,0 +1,52 @@
+
+
+
+
+.body{
+    display: flex;
+}
+
+main {
+    width: 100%;
+}
+
+
+.container {
+    width: 70%;
+    margin: -6rem auto 0 auto;
+    background-color: white;
+    box-shadow: 5px 5px 50px 1px #00000038;
+    height: 30rem;
+    border-radius: 10px;
+}
+
+
+
+
+
+/* linha abaixo do título */
+
+
+
+/* botão imprimir */
+.submit {
+    background-color: #08C746;
+    width: 30%;
+    color: white;
+    font-size: 1.2em;
+    height: 3em;
+    cursor: pointer;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin-top: 2em;
+    border-radius: 5px;
+}
+
+/* botão imprimir ao passar o mouse */
+.submit:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}

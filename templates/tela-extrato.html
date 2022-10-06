@@ -1,132 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extrato</title>
+{% block contents %}
 
-    <!-- links CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-extrato.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
-</head>
+<main>
 
-<body>
-
-    <!-- componente cabeçalho -->
-    <header>
-        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo"
-                class="logo"></a>
-        <div class="sair">
-            <span>Sair</span>
-            <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}"
-                    alt="sair"></a>
-        </div>
-    </header>
-    <!-- fim -->
-
-    <div class="body">
-
-        <!-- componente menu lateral -->
-        <div class="menu">
-            <a href="{{ url_for('home') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
-                </label>
-                <label class="ativo">Home</label>
-            </a>
-
-            <a href="{{ url_for('deposito') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}"
-                        alt="depósito">
-                </label>
-                <label class="ativo">Depósito</label>
-            </a>
-
-            <a href="{{ url_for('saque') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
-                </label>
-                <label class="ativo">Saque</label>
-            </a>
-
-            <a href="">
-                <!-- {{ url_for('transferencia') }} -->
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}"
-                        alt="transferência">
-                </label>
-                <label class="inativo">Transferência</label>
-            </a>
-
-            <a href="{{ url_for('extrato') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
-                </label>
-                <label class="ativo">Extrato</label>
-            </a>
-
-            <a href="">
-                <!-- {{ url_for('configuracoes') }} -->
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}"
-                        alt="configurações">
-                </label>
-                <label class="inativo">Configurações</label>
-            </a>
-        </div>
-        <!-- fim -->
-
-        <div class="container">
-
-            <div class="fundo">
-                <h1>Extrato</h1>
-                <hr>
-            </div>
-
-            <!-- deposito -->
-            <!-- filtros -->
-            <div class="extrato">
-                <form method="post" action="">
-                    <div class="filtros">
-                        <div class="periodo">
-                            <h2>Período</h2>
-                            <div>
-                                <input type="date" name="data-inicial" placeholder="dd/mm/yyyy">
-                                <span>à</span>
-                                <input type="date" name="data-limite" placeholder="dd/mm/yyyy">
-                            </div>
-                        </div>
-                        <div class="tipo-transacao">
-                            <h2>Tipo de transação</h2>
-                            <select name="tipo-transacao" id="tipo-transacao">
-                                <option value="todos">Todos</option>
-                                <option value="deposito">Depósito</option>
-                                <option value="saque">Saque</option>
-                            </select>
-                        </div>
-                        <input type="submit" class="submit" value="Pesquisar" name="pesquisar">
-                    </div>
-                    <!-- tabela -->
-                    {% for tabela in tabelas %}
-                        {{ titulos[loop.index] }}
-                        {{ tabela|safe }}
-                    {% endfor %}
-                    <input type="submit" class="submit" value="Imprimir" name="imprimir">
-                    <!-- <button name="imprimir"><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button> -->
-                </form>     
-            </div>
-            <!-- fim depósito -->
+    <!-- título -->
+    <div class="fundo">
+        <div class="titulo">
+            <h1>Extrato</h1>
+            <hr>
         </div>
     </div>
 
-    <!-- componente rodapé -->
-    <footer>© 2022 SiriusBank</footer>
-    <!-- fim -->
-</body>
+    <!-- filtros -->
+    <div class="container">
+        <form method="post" action="">
+            <div class="barra-pesquisa">
+                <div class="filtros">
+                    <div class="periodo">
+                        <span>Data inicial</span>
+                        <input type="date" name="data-inicial">
+                    </div>
+                    <div class="periodo">
+                        <span>Data final</span>
+                        <input type="date" name="data-limite">
+                    </div>
 
-</html>
+                    <div class="tipo-transacao">
+                        <span>Tipo de transação</span>
+                        <select name="tipo-transacao" id="tipo-transacao">
+                            <option value="todos">Todos</option>
+                            <option value="deposito">Depósito</option>
+                            <option value="saque">Saque</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
+            </div>
+            <!-- tabela -->
+            {% for tabela in tabelas %}
+            {{ titulos[loop.index] }}
+            {{ tabela|safe }}
+            {% endfor %}
+            <input type="submit" class="button" value="Imprimir" name="imprimir">
+            <!-- <button name="imprimir"><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button> -->
+        </form>
+    </div>
+
+</main>
+
+{% endblock %}

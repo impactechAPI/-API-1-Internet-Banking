@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'); /* importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap');
+
+/* removendo formatação padrão da página */
 * {
     margin: 0;
     padding: 0;
@@ -5,6 +9,43 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
+/* CABEÇALHO TELA LOGIN CLIENTE E GERENTE */
+
+
+/* div cabeçalho logo + menu */
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1rem;
+}
+
+/* espaçamento entre link "Cliente" e "Gerente" */
+.header a {
+    margin-right: 1rem;
+}
+
+/* link nav ao passar o mouse */
+.ativo:hover {
+    color: #08C746;
+}
+
+/* link nav visitado */
+.ativo:visited {
+    color: #343434;
+}
+
+/* link nav visitado ao passar o mouse */
+.ativo:visited:hover {
+    color: #08C746;
+}
+
+
+
+/* CABEÇALHO DEMAIS PÁGINAS */
+
+
+/* cabeçalho */
 header {
     display: flex;
     align-items: center;
@@ -16,13 +57,16 @@ header {
     left: 0;
     background-color: white;
     border-bottom: 1px solid gray;
+    overflow: auto; /* imagem não ultrapassa a div */
 }
 
+/* cabeçalho logo */
 .logo {
     width: 7em;
     margin-left: 1.5em;
 }
 
+/* cabeçalho texto "Sair" */
 .sair {
     margin-right: 1.5em;
     display: flex;
@@ -30,10 +74,15 @@ header {
     font-size: 1em;
 }
 
+/* cabeçalho imagem "sair" */
 .sair img {
     width: 1em;
     margin-left: 0.5em;
 }
+
+
+/* RODAPÉ */
+
 
 footer {
     position: relative;

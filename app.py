@@ -152,7 +152,6 @@ def indexCadastro():
         contaBancaria="".join(map(str,numero))
         
         #Salvando dados no BD e finalizando operação
-        cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
         mysql.connection.commit()
         cur.close()

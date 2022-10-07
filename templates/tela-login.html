@@ -1,56 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base-index.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo!</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}"">
-    <link rel=" stylesheet" href="{{ url_for('static', filename='styles/tela-login.css') }}">
-</head>
+{% block contents %}
+<main class="login-cliente">
 
-<body>
-    <!-- componente cabeçalho -->
-    <header>
-        <img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo" class="logo">
-    </header>
-    <!-- fim -->
-
-    <main class="container">
-        <div class="abra-conta">
-            <h1 class="titulo">Gerencie suas finanças <br> de forma inteligente</h1>
-            <img src="{{ url_for('static', filename='icones/capa.png') }}" alt="capa" class="capa">
-            <div class="button-abra-conta">
-                <a href="{{ url_for('indexCadastro') }}"><span>Abra sua conta</span></a>
-            </div>
+    <div class="abra-conta">
+        <h1 class="titulo">Gerencie suas finanças <br> de forma inteligente</h1>
+        <img src="../static/icones/capa.png" alt="capa" class="capa">
+        <div class="button-abra-conta">
+            <a href="{{ url_for('indexCadastro') }}"><span>Abra sua conta</span></a>
         </div>
+    </div>
 
-        <div class="login">
-            <form method="post" action="" class="formulario">
-                <h2>Faça seu login</h2>
-                <input class="conta" type="number" name="numContaUsuario" id="" placeholder="Informe sua conta"><br>
-                <input class="password" type="password" name="senhaLogin" id="" placeholder="Informe sua senha"><br>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <div class="error">{{ message }}</div>
-                    {% endfor %}
-                </ul>
+    <div class="container-login">
+        <form method="post" action="" class="formulario">
+            <h2>Faça seu login</h2>
+            <input class="conta" type="number" name="numContaUsuario" id="" placeholder="Informe sua conta"><br>
+            <input class="password" type="password" name="senhaLogin" id="" placeholder="Informe sua senha"><br>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <div class="error">{{ message }}</div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% if error %}
+            <p class=error><strong>Erro:</strong> {{ error }}
                 {% endif %}
-                {% endwith %}
-                {% if error %}
-                <p class=error><strong>Erro:</strong> {{ error }}
-                    {% endif %}
-                    <input type="submit" class="submit" value="Entrar">
-            </form>
-        </div>
-    </main>
+                <input type="submit" class="entrar" value="Entrar">
+        </form>
+    </div>
 
-    <!-- componente rodapé -->
-    <footer>© 2022 SiriusBank</footer>
-    <!-- fim -->
-</body>
-
-</html>
+</main>
+{% endblock %}

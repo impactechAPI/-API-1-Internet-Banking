@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.body {
+    display: flex;
+    height: fit-content;
+}
+
+.container {
+    width: 100%;
+    height: fit-content;
+}
+
+.fundo h1 {
+    width: 70%;
+    margin: 0 auto;
+    padding-top: 5rem;
+    color: white;
+    font-size: 3rem;
+}
+
+.fundo hr {
+    width: 70%;
+    margin: 1em auto 0 auto;
+}
+
+.gerenciar-clientes {
+    width: 70%;
+    margin: -0rem auto 0 auto;
+    background-color: white;
+    box-shadow: 5px 5px 50px 1px #00000038;
+    height: 30rem;
+    border-radius: 10px;
+}
+
+.gerenciar-clientes h1 {
+    font-weight: normal;
+    font-size: 2em;
+}
+
+.gerenciar-clientes h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    padding-top: 1em;
+}
+
+/* filtros */
+
+.filtros {
+    display: flex;
+    padding: 1rem 2rem;
+    justify-content: space-between;
+}
+
+.tipo-solicitacao {
+    text-align: right;
+}
+
+.filtros input, select {
+    padding: .5rem;
+    margin-top: .5rem;
+    width: 7rem;
+}
+
+
+
+/* tabela */
+
+.table {
+    width: 90%;
+    margin: 1rem 2rem 0 2rem;
+    border-collapse: collapse;
+}
+
+.table th {
+    background-color: #22D6C3;
+    padding: .5rem;
+}
+
+tr:nth-child(even) {
+    background: lightgray;
+}
+
+body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;}
+h1, h2          { margin: 0; }
+h1              { border-bottom: 2px solid #eee; }
+h2              { font-size: 1.2em; }
+
+table.dataframe, .dataframe th, .dataframe td {
+    table-layout: fixed;
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align:center;
+    padding: 10px;
+    font-size: 0.9em;
+    margin: auto;
+    width: 80%;
+}
+
+th {
+    background-color: #22D6C3;
+    color: white;
+}
+
+tr:hover{ 
+    background-color: #ffff99;
+}

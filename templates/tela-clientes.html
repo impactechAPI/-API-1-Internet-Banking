@@ -1,47 +1,28 @@
-{% extends "base.html" %}
+{% extends "base-gerente.html" %}
 
 {% block contents %}
 <main>
 
     <!-- título -->
-    <div class="fundo">
-        <h1>Clientes</h1>
-        <hr>
-    </div>
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Clientes</h1>
+            <hr>
+        </div>
+    </aside>
 
     <!-- filtros -->
-    <div class="clientes">
+    <section class="container">
         <div class="filtros">
-            <div class="periodo">
-                <input type="date" placeholder="Nome">
+            <input type="text" placeholder="Nome" class="nome">
+            <div>
+                <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
             </div>
         </div>
 
         <!-- tabela -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Transação</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <!-- for -->
-                    <td>
-                        <!-- {{ session['data'] }} -->
-                    </td>
-                    <td>
-                        <!-- {{ session['transacao'] }} -->
-                    </td>
-                    <td>
-                        <!-- {{ session['valor'] }} -->
-                    </td>
-                    <!-- endfor-->
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        
+    </section>
 
 </main>
 {% endblock %}

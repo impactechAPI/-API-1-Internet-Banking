@@ -28,6 +28,7 @@
 /* container home */
 .container {
     width: 70%;
+    max-width: 80rem;
     margin: -4rem auto 4rem auto;
     background-color: white;
     box-shadow: 5px 5px 50px 1px #00000038;
@@ -37,10 +38,10 @@
     position: relative;
 }
 
-/* título "Home" */
+/* título da página */
 .container h2 {
     font-weight: normal;
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 
 /* mensagens de erro */

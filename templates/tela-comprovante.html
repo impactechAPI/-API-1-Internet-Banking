@@ -1,0 +1,43 @@
+{% extends "base-cliente.html" %}
+
+{% block contents %}
+<main>
+
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Depósito</h1>
+            <hr>
+        </div>
+    </aside>
+
+    <div class="container">
+        <a href="#" class="voltar">&lt voltar</a>
+        <div class="comprovante">
+            <section>
+                <h2>SIRIUSBANK</h2>
+                <h3>{{ session['dataHoraMovimentacao'] }} - Autoatendimento</h3>
+                <div class="linha">
+                    <span></span>
+                </div>
+                <h3>COMPROVANTE DE <span>{{ session['tipoMovimentacao'] }}</span></h3>
+            </section>
+            <section>
+                <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
+                <h4>AGÊNCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
+                <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
+                <h4>VALOR <span>{{ session['tipoMovimentacao'] }}</span>: {{ session['valorMovimentacao'] }}</h4>
+                <h4>SALDO DISPONÍVEL: {{ session['saldoUsuario'] }}</h4>
+                <h5>* Valor sujeito a conferência.</h5>
+                <div class="linha">
+                    <span></span>
+                </div>
+            </section>
+            <section>
+                <h3>GUARDE ESTE COMPROVANTE ATÉ A OPERAÇÃO SER PROCESSADA.</h3>
+            </section>
+            <input type="submit" class="button" value="Imprimir" name="imprimir">
+        </div>
+    </div>
+
+</main>
+{% endblock %}

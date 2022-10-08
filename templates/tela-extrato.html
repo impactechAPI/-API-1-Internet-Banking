@@ -1,19 +1,19 @@
-{% extends "base.html" %}
+{% extends "base-cliente.html" %}
 
 {% block contents %}
 
 <main>
 
     <!-- título -->
-    <div class="fundo">
+    <aside class="fundo">
         <div class="titulo">
             <h1>Extrato</h1>
             <hr>
         </div>
-    </div>
+    </aside>
 
     <!-- filtros -->
-    <div class="container">
+    <section class="container">
         <form method="post" action="">
             <div class="barra-pesquisa">
                 <div class="filtros">
@@ -37,15 +37,16 @@
                 </div>
                 <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
             </div>
-            <!-- tabela -->
-            {% for tabela in tabelas %}
-            {{ titulos[loop.index] }}
-            {{ tabela|safe }}
-            {% endfor %}
-            <input type="submit" class="button" value="Imprimir" name="imprimir">
-            <!-- <button name="imprimir"><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button> -->
         </form>
-    </div>
+        
+        <!-- tabela -->
+        {% for tabela in tabelas %}
+        {{ titulos[loop.index] }}
+        {{ tabela|safe }}
+        {% endfor %}
+        <input type="submit" class="button" value="Imprimir" name="imprimir">
+        <!-- <button name="imprimir"><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button> -->
+    </section>
 
 </main>
 

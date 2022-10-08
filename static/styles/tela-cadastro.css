@@ -100,13 +100,6 @@ input {
     transition: 0.3s all;
 }
 
-.error {
-    color: rgb(252, 5, 5);
-    border-radius: 10px;
-    text-align: center;
-    font-size: 0.9em;
-}
-
 /* media queries */
 
 @media (max-width: 360px) {

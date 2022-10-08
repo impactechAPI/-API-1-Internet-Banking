@@ -2,12 +2,13 @@
 .menu {
     display: flex;
     flex-direction: column;
-    height: 84vh;
+    height: 90vh;
     box-shadow: 0px 2px 50px 0.1px #00000012; /* sombra do container */
     justify-content: left;
     padding: 0.5em 2em 0 2em;
     bottom: 0;
     background-color: white;
+    font-size: .9rem;
 }
 
 /* menu lateral ícones */
@@ -18,7 +19,7 @@
 
 /* menu lateral div ícone + texto */
 .menu a {
-    width: 11em;
+    width: 12.5rem;
     height: 3.5em;
     border-radius: 10px;
     text-decoration: none;

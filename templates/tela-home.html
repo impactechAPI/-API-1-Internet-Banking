@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "base-cliente.html" %}
 
 {% block contents %}
 <main>
 
     <!-- dados usuário -->
-    <div class="fundo-home">
+    <section class="fundo-home">
         <div class="info-usuario">
             <div class="info">
                 <h1>Olá, {{ session['nomeUsuario'] }}</h1>
@@ -17,13 +17,13 @@
             </div>
         </div>
         <hr class="hr">
-    </div>
+    </section>
 
     <!-- home -->
-    <div class="container">
+    <section class="container">
         <h2>Home</h2>
         <p>Fique à vontade! Navegue pelo menu lateral!</p>
-    </div>
+    </section>
 
 </main>
 {% endblock %}

@@ -582,5 +582,17 @@ def configuracoes():
 def indexGerente():
     return render_template("tela-login-ga.html")
 
+@app.route("/homeGerente", methods=["GET", "POST"])
+def homeGerente():
+    return render_template("tela-home-ga.html")
+
+@app.route("/clientes", methods=["GET", "POST"])
+def clientes():
+    return render_template("tela-clientes.html")
+
+@app.route("/gerenciar", methods=["GET", "POST"])
+def gerenciar():
+    return render_template("tela-gerenciar.html")
+
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

@@ -9,12 +9,12 @@
 
     <!-- aba navegador -->
     <title>Bem-vindo!</title>
-    <link rel="stylesheet" href="../static/icones/logo-parcial.png">
+    <link rel="icon" href="../static/icones/logo-parcial.png">
 
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/cabecalho-rodape.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
-    <link rel=" stylesheet" href="../static/styles/tela-login.css">
+    <link rel=" stylesheet" href="../static/styles/telas-login.css">
     <link rel="stylesheet" href="../static/styles/tela-cadastro.css">
     {% endblock %}
 </head>
@@ -24,7 +24,7 @@
     {% block header %}
     <header class="header">
         <div>
-            <a href="{{ url_for('indexHome') }}"><img src="../static/icones/logo.png" alt="logo" class="logo"></a>
+            <img src="../static/icones/logo.png" alt="logo" class="logo">
         </div>
         <div class="header">
             <a href="{{ url_for('indexHome') }}" class="ativo">Cliente</a>

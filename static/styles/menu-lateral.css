@@ -1,56 +1,175 @@
-/* menu lateral */
-.menu {
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    box-shadow: 0px 2px 50px 0.1px #00000012; /* sombra do container */
-    justify-content: left;
-    padding: 0.5em 2em 0 2em;
-    bottom: 0;
+body {
+    position: relative; /* alterar a posição de um elemento tendo como referêcia a posição inicial */
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden; /* o conteúdo é cortado, não exibe barra de rolagem */
+}
+
+/* sidebar */
+.sidebar {
+    position: fixed; /* elemento não se move na tela */
+    width: 78px;
+    left: 0;
+    top: 0;
+    height: 100%;
     background-color: white;
-    font-size: .9rem;
+    padding: 6px 14px 6px 4px;
+    transition: all 0.5s ease; /* transição com início e final lentos */
+    box-shadow: 5px 5px 50px 1px #00000038;
 }
 
-/* menu lateral ícones */
-.icone-menu {
-    width: 1.5em;
-    margin-right: 0.5em;
-}
-
-/* menu lateral div ícone + texto */
-.menu a {
-    width: 12.5rem;
-    height: 3.5em;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #000000;
-    margin-bottom: 10px;
+.sidebar .logoContent .logo {
+    width: 100%;
+    height: 50px;
     display: flex;
-    align-items: flex-end; /* alinhado à direita */
+    align-items: center;
+    opacity: 0;
+    pointer-events: auto;
+    margin-left: 1rem;
 }
 
-/* link texto ao passar o mouse (links ativos) */
-.ativo:hover {
-    color: #08C746;
+.sidebar .logoContent .logo img {
+    width: 8rem;
 }
 
-/* link texto visitado */
-.ativo:visited {
+.sidebar .links-name {
+    opacity: 0;
+    margin-left: 1rem;
+    font-size: 1rem;
+    transition: all 0.5s ease;
+}
+
+.sidebar #btn {
+    position: absolute; /* elemento pai (relative) como referência */
+    top: 1rem;
+    left: 50%;
+    transform: translate(-50%); /* translate reposiciona o elemento */
+    width: 1.5rem;
+    height: 1rem;
+    line-height: 50px; /* espaçamento entre as linhas */
+    text-align: center;
+    font-size: 30px;
+    cursor: pointer;
+    color: aliceblue;
+}
+
+.sidebar ul {
+    margin-top: 20px;
+}
+
+.sidebar ul li {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 5px;
+    list-style: none; 
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    color: #343434;
+    text-decoration: none;
+    border-radius: 10px;
+    white-space: nowrap; /* recolhe os espaços em branco, suprime as quebras de linha no texto */
+    transition: all 0.5s ease; /* ease: início lento, depois rápido e depois termina lentamente */
+}
+
+.sidebar ul li a:hover {
+    background-color: #22D6C3;
+}
+
+.sidebar ul li img {
+    min-width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+}
+
+.sidebar .profileContent {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     color: #343434;
 }
 
-/* link texto visitado ao passar o mouse */
-.ativo:visited:hover {
-    color: #08C746;
+.sidebar .profileContent .profile {
+    position: relative;
+    height: 60px;
+    padding: 10px 6px;
 }
 
-/* menu lateral texto + ícone */
-.menu label {
+.sidebar .profileContent .profile .profileDetail {
+    display: flex;
+    align-items: center;
+    pointer-events: none; /* evento de mouse do usuário */
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar .profileContent .profile .profileDetail img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.sidebar .profileContent .profile .profileDetail .name {
+    font-size: 15px;
+    font-weight: 400;
+    margin-left: 15px;
+    text-transform: capitalize;
+}
+
+.profile #logout {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+    bottom: 14px;
+    width: 1.5rem;
+    height: 1.5rem;
     cursor: pointer;
-    font-size: 1.2em;
 }
 
-/* menu lateral texto ao passar o mouse (links inativos) */
-.inativo:hover {
-    color: gray;
+.pagina .pageContent {
+    position: absolute;
+    top: 0;
+    left: 78px;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+/* sidebar active */
+.sidebar.active {
+    width: 300px;
+}
+
+.pageContent.active {
+    width: calc(100% - 300px);
+    left: 300px;
+}
+
+.sidebar.active .logoContent .logo {
+    opacity: 1;
+}
+
+.sidebar.active #btn {
+    left: 90%;
+}
+
+.sidebar.active .links-name {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar.active .profileContent .profile .profileDetail {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar.active .profile #logout {
+    left: 90%;
 }

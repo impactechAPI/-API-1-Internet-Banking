@@ -1,0 +1,50 @@
+{% extends "base-gerente.html" %}
+
+{% block contents %}
+<main>
+
+    <!-- título -->
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Clientes</h1>
+            <hr>
+        </div>
+    </aside>
+
+    <!-- filtros -->
+    <section class="container">
+        <div class="filtros">
+            <input type="text" placeholder="Nome" nome="nomeCliente" class="nome">
+            <div>
+                <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
+            </div>
+        </div>
+
+        <!-- tabela -->
+        <table>
+            <thead>
+               <tr>
+                {% for coluna in colunas %}
+                    <th>{{ coluna }}</th>
+                {% endfor %}
+                </tr> 
+            </thead>
+            <tbody>
+                {% for linhas in dados %}
+                    <tr>
+                        {% for x in linhas %}
+                            {% if loop.index0 != 1 %}
+                                <td>{{ x }}</td>
+                            {% endif %}
+                            {% if loop.index0 == 1 %}
+                                <td><a href={{url_for("infoCliente",idCliente=x)}}>Ver</a></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+</main>
+{% endblock %}

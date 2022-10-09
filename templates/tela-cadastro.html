@@ -1,96 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base-index.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abra sua conta</title>
-    <!-- link CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-cadastro.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
-</head>
+<!-- cabeçalho -->
+{% block header %}
+<header>
+    <a href="{{ url_for('indexHome') }}"><img src="../static/icones/logo.png" alt="logo" class="logo"></a>
+</header>
+{% endblock %}
 
-<body>
-    <!-- componente cabeçalho -->
-    <header>
-        <a href="{{ url_for('indexHome') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo"
-                class="logo"></a>
-    </header>
-    <!-- fim -->
+<!-- Formulário-->
+{% block contents %}
+<main class="container">
 
-    <!-- Formulário-->
-    <main class="container">
-        <h1>Abra sua conta</h1>
-        <hr>
-        <form method="post" action="">
-            <div class="linha-inteira">
-                <label>Nome<br>
-                    <input type="text" name="nome" placeholder="Informe seu nome">
-                </label>
-            </div>
-
-            <div class="mesma-linha">
-                <label>CPF (Apenas números)<br>
-                    <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
-                </label>
-
-                <label>Data de nascimento<br>
-                    <input type="date" class="data" name="dataAniversario">
-                </label>
-
-                <label>Gênero<br>
-                    <select name="genero" id="genero" class="genero">
-                        <option value="selecione" disabled>Selecione</option>
-                        <option value="feminino">Feminino</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="outro">Outro</option>
-                    </select>
-                </label>
-            </div>
-
-            <div class="linha-inteira">
-                <label>Endereço<br>
-                    <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
-                </label>
-            </div>
-
-            <div class="senha">
-                <label class="input-senha">Senha<br>
-                    <input type="password" placeholder="Informe sua senha" name="senha">
-                </label>
-                <label class="input-senha">Confirmação de senha<br>
-                    <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
-                </label>
-            </div>
-
-            <label class="checkbox">
-                <input type="checkbox" name="consentimentoUsuario"> Li e estou de acordo com os <a href="">Termos de Uso</a> e <a href="">Política
-                    de Privacidade</a>.
-                <span></span>
+    <h1>Abra sua conta</h1>
+    <hr>
+    <form method="post" action="">
+        <div class="linha-inteira">
+            <label>Nome<br>
+                <input type="text" name="nome" placeholder="Informe seu nome">
             </label>
-            {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <div class="error">
-            {{ message }}</div>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% if error %}
-    <p class=error><strong>Erro:</strong> {{ error }}
+        </div>
+
+        <div class="mesma-linha">
+            <label>CPF (Apenas números)<br>
+                <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+            </label>
+
+            <label>Data de nascimento<br>
+                <input type="date" class="data" name="dataAniversario">
+            </label>
+
+            <label>Gênero<br>
+                <select name="genero" id="genero" class="genero">
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="linha-inteira">
+            <label>Endereço<br>
+                <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
+            </label>
+        </div>
+
+        <div class="senha">
+            <label class="input-senha">Senha<br>
+                <input type="password" placeholder="Informe sua senha" name="senha">
+            </label>
+            <label class="input-senha">Confirmação de senha<br>
+                <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
+            </label>
+        </div>
+
+        <label class="checkbox">
+            <input type="checkbox" name="consentimentoUsuario"> Li e estou de acordo com os <a href="">Termos de Uso</a> e <a href="">Política de Privacidade</a>.
+            <span></span>
+        </label>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">
+                {{ message }}</div>
+            {% endfor %}
+        </ul>
         {% endif %}
+        {% endwith %}
+        {% if error %}
+        <p class=error><strong>Erro:</strong> {{ error }}
+            {% endif %}
             <input type="submit" class="submit" value="Cadastrar">
-        </form>
+    </form>
 
-    </main>
-    <!-- fim -->
-
-    <!-- componente rodapé -->
-    <footer>© 2022 SiriusBank</footer>
-    <!-- fim -->
-</body>
-
-</html>
+</main>
+{% endblock %}

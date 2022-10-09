@@ -1,0 +1,83 @@
+{% extends "base-gerente.html" %}
+
+{% block contents %}
+<main>
+
+    <!-- título -->
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Gerenciar Clientes</h1>
+            <hr>
+        </div>
+    </aside>
+
+    <!-- filtros -->
+    <section class="container">
+        <form method="post" action="">
+            <div class="barra-pesquisa">
+                <div class="filtros">
+                    <div class="periodo">
+                        <span>Data inicial</span>
+                        <input type="date" name="data-inicial">
+                    </div>
+                    <div class="periodo">
+                        <span>Data final</span>
+                        <input type="date" name="data-limite">
+                    </div>
+                    <div class="tipo-solicitacao">
+                        <span>Tipo de Solicitação</span>
+                        <select name="tipo-solicitacao" id="tipo-socilitacao">
+                            <option value="todos">Todos</option>
+                            <option value="abertura">Abertura</option>
+                            <!-- <option value="fechamento">Fechamento</option>
+                            <option value="alteracoes-de-dados">Alterações de dados</option> -->
+                            <option value="deposito">Depósito</option>
+                        </select>
+                    </div>
+                    <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
+                </div>
+            </div>
+        </form>
+
+        <!-- tabela -->
+        <table>
+            <thead>
+               <tr>
+                {% for coluna in colunas %}
+                    <th>{{ coluna }}</th>
+                {% endfor %}
+                </tr> 
+            </thead>
+            <tbody>
+                {% for linhas in dados %}
+                    <tr>
+                        {% if linhas[2] == 'Depósito' %}
+                            {% for x in linhas %}
+                                {% if loop.index0 != 3 %}
+                                    <td>{{ x }}</td>
+                                {% endif %}
+                                {% if loop.index0 == 3 %}
+                                    <td><a href={{url_for("confirmacaoDeposito",solicitacaoIdDeposito=x)}}>Ver</a></td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if linhas[2] == 'Abertura' %}
+                            {% for y in linhas %}
+                                {% if loop.index0 != 3 %}
+                                    <td>{{ y }}</td>
+                                {% endif %}
+                                {% if loop.index0 == 3 %}
+                                    <td><a href={{url_for("confirmacaoAbertura",solicitacaoIdAbertura=y)}}>Ver</a></td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <!-- fim depósito -->
+    </div>
+
+</main>
+{% endblock %}

@@ -1,0 +1,129 @@
+/* FILTROS */
+
+
+.barra-pesquisa {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* alinhar itens ao fim da div */
+    overflow: auto; /* conteúdo não ultrapassa a div, gera barra de rolagem */
+}
+
+.filtros {
+    display: flex;
+    width: 100%;
+}
+
+/* filtro tela clientes */
+.filtros .nome {
+    margin-right: 1rem;
+    width: 100%;
+    padding: .5rem;
+    height: 1.5rem;
+    border-radius: 3px;
+    border: 1px solid #343434;
+    outline-color: #08C746;
+}
+
+/* filtros tela gerenciar e extrato */
+.periodo,
+.tipo-transacao,
+.tipo-solicitacao {
+    display: flex;
+    flex-direction: column;
+    margin-right: .6rem;
+    width: 50%;
+}
+
+/* filtros data */
+.periodo input {
+    padding: .5rem;
+    margin-top: .5rem;
+}
+
+/* filtros selecionar tipo */
+.tipo-transacao select,
+.tipo-solicitacao select {
+    height: 2.6rem;
+    margin-top: .5rem;
+    width: 100%;
+    outline-color: #08C746;
+}
+
+
+/* BOTÃO PESQUISAR */
+
+
+.pesquisar {
+    width: 5rem;
+    color: aliceblue;
+    background-color: #08C746;
+    border: none;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 3px;
+    margin: auto 0 .1rem 0;
+}
+
+/* botão pesquisar ao passar o mouse */
+.pesquisar:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}
+
+
+/* TABELA */
+
+
+table.dataframe, .dataframe th, .dataframe td  {
+    table-layout: fixed;
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 10px;
+    font-size: .9rem;
+    margin: auto;
+    width: 90%;
+}
+
+table{
+    table-layout: fixed;
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 10px;
+    font-size: .9rem;
+    margin: auto;
+    margin-top: 2rem;
+    width: 90%;
+}
+
+table th, 
+table td{
+    padding: 0.8rem;
+}
+
+/* cabeçalho tabela */
+th {
+    background-color: #1A20BD;
+    border: none;
+    color: aliceblue;
+}
+
+/* linha tabela de cor alternada  */
+tr:nth-child(even) {
+    background: lightgray;
+}
+
+/* linha tabela ao passar o mouse */
+tr:hover{ 
+    background-color: #22D6C3;
+}
+
+/* button img {
+    width: 1.5rem;
+    margin-right: .5rem;
+} */

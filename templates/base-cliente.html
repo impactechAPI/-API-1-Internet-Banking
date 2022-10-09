@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- aba navegador -->
+    <title>SiriusBank</title>
+    <link rel="icon" href="../static/icones/logo-parcial.png">
+
+    <!-- links css -->
+    <link rel="stylesheet" href="../static/styles/cabecalho-rodape.css">
+    <link rel="stylesheet" href="../static/styles/menu-lateral.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/telas-home.css">
+    <link rel="stylesheet" href="../static/styles/telas-transacoes.css">
+    <link rel="stylesheet" href="../static/styles/tabelas-filtros.css">
+    <link rel="stylesheet" href="../static/styles/comprovante.css">
+    {% endblock %}
+</head>
+
+<body>
+
+    <div class="pagina">
+
+        <!-- menu lateral -->
+        {% block menu %}
+        <div class="menu">
+            <a href="{{ url_for('home') }}">
+                <label>
+                    <img class="icone-menu" src="../static/icones/home.png" alt="home">
+                </label>
+                <label class="ativo">Home</label>
+            </a>
+
+            <a href="{{ url_for('deposito') }}">
+                <label>
+                    <img class="icone-menu" src="../static/icones/deposito.png" alt="depósito">
+                </label>
+                <label class="ativo">Depósito</label>
+            </a>
+
+            <a href="{{ url_for('saque') }}">
+                <label>
+                    <img class="icone-menu" src="../static/icones/saque.png" alt="saque">
+                </label>
+                <label class="ativo">Saque</label>
+            </a>
+
+            <a href="#">
+                <!-- {{ url_for('transferencia') }} -->
+                <label>
+                    <img class="icone-menu" src="../static/icones/transferencia.png" alt="transferência">
+                </label>
+                <label class="inativo">Transferência</label>
+            </a>
+
+            <a href="{{ url_for('extrato') }}">
+                <label>
+                    <img class="icone-menu" src="../static/icones/extrato.png" alt="extrato">
+                </label>
+                <label class="ativo">Extrato</label>
+            </a>
+
+            <a href="#">
+                <!-- {{ url_for('configuracoes') }} -->
+                <label>
+                    <img class="icone-menu" src="../static/icones/configuracoes.png" alt="configurações">
+                </label>
+                <label class="inativo">Configurações</label>
+            </a>
+        </div>
+        {% endblock %}
+
+        <!-- cabeçalho -->
+        {% block header %}
+        <div class="header-conteudo">
+            <header>
+                <a href="{{ url_for('home') }}"><img src="../static/icones/logo.png" alt="logo" class="logo"></a>
+                <div class="sair">
+                    <span>Sair</span>
+                    <a href="{{ url_for('indexHome') }}"><img src="../static/icones/sair.png" alt="sair"></a>
+                </div>
+            </header>
+            {% endblock %}
+
+            <!-- conteúdo da página -->
+            {% block contents %}
+
+            {% endblock %}
+        </div>
+
+    </div>
+
+    <!-- rodapé -->
+    {% block footer %}
+    <footer>© 2022 SiriusBank</footer>
+    {% endblock %}
+</body>
+
+</html>

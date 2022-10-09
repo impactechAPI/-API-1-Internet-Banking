@@ -1,0 +1,53 @@
+.pagina {
+    display: flex;
+}
+
+.header-conteudo {
+    width: 100%;
+}
+
+/* fundo com título da página */
+.fundo {
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+    height: 12rem;
+}
+
+.titulo {
+    width: 78%;
+    margin: 0 auto;
+}
+
+/* fundo título da página */
+.fundo h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: normal;
+    padding-top: 2rem;
+}
+
+/* container home */
+.container {
+    width: 70%;
+    max-width: 80rem;
+    margin: -4rem auto 4rem auto;
+    background-color: white;
+    box-shadow: 5px 5px 50px 1px #00000038;
+    min-height: 50vh;
+    border-radius: 10px;
+    padding: 2rem 3rem;
+    position: relative;
+}
+
+/* título da página */
+.container h2 {
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+
+/* mensagens de erro */
+.error {
+    color: rgb(252, 5, 5);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.9em;
+}

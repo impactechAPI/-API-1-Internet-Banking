@@ -1,121 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base-cliente.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Depósito</title>
+{% block contents %}
 
-    <!-- links CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cabecalho-rodape.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/menu-lateral.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/tela-deposito-saque.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dados-usuario.css') }}">
-</head>
+<main>
 
-<body>
-
-    <!-- componente cabeçalho -->
-    <header>
-        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icones/logo.png') }}" alt="logo"
-                class="logo"></a>
-        <div class="sair">
-            <span>Sair</span>
-            <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='icones/sair.png') }}"
-                    alt="sair"></a>
+    <!-- título -->
+    <div class="fundo">
+        <div class="titulo">
+            <h1>Depósito</h1>
+            <hr>
         </div>
-    </header>
-    <!-- fim -->
+    </div>
 
-    <div class="body">
-
-        <!-- componente menu lateral -->
-        <div class="menu">
-            <a href="{{ url_for('home') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/home.png') }}" alt="home">
+    <!-- deposito -->
+    <div class="container">
+        <h2>Quanto você quer depositar?</h2>
+        <form method="post" action="">
+            <div class="transacao">
+                <div class="saldo">
+                    <label>Saldo disponível</label>
+                    <span>R$ {{ session['saldoUsuario'] }}</span>
+                </div>
+                <label class="valor">Valor<br>
+                    <input type="text" name="valorDeposito" placeholder="R$ 0,00" step="0.01">
                 </label>
-                <label class="ativo">Home</label>
-            </a>
-
-            <a href="{{ url_for('deposito') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/deposito.png') }}"
-                        alt="depósito">
-                </label>
-                <label class="ativo">Depósito</label>
-            </a>
-
-            <a href="{{ url_for('saque') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/saque.png') }}" alt="saque">
-                </label>
-                <label class="ativo">Saque</label>
-            </a>
-
-            <a href=""><!-- {{ url_for('transferencia') }} -->
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/transferencia.png') }}"
-                        alt="transferência">
-                </label>
-                <label class="inativo">Transferência</label>
-            </a>
-
-            <a href="{{ url_for('extrato') }}">
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/extrato.png') }}" alt="extrato">
-                </label>
-                <label class="ativo">Extrato</label>
-            </a>
-
-            <a href=""><!-- {{ url_for('configuracoes') }} -->
-                <label>
-                    <img class="icone-menu" src="{{ url_for('static', filename='icones/configuracoes.png') }}"
-                        alt="configurações">
-                </label>
-                <label class="inativo">Configurações</label>
-            </a>
-        </div>
-        <!-- fim -->
-
-        <div class="container">
-
-            <div class="fundo">
-                <h1>Depósito</h1>
-                <hr>
             </div>
-
-            <!-- deposito -->
-            <div class="deposito">
-                <h2>Quanto você quer depositar?</h2>
-                <form method="post" action="">
-                    <label class="valor">Valor<br>
-                        <input type="text" name="valorDeposito" placeholder="R$ 0,00" step="0.01" maxlength="5">
-                    </label>
-                    {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <ul class=flashes>
                     {% for message in messages %}
-                    <div class="error">
-                        {{ message }}</div>
+                    <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
                     {% endfor %}
                 </ul>
                 {% endif %}
                 {% endwith %}
-                {% if error %}
-                <p class=error><strong>Erro:</strong> {{ error }}
-                    {% endif %}
-                    <input type="submit" class="submit" value="Depositar">
-                </form>
-            </div>
-            <!-- fim -->
-        </div>
+            <input type="submit" class="button" value="Depositar">
+        </form>
     </div>
 
-    <!-- componente rodapé -->
-    <footer>© 2022 SiriusBank</footer>
-    <!-- fim -->
-</body>
-
-</html>
+</main>
+{% endblock %}

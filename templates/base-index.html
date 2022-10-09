@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- aba navegador -->
+    <title>Bem-vindo!</title>
+    <link rel="icon" href="../static/icones/logo-parcial.png">
+
+    <!-- links css -->
+    <link rel="stylesheet" href="../static/styles/cabecalho-rodape.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel=" stylesheet" href="../static/styles/telas-login.css">
+    <link rel="stylesheet" href="../static/styles/tela-cadastro.css">
+    {% endblock %}
+</head>
+
+<body>
+    <!-- cabeçalho -->
+    {% block header %}
+    <header class="header">
+        <div>
+            <img src="../static/icones/logo.png" alt="logo" class="logo">
+        </div>
+        <div class="header">
+            <a href="{{ url_for('indexHome') }}" class="ativo">Cliente</a>
+            <a href="{{ url_for('indexGerente') }}" class="ativo">Gerente</a>
+        </div>
+    </header>
+    {% endblock %}
+
+    <!-- conteúdo da página -->
+    {% block contents%}
+
+    {% endblock %}
+
+    <!-- rodapé -->
+    {% block footer %}
+    <footer>© 2022 SiriusBank</footer>
+    {% endblock %}
+
+</body>
+
+</html>

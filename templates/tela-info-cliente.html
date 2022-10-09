@@ -1,0 +1,59 @@
+{% extends "base-gerente.html" %}
+
+{% block contents %}
+<main>
+
+    <!-- título -->
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Clientes</h1>
+            <hr>
+        </div>
+    </aside>
+
+    <div class="container">
+        <a href="{{ url_for('clientes') }}" class="voltar">&lt voltar</a>
+        <section class="solicitacao">
+            <div class="campo-unico">
+                <label>Nome </label>
+                <span>{{ session["nomeUsuarioCadastro"] }}</span>
+            </div>
+            <div class="campo-triplo">
+                <div class="info-conta">
+                    <label>CPF</label>
+                    <span>{{ session["cpfUsuarioCadastro"] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Data de nascimento</label>
+                    <span>{{ session["dataAniversarioCadastro"] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Gênero</label>
+                    <span>{{ session["generoCadastro"] }}</span>
+                </div>
+            </div>
+            <div class="campo-unico">
+                <label>Endereço</label>
+                <span>{{ session["enderecoCadastro"] }}</span>
+            </div>
+            <div class="campo-triplo">
+                <div class="info-conta">
+                    <label>Número da conta</label>
+                    <span>{{ session["contaBancariaCadastro"] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Agência</label>
+                    <span>{{ session["agenciaBancariaCadastro"] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Saldo disponível</label>
+                    <span>{{ session["saldoBancarioCadastro"] }}</span>
+                </div>
+            </div>
+
+            <p>Cliente desde: {{ session["dataClientela"] }}</p>
+        </section>
+    </div>
+
+</main>
+{% endblock %}

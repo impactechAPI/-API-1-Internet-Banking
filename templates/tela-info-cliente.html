@@ -1,0 +1,59 @@
+{% extends "base-gerente.html" %}
+
+{% block contents %}
+<main>
+
+    <!-- título -->
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Clientes</h1>
+            <hr>
+        </div>
+    </aside>
+
+    <div class="container">
+        <a href="{{ url_for('clientes') }}" class="voltar">&lt voltar</a>
+        <section class="solicitacao">
+            <div class="campo-unico">
+                <label>Nome </label>
+                <span>{{ session['nomeUsuario'] }}</span>
+            </div>
+            <div class="campo-triplo">
+                <div class="info-conta">
+                    <label>CPF</label>
+                    <span>{{ session['cpf'] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Data de nascimento</label>
+                    <span>{{ session['dataAniversário'] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Gênero</label>
+                    <span>{{ session['genero'] }}</span>
+                </div>
+            </div>
+            <div class="campo-unico">
+                <label>Endereço</label>
+                <span>{{ session['endereco'] }}</span>
+            </div>
+            <div class="campo-triplo">
+                <div class="info-conta">
+                    <label>Número da conta</label>
+                    <span>{{ session['contaUsuario'] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Agência</label>
+                    <span>{{ session['agenciaUsuario'] }}</span>
+                </div>
+                <div class="info-conta">
+                    <label>Saldo disponível</label>
+                    <span>{{ session['saldoUsuario'] }}</span>
+                </div>
+            </div>
+
+            <p>Cliente desde: {{ session[''] }}</p>
+        </section>
+    </div>
+
+</main>
+{% endblock %}

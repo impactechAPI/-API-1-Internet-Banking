@@ -76,7 +76,7 @@
 /* TABELA */
 
 
-table.dataframe, .dataframe th, .dataframe td {
+table.dataframe, .dataframe th, .dataframe td  {
     table-layout: fixed;
     border: none;
     border-bottom: 1px solid #C8C8C8;
@@ -86,6 +86,24 @@ table.dataframe, .dataframe th, .dataframe td {
     font-size: .9rem;
     margin: auto;
     width: 90%;
+}
+
+table{
+    table-layout: fixed;
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 10px;
+    font-size: .9rem;
+    margin: auto;
+    margin-top: 2rem;
+    width: 90%;
+}
+
+table th, 
+table td{
+    padding: 0.8rem;
 }
 
 /* cabeçalho tabela */

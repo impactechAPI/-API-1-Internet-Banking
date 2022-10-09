@@ -74,11 +74,6 @@
     margin-top: 1rem;
 }
 
-.solicitacao p {
-    font-size: 1.1rem;
-    margin-top: 7rem;
-}
-
 /* div com os botões */
 .botoes {
     display: flex;

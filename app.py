@@ -235,7 +235,7 @@ def deposito():
         cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session['contaUsuario']])
         saldoAtual = cur.fetchone()
         saldoAtual = saldoAtual[0]
-        session["saldoUsuarioAntes"]
+        session["saldoUsuarioAntes"] = saldoAtual
 
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
         if valorDeposito and float(valorDeposito) > 0:

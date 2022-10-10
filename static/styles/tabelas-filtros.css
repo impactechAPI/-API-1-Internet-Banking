@@ -17,7 +17,7 @@
 .filtros .nome {
     margin-right: 1rem;
     width: 100%;
-    padding: .5rem;
+    padding: 1.2rem;
     height: 1.5rem;
     border-radius: 3px;
     border: 1px solid #343434;
@@ -32,6 +32,11 @@
     flex-direction: column;
     margin-right: .6rem;
     width: 50%;
+}
+
+.periodo span,
+.tipo-transacao span {
+    text-transform: capitalize;
 }
 
 /* filtros data */
@@ -88,7 +93,7 @@ table.dataframe, .dataframe th, .dataframe td  {
     width: 90%;
 }
 
-table{
+table {
     table-layout: fixed;
     border: none;
     border-bottom: 1px solid #C8C8C8;

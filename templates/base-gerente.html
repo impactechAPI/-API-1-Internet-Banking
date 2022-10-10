@@ -12,7 +12,6 @@
     <link rel="icon" href="../static/icones/logo-parcial.png">
 
     <!-- links css -->
-    <link rel="stylesheet" href="../static/styles/cabecalho-rodape.css">
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/telas-home.css">
@@ -27,61 +26,83 @@
 
         <!-- menu lateral -->
         {% block menu %}
-        <div class="menu">
-            <a href="{{ url_for('homeGerente') }}">
-                <label>
-                    <img class="icone-menu" src="../static/icones/home.png" alt="home">
-                </label>
-                <label class="ativo">Home</label>
-            </a>
+        <div class="sidebar">
+            <section class="logoContent">
+                <div class="logo">
+                    <img src="../static/icones/logo.png" alt="logo">
+                </div>
+                <!-- /logo -->
+                <img src="../static/icones/menu.png" alt="menu" id="btn">
+            </section>
+            <!-- /logoContent -->
+            <ul class="nav-list">
+                <li>
+                    <a href="{{ url_for('homeGerente') }}">
+                        <img src="../static/icones/home.png" alt="home">
+                        <span class="links-name">Home</span>
+                    </a>
+                </li>
 
-            <a href="{{ url_for('clientes') }}">
-                <label>
-                    <img class="icone-menu" src="../static/icones/usuario.png" alt="depósito">
-                </label>
-                <label class="ativo">Clientes</label>
-            </a>
+                <li>
+                    <a href="{{ url_for('clientes') }}">
+                        <img src="../static/icones/usuario.png" alt="depósito">
+                        <span class="links-name">Clientes</span>
+                    </a>
+                </li>
 
-            <a href="{{ url_for('gerenciar') }}">
-                <label>
-                    <img class="icone-menu" src="../static/icones/gerenciar.png" alt="saque">
-                </label>
-                <label class="ativo">Gerenciar Clientes</label>
-            </a>
+                <li>
+                    <a href="{{ url_for('gerenciar') }}">
+                        <img src="../static/icones/gerenciar.png" alt="saque">
+                        <span class="links-name">Gerenciar Clientes</span>
+                    </a>
+                </li>
 
-            <a href="#"> <!-- {{ url_for('configuracoes') }} -->
-                <label>
-                    <img class="icone-menu" src="../static/icones/configuracoes.png" alt="configurações">
-                </label>
-                <label class="inativo">Configurações</label>
-            </a>
+                <li>
+                    <a href="#">
+                        <!-- {{ url_for('configuracoes') }} -->
+                        <img src="../static/icones/configuracoes.png" alt="configurações">
+                        <span class="links-name">Configurações</span>
+                    </a>
+                </li>
+            </ul>
+            <!-- /nav-list -->
+            <section class="profileContent">
+                <div class="profile">
+                    <div class="profileDetail">
+                        <img src="../static/icones/perfil.jpg" alt="usuário">
+                        <span class="name">{{ session['nomeGerente'] }}</span>
+                    </div>
+                    <!-- /profileDetail -->
+                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair" id="logout"></a>
+                </div>
+                <!-- /profile -->
+            </section>
+            <!-- /profileContent -->
         </div>
+        <!-- /sidebar -->
         {% endblock %}
 
-        <!-- cabeçalho -->
-        {% block header %}
-        <div class="header-conteudo">
-            <header>
-                <a href="{{ url_for('homeGerente') }}"><img src="../static/icones/logo.png" alt="logo" class="logo"></a>
-                <div class="sair">
-                    <span>Sair</span>
-                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair"></a>
-                </div>
-            </header>
-            {% endblock %}
-
+        <section class="pageContent">
             <!-- conteúdo da página -->
             {% block contents %}
 
             {% endblock %}
-        </div>
-
+        </section>
     </div>
 
-    <!-- rodapé -->
-    {% block footer %}
-    <footer>© 2022 SiriusBank</footer>
-    {% endblock %}
+    <!-- script botão do menu lateral (abrir e fechar) -->
+    <script>
+        // variáveis
+        const btn = document.querySelector('#btn');
+        const sidebar = document.querySelector('.sidebar');
+        const home = document.querySelector('.pageContent');
+
+        // eventos de escuta do click
+        btn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            home.classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>

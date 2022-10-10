@@ -151,6 +151,8 @@ Essas foram as tecnologias utilizadas, até agora, para desenvolvimento da aplic
 - [HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML): Estrutura das páginas do site
 - [CSS](https://developer.mozilla.org/pt-BR/docs/Web/CSS): Estilização do site
 - [Python](https://www.python.org/): Back-end
+- [MySQL](https://www.mysql.com/): Banco de Dados
+- [JavaScript](https://www.javascript.com/): Front-end
 - [Flask](https://flask.palletsprojects.com/en/2.2.x/): Integração Back-end/Front-end
 - [Figma](http://www.figma.com): Prototipagem
 - [Visual Studio Code](https://code.visualstudio.com/): Algoritmos
@@ -164,7 +166,7 @@ Essas foram as tecnologias utilizadas, até agora, para desenvolvimento da aplic
 |    Função    | Nome                     | LinkedIn | Github |
 | :----------: | :----------------------- | -------- | ------ |
 | Scrum Master | Elaine Santos | [LinkedIn](https://www.linkedin.com/in/elaineads/) | [Github](https://github.com/elaineads)
-|   PO   | Leandro Ferraz Luz | [LinkedIn](https://www.linkedin.com/in/leandro-f-luz/) | [Github](https://github.com/l3androluz)
+| Product Owner | Leandro Ferraz Luz | [LinkedIn](https://www.linkedin.com/in/leandro-f-luz/) | [Github](https://github.com/l3androluz)
 |   Dev Team   | Jonas Ribeiro |[LinkedIn](https://www.linkedin.com/in/jonasrsribeiro/) | [Github](https://github.com/jonasrsribeiro)
 |   Dev Team   | Tiago Souza | [LinkedIn](https://www.linkedin.com/in/tiagosouzadesenvolvedor) | [Github](https://github.com/Tiag-ctrl)
 |   Dev Team   | Bruno Marcondes | [LinkedIn](https://www.linkedin.com/in/bruno-marcondes-cardozo-a4b374225) | [Github](https://github.com/brunom4rcondes)

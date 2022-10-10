@@ -123,7 +123,7 @@ Clicando [aqui](https://www.figma.com/file/fTVQuAtVUTT97mvjmaft1Q/Untitled-(Copy
 
 Confirmação de abertura de conta:
 
-![](/static/icones/confirmaçao_abertura.gif)
+![](/static/icones/confirmação_abertura.gif)
 
 Confirmação de depósito:
 

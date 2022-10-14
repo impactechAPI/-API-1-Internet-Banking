@@ -55,11 +55,11 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 | US 03 | Sistema de login | ----- | 01 |
 | US 05 | Autorizações de usuário gerente de agência | RF 02 | 02 |
 | US 07 | Implementar extrato e comprovantes | RF 13 | 02 |
-| US 08 | Sistema de transferência de valores | RF 03 | 02 |
+| US 08 | Sistema de transferência de valores | RF 03 | 03 |
 | US 09 | Consulta e alteração de informações pessoais | RF 03 | 03 |
-| US 10 | Sistema de fechamento de conta | RF 03 | 03 |
-| US 11 | Sistema responsivo e intuitivo | RN.U.01/03 | 03 |
 | US 06 | Autorizações de usuário gerente geral | RF 01 | 03 |
+| US 10 | Sistema de fechamento de conta | RF 03 | 04 |
+| US 11 | Sistema responsivo e intuitivo | RN.U.01/03 | 04 |
 | US 04 | Sistema de cheque especial | RF 12/13 | 04 |
 | US 12 | Juros ajustáveis | RF 13 | 04 |
 
@@ -89,6 +89,26 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 | 05 | Emissão de extrato |
 | 06 | Confirmação de depósito em conta |
 | 07 | Confirmação de abertura de conta |
+
+#### Sprint 3
+
+| Item | Descrição                  |
+| - | :---------------------------- |
+| 01 | Consulta de dados pessoais do usuário |
+| 02 | Alteração de dados pessoais do usuário |
+| 03 | Sistema de transferência de valores |
+| 04 | Sistema para Gerente Geral |
+| 05 | Interfaces do Gerente Geral |
+
+#### Sprint 4
+
+| Item | Descrição                  |
+| - | :---------------------------- |
+| 01 | Sistema para fechamento de conta |
+| 02 | Implementação de responsividade na aplicação |
+| 03 | Melhorias na intuitividade da aplicação |
+| 04 | Sistema de Cheque Especial |
+| 05 | Juros ajustáveis pelo Gerente Geral |
 
 
 <span id="user-stories">
@@ -166,7 +186,7 @@ Essas foram as tecnologias utilizadas, até agora, para desenvolvimento da aplic
 |    Função    | Nome                     | LinkedIn | Github |
 | :----------: | :----------------------- | -------- | ------ |
 | Scrum Master | Elaine Santos | [LinkedIn](https://www.linkedin.com/in/elaineads/) | [Github](https://github.com/elaineads)
-| Product Owner | Leandro Ferraz Luz | [LinkedIn](https://www.linkedin.com/in/leandro-f-luz/) | [Github](https://github.com/l3androluz)
+| Product Owner | Leandro Luz | [LinkedIn](https://www.linkedin.com/in/leandro-f-luz/) | [Github](https://github.com/l3androluz)
 |   Dev Team   | Jonas Ribeiro |[LinkedIn](https://www.linkedin.com/in/jonasrsribeiro/) | [Github](https://github.com/jonasrsribeiro)
 |   Dev Team   | Tiago Souza | [LinkedIn](https://www.linkedin.com/in/tiagosouzadesenvolvedor) | [Github](https://github.com/Tiag-ctrl)
 |   Dev Team   | Bruno Marcondes | [LinkedIn](https://www.linkedin.com/in/bruno-marcondes-cardozo-a4b374225) | [Github](https://github.com/brunom4rcondes)

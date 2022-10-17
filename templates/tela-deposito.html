@@ -29,7 +29,7 @@
                 {% if messages %}
                 <ul class=flashes>
                     {% for message in messages %}
-                    <div class="error">{{ message }}</div>
+                    <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
                     {% endfor %}
                 </ul>
                 {% endif %}

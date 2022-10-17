@@ -1,9 +1,23 @@
-.pagina {
-    display: flex;
+/* importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+/* removendo formatação padrão da página */
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box; /* o navegador passa a considerar a altura e largura do elemento contando o "padding" e o "border do elemento */
+    font-family: 'Poppins', sans-serif;
 }
 
-.header-conteudo {
-    width: 100%;
+body {
+    height: 100%;
+}
+
+.pagina {
+    display: flex;
 }
 
 /* fundo com título da página */
@@ -32,7 +46,7 @@
     margin: -4rem auto 4rem auto;
     background-color: white;
     box-shadow: 5px 5px 50px 1px #00000038;
-    min-height: 50vh;
+    min-height: 60vh;
     border-radius: 10px;
     padding: 2rem 3rem;
     position: relative;
@@ -50,4 +64,22 @@
     border-radius: 10px;
     text-align: center;
     font-size: 0.9em;
+}
+
+
+/* RODAPÉ */
+
+
+footer {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    background-color: #343434;
+    color: white;
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
 }

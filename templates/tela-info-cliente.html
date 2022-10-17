@@ -16,42 +16,42 @@
         <section class="solicitacao">
             <div class="campo-unico">
                 <label>Nome </label>
-                <span>{{ session['nomeUsuario'] }}</span>
+                <span>{{ session["nomeUsuarioCadastro"] }}</span>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>CPF</label>
-                    <span>{{ session['cpf'] }}</span>
+                    <span>{{ session["cpfUsuarioCadastro"] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Data de nascimento</label>
-                    <span>{{ session['dataAniversário'] }}</span>
+                    <span>{{ session["dataAniversarioCadastro"] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Gênero</label>
-                    <span>{{ session['genero'] }}</span>
+                    <span>{{ session["generoCadastro"] }}</span>
                 </div>
             </div>
             <div class="campo-unico">
                 <label>Endereço</label>
-                <span>{{ session['endereco'] }}</span>
+                <span>{{ session["enderecoCadastro"] }}</span>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>Número da conta</label>
-                    <span>{{ session['contaUsuario'] }}</span>
+                    <span>{{ session["contaBancariaCadastro"] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Agência</label>
-                    <span>{{ session['agenciaUsuario'] }}</span>
+                    <span>{{ session["agenciaBancariaCadastro"] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Saldo disponível</label>
-                    <span>{{ session['saldoUsuario'] }}</span>
+                    <span>{{ session["saldoBancarioCadastro"] }}</span>
                 </div>
             </div>
 
-            <p>Cliente desde: {{ session[''] }}</p>
+            <p>Cliente desde: {{ session["dataClientela"] }}</p>
         </section>
     </div>
 

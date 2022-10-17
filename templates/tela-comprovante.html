@@ -11,7 +11,7 @@
     </aside>
 
     <div class="container">
-        <a href="#" class="voltar">&lt voltar</a>
+        <a href={{url_for("home")}} class="voltar">&lt voltar</a>
         <div class="comprovante">
             <section>
                 <h2>SIRIUSBANK</h2>
@@ -19,14 +19,15 @@
                 <div class="linha">
                     <span></span>
                 </div>
-                <h3>COMPROVANTE DE <span>{{ session['tipoMovimentacao'] }}</span></h3>
+                <h3>COMPROVANTE DE <span>{{ session["tipoSolicitacao"] }}</span></h3>
             </section>
             <section>
                 <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
                 <h4>AGÊNCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
                 <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
-                <h4>VALOR <span>{{ session['tipoMovimentacao'] }}</span>: {{ session['valorMovimentacao'] }}</h4>
-                <h4>SALDO DISPONÍVEL: {{ session['saldoUsuario'] }}</h4>
+                <h4>VALOR <span>{{ session["tipoSolicitacao"] }}</span>: {{ session["valorDeposito"] }}</h4>
+                <h4>SALDO DISPONÍVEL: {{ session['saldoUsuarioAntes'] }}</h4> 
+                <h4>SALDO FINAL: {{ session["saldoFinalConfirmacao"] }}</h4>
                 <h5>* Valor sujeito a conferência.</h5>
                 <div class="linha">
                     <span></span>
@@ -35,7 +36,7 @@
             <section>
                 <h3>GUARDE ESTE COMPROVANTE ATÉ A OPERAÇÃO SER PROCESSADA.</h3>
             </section>
-            <input type="submit" class="button" value="Imprimir" name="imprimir">
+            <!-- <input type="submit" class="button" value="Imprimir" name="imprimir"> -->
         </div>
     </div>
 

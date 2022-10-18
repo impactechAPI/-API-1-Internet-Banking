@@ -12,11 +12,13 @@
     </aside>
 
     <div class="container">
-        <a href="{{ url_for('clientes') }}" class="voltar">&lt voltar</a>
-        <section class="solicitacao">
+        <a href="{{ url_for('clientes') }}" class="voltar">&lt voltar</a><br><br>
+        <section>
             <div class="campo-unico">
-                <label>Nome </label>
-                <span>{{ session["nomeUsuarioCadastro"] }}</span>
+                <div class="info-conta">
+                    <label>Nome</label>
+                    <span>{{ session["nomeUsuarioCadastro"] }}</span>
+                </div>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
@@ -33,8 +35,10 @@
                 </div>
             </div>
             <div class="campo-unico">
-                <label>Endereço</label>
-                <span>{{ session["enderecoCadastro"] }}</span>
+                <div class="info-conta">
+                    <label>Endereço</label>
+                    <span>{{ session["enderecoCadastro"] }}</span>
+                </div>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
@@ -51,7 +55,7 @@
                 </div>
             </div>
 
-            <p>Cliente desde: {{ session["dataClientela"] }}</p>
+            <p class="data_inicio">Cliente desde: {{ session["dataClientela"] }}</p>
         </section>
     </div>
 

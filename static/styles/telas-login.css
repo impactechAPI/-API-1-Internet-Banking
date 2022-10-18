@@ -49,7 +49,7 @@
 .login-cliente {
     display: flex;
     background-image: linear-gradient(#1A20BD, #22D6C3);
-    height: 87vh;
+    height: 80%;
 }
 
 /* div com conteúdo do lado esquerdo da página */

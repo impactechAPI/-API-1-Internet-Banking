@@ -13,6 +13,8 @@
 
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
+    <link rel="stylesheet" href="../static/styles/formularios.css">
+    <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/telas-home.css">
     <link rel="stylesheet" href="../static/styles/tabelas-filtros.css">
@@ -40,6 +42,7 @@
                     <a href="{{ url_for('homeGerente') }}">
                         <img src="../static/icones/home.png" alt="home">
                         <span class="links-name">Home</span>
+                        <span class="tooltip">Home</span>
                     </a>
                 </li>
 
@@ -47,6 +50,7 @@
                     <a href="{{ url_for('clientes') }}">
                         <img src="../static/icones/usuario.png" alt="depósito">
                         <span class="links-name">Clientes</span>
+                        <span class="tooltip">Clientes</span>
                     </a>
                 </li>
 
@@ -54,14 +58,16 @@
                     <a href="{{ url_for('gerenciar') }}">
                         <img src="../static/icones/gerenciar.png" alt="saque">
                         <span class="links-name">Gerenciar Clientes</span>
+                        <span class="tooltip">Gerenciar Clientes</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ url_for('configuracoes') }}">
                         <!-- {{ url_for('configuracoes') }} -->
                         <img src="../static/icones/configuracoes.png" alt="configurações">
                         <span class="links-name">Configurações</span>
+                        <span class="tooltip">Configurações</span>
                     </a>
                 </li>
             </ul>

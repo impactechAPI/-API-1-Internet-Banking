@@ -136,10 +136,30 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 
 Clicando [aqui](https://www.figma.com/file/fTVQuAtVUTT97mvjmaft1Q/Untitled-(Copy)?node-id=0%3A1) é possível ver as páginas e um protótipo navegavel no Figma.
 
-![](/static/icones/GIF_API_0.gif)
+![](/static/gif/GIF_API_0.gif)
 
 
-![](/static/icones/GIF_API_1.gif)
+![](/static/gif/GIF_API_1.gif)
+
+Confirmação de abertura de conta:
+
+![](/static/gif/confirmação_abertura.gif)
+
+Confirmação de depósito:
+
+![](/static/gif/confirmacao_deposito.gif)
+
+Comprovante de depósito:
+
+![](/static/gif/deposito_comprovante.gif)
+
+Comprovante de saque:
+
+![](/static/gif/saque_comprovante.gif)
+
+Extrato de conta:
+
+![](/static/gif/extrato_conta.gif)
 
 Confirmação de abertura de conta:
 

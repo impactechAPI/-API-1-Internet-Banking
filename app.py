@@ -73,7 +73,7 @@ def indexHome():
 
         except Exception as ex:
              flash("Conta Bancária não existe no sistema! Cadastre-se para continuar.")
-             return render_template("tela-login.html")
+             return render_template("tela-login.html", tituloNavegador="Bem-vindo!")
         
         #Se a senhaCriptografada estiverem corretos ele loga, se não fica preso na tela de Login:
         if check_password_hash(senhaCriptografada, senhaLogin):
@@ -91,9 +91,9 @@ def indexHome():
                 return redirect (url_for('indexHome'))
         else:
             flash("Senha incorreta!")
-            return render_template("tela-login.html")
+            return render_template("tela-login.html", tituloNavegador="Bem-vindo!")
 
-    return render_template("tela-login.html", error = error)
+    return render_template("tela-login.html", tituloNavegador="Bem-vindo!", error = error)
 
 #Rota da página cadastro
 @app.route("/cadastro", methods=["GET", "POST"])
@@ -169,6 +169,7 @@ def indexCadastro():
         session["horaSistema"] = dataAgora()
         
         #Salvando dados no BD e finalizando operação
+        mysql.connection.commit()
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
         
@@ -212,7 +213,7 @@ def indexCadastro():
             flash("Algo deu errado com seu cadastro, tente novamente e atente-se aos campos e senha!")
             return redirect (url_for('indexCadastro'))
 
-    return render_template("tela-cadastro.html")
+    return render_template("tela-cadastro.html", tituloNavegador="Novo Cliente")
 
 #Rota home
 @app.route("/deposito", methods=["GET", "POST"])
@@ -618,7 +619,7 @@ def extrato():
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
-    return render_template("tela-configuracoes.html")
+    return render_template("configuracoes.html")
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():
@@ -650,7 +651,7 @@ def indexGerente():
         except Exception as ex:
 
              flash("Conta de Gerente de Agência não existe no sistema! Solicite a um Gerente Geral o cadastro para continuar.")
-             return render_template("tela-login-ga.html")
+             return render_template("tela-login-ga.html", tituloNavegador="Bem-vindo!")
 
         if senhaGerente == senhaGravada:
             session.pop('gerenteLogado', None)
@@ -658,9 +659,9 @@ def indexGerente():
             return redirect (url_for('homeGerente'))
         else:
             flash("Senha incorreta!")
-            return render_template("tela-login-ga.html")
+            return render_template("tela-login-ga.html", tituloNavegador="Bem-vindo!")
 
-    return render_template("tela-login-ga.html", error = error)
+    return render_template("tela-login-ga.html", tituloNavegador="Bem-vindo!", error = error)
 
 @app.route("/homeGerente", methods=["GET", "POST"])
 def homeGerente():
@@ -933,6 +934,14 @@ def confirmacaoAbertura():
             flash("Cancelamento de abertura de conta feito com sucesso!")
 
     return render_template("tela-abertura-conta.html", solicitacaoIdAbertura = solicitacaoIdAbertura)
+
+@app.route("/editar-gerente", methods=["GET", "POST"])
+def editarGerente():
+    return render_template("editar_gerente.html")
+
+@app.route("/gerentes", methods=["GET", "POST"])
+def gerentes():
+    return render_template("gerentes.html")
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

@@ -1,3 +1,47 @@
+/* CABEÇALHO TELA LOGIN CLIENTE E GERENTE */
+
+
+/* div cabeçalho logo + menu */
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: .5rem;
+    right: 0;
+    width: 100%;
+}
+
+.header .logo {
+    width: 8rem;
+    margin-left: 1rem;
+}
+
+.header .nav {
+    display: flex;
+    align-items: center;
+}
+
+/* espaçamento entre link "Cliente" e "Gerente" */
+.header a {
+    margin-right: 2rem;
+}
+
+/* link nav ao passar o mouse */
+.ativo:hover {
+    color: #08C746;
+}
+
+/* link nav visitado */
+.ativo:visited {
+    color: #343434;
+}
+
+/* link nav visitado ao passar o mouse */
+.ativo:visited:hover {
+    color: #08C746;
+}
+
+
 /* TELA LOGIN CLIENTE */
 
 
@@ -5,7 +49,7 @@
 .login-cliente {
     display: flex;
     background-image: linear-gradient(#1A20BD, #22D6C3);
-    height: 85vh;
+    height: 87vh;
 }
 
 /* div com conteúdo do lado esquerdo da página */
@@ -57,6 +101,10 @@
     text-align: center;
     width: 75%;
     font-weight: normal;
+}
+
+.container-login form {
+    width: 25rem;
 }
 
 /* form título */
@@ -128,7 +176,7 @@ input[type="number"] {
     justify-content: center;
     align-items: center;
     background-image: linear-gradient(#1A20BD, #22D6C3);
-    height: 85vh;
+    height: 87vh;
 }
 
 /* título "SiriusBank" */
@@ -141,7 +189,7 @@ input[type="number"] {
 
 /* inputs de matrícula e senha */
 .form-login input {
-    width: 18rem;
+    width: 20rem;
     padding: 1rem;
     border: none;
 }

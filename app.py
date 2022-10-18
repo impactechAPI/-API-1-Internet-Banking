@@ -169,6 +169,7 @@ def indexCadastro():
         session["horaSistema"] = dataAgora()
         
         #Salvando dados no BD e finalizando operação
+        mysql.connection.commit()
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
         
@@ -618,7 +619,7 @@ def extrato():
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
-    return render_template("tela-configuracoes.html")
+    return render_template("configuracoes.html")
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():
@@ -933,6 +934,14 @@ def confirmacaoAbertura():
             flash("Cancelamento de abertura de conta feito com sucesso!")
 
     return render_template("tela-abertura-conta.html", solicitacaoIdAbertura = solicitacaoIdAbertura)
+
+@app.route("/editar-gerente", methods=["GET", "POST"])
+def editarGerente():
+    return render_template("editar_gerente.html")
+
+@app.route("/gerentes", methods=["GET", "POST"])
+def gerentes():
+    return render_template("gerentes.html")
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

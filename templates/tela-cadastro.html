@@ -9,54 +9,61 @@
 
 <!-- Formulário-->
 {% block contents %}
-<main class="container">
+<main class="container container_cadastro">
 
     <h1>Abra sua conta</h1>
     <hr>
     <form method="post" action="">
-        <div class="linha-inteira">
-            <label>Nome<br>
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
                 <input type="text" name="nome" placeholder="Informe seu nome">
-            </label>
+            </div>
         </div>
 
-        <div class="mesma-linha">
-            <label>CPF (Apenas números)<br>
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF (Apenas números)</label>
                 <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
-            </label>
+            </div>
 
-            <label>Data de nascimento<br>
+            <div class="info-conta">
+                <label>Data de nascimento</label>
                 <input type="date" class="data" name="dataAniversario">
-            </label>
+            </div>
 
-            <label>Gênero<br>
+            <div class="info-conta">
+                <label>Gênero</label>
                 <select name="genero" id="genero" class="genero">
                     <option value="selecione" disabled>Selecione</option>
                     <option value="feminino">Feminino</option>
                     <option value="masculino">Masculino</option>
                     <option value="outro">Outro</option>
                 </select>
-            </label>
+            </div>
         </div>
 
-        <div class="linha-inteira">
-            <label>Endereço<br>
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
                 <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
-            </label>
+            </div>
         </div>
 
-        <div class="senha">
-            <label class="input-senha">Senha<br>
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>Senha</label>
                 <input type="password" placeholder="Informe sua senha" name="senha">
-            </label>
-            <label class="input-senha">Confirmação de senha<br>
+            </div>
+            <div class="info-conta">
+                <label>Confirmação de senha</label>
                 <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
-            </label>
+            </div>
         </div>
 
         <label class="checkbox">
-            <input type="checkbox" name="consentimentoUsuario"> Li e estou de acordo com os <a href="">Termos de Uso</a> e <a href="">Política de Privacidade</a>.
-            <span></span>
+            <input type="checkbox" name="consentimentoUsuario"> Li e estou de acordo com os <a href="">Termos de Uso</a>
+            e <a href="">Política de Privacidade</a>.
         </label>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -71,7 +78,7 @@
         {% if error %}
         <p class=error><strong>Erro:</strong> {{ error }}
             {% endif %}
-            <input type="submit" class="submit" value="Cadastrar">
+            <input type="submit" class="confirmar" value="Cadastrar">
     </form>
 
 </main>

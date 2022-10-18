@@ -1,0 +1,47 @@
+/* div com os botões */
+.botoes {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem auto 0 auto;
+    width: 60%;
+}
+
+/* botões cadastrar/confirmar/salvar */
+
+.confirmar {
+    background-color: #08C746;
+    width: 48%;
+    color: aliceblue;
+    font-size: 1.2em;
+    height: 3.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+}
+
+.confirmar:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}
+
+/* botão cancelar */
+.cancelar {
+    background-color: #C71308;
+    width: 48%;
+    color: aliceblue;
+    font-size: 1.2em;
+    height: 3.5rem;
+    cursor: pointer; 
+    justify-content: center;
+    border: none;
+    border-radius: 3px;
+}
+
+/* botão cancelar ao passar o mouse */
+.cancelar:hover {
+    background-color: #810e08;
+    transition: 0.3s all;;
+}

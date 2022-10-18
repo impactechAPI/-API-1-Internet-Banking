@@ -16,6 +16,10 @@ body {
     height: 100%;
 }
 
+.body_index {
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+}
+
 .pagina {
     display: flex;
 }
@@ -39,6 +43,10 @@ body {
     padding-top: 2rem;
 }
 
+hr {
+    margin-bottom: 2rem;
+}
+
 /* container home */
 .container {
     width: 70%;
@@ -52,7 +60,12 @@ body {
     position: relative;
 }
 
+.container_cadastro {
+    margin-top: 2rem;
+}
+
 /* título da página */
+.container h1, 
 .container h2 {
     font-weight: normal;
     font-size: 1.8rem;

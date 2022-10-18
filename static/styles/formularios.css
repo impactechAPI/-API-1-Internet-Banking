@@ -1,0 +1,77 @@
+/* link voltar */
+.container .voltar {
+    color: #343434;
+}
+
+/* link voltar ao passar o mouse */
+.container .voltar:hover {
+    color: #08C746;
+}
+
+/* margin superior  */
+.container label {
+    margin-top: .1rem;
+}
+
+/* campo nome com borda que ocupa linha inteira */
+.container .campo-unico {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* disposicão dos campos em mesma linha */
+.container .campo-duplo,
+.container .campo-triplo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* tamanho campo duplo */
+.container .campo-duplo .info-conta {
+    width: 47%;
+}
+
+/* tamanho campo triplo  */
+.container .campo-triplo .info-conta {
+    width: 30%;
+}
+
+/* quebra de linha campos label e span */
+.container .info-conta {
+    display: flex;
+    flex-direction: column;
+}
+
+/* select de gênero */
+.container .genero {
+    border: 1px solid #000000;
+    border-radius: 3px;
+    margin-top: 7px;
+    outline-color: #08C746;
+    padding: .5rem 0 .5rem 1rem;
+    background-color: white;
+}
+
+input,
+.container .info-conta span {
+    padding: .5rem 0 .5rem 1rem;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    margin-top: 7px;
+    accent-color: #08c746;
+    border: 1px solid #343434;
+    font-size: .9rem;
+    color: #343434;
+}
+
+/* retira as setas padrão de input type number */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.container .data_inicio {
+    margin-top: 2rem;
+}

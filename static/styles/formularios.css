@@ -75,3 +75,13 @@ input[type="number"] {
 .container .data_inicio {
     margin-top: 2rem;
 }
+
+
+/* TELA INFO GERENTE */
+
+
+.container .solicitacao .data-botao {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}

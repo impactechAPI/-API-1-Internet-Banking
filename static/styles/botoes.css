@@ -45,3 +45,22 @@
     background-color: #810e08;
     transition: 0.3s all;;
 }
+
+/* botão editar */
+.editar {
+    background-color: #08C746;
+    color: aliceblue;
+    height: 2.5rem;
+    width: 90px;
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.img_editar {
+    width: 1.5rem;
+    margin-right: .3rem;
+}

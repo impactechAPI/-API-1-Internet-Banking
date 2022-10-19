@@ -14,7 +14,9 @@
     <div class="container-login">
         <form method="post" action="" class="formulario">
             <h2>Faça seu login</h2>
+            <span>Número da conta</span><br>
             <input class="conta" type="number" name="numContaUsuario" id="" placeholder="Informe sua conta"><br>
+            <span>Senha</span><br>
             <input class="password" type="password" name="senhaLogin" id="" placeholder="Informe sua senha"><br>
             {% with messages = get_flashed_messages() %}
             {% if messages %}

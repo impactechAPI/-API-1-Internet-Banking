@@ -56,9 +56,9 @@
 
                 <li>
                     <a href="{{ url_for('gerenciar') }}">
-                        <img src="../static/icones/gerenciar.png" alt="saque">
-                        <span class="links-name">Gerenciar Clientes</span>
-                        <span class="tooltip">Gerenciar Clientes</span>
+                        <img src="../static/icones/solicitacao.png" alt="saque">
+                        <span class="links-name">Solicitações</span>
+                        <span class="tooltip">Solicitações</span>
                     </a>
                 </li>
 
@@ -79,7 +79,8 @@
                         <span class="name">{{ session['nomeGerente'] }}</span>
                     </div>
                     <!-- /profileDetail -->
-                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair" id="logout"></a>
+                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair"
+                            id="logout"></a>
                 </div>
                 <!-- /profile -->
             </section>
@@ -90,6 +91,17 @@
 
         <section class="pageContent">
             <!-- conteúdo da página -->
+
+            {% block header %}
+            <!-- título -->
+            <header class="fundo">
+                <div class="titulo">
+                    <h1>{{ titulo }}</h1>
+                    <hr>
+                </div>
+            </header>
+            {% endblock %}
+            
             {% block contents %}
 
             {% endblock %}

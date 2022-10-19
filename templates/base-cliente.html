@@ -107,6 +107,16 @@
 
         <!-- conteúdo da página -->
         <section class="pageContent">
+            {% block header %}
+            <!-- título -->
+            <header class="fundo">
+                <div class="titulo">
+                    <h1>{{ titulo }}</h1>
+                    <hr>
+                </div>
+            </header>
+            {% endblock %}
+
             {% block contents %}
 
             {% endblock %}

@@ -3,65 +3,60 @@
 {% block contents %}
 <main>
 
-    <!-- título -->
-    <aside class="fundo">
-        <div class="titulo">
-            <h1>Depósito</h1>
-            <hr>
-        </div>
-    </aside>
     <form method="post" action="">
-    <div class="container">
-        <a href="{{ url_for('gerenciar') }}" class="voltar">&lt voltar</a>
-        <section class="solicitacao">
-            <h2> Confirmação de depósito</h2>
-            <div class="campo-unico">
-                <label>Nome </label>
-                <span>{{ session["nomeUsuario"] }}</span>
-            </div>
-            <div class="campo-duplo">
-                <div class="info-conta">
-                    <label>Número da conta</label>
-                    <span>{{ session["contaUsuario"] }}</span>
-                </div>
-                <div class="info-conta">
-                    <label>Agência</label>
-                    <span>{{ session["agenciaBancariaUsuario"] }}</span>
-                </div>
-            </div>
-        </section>
-        <section class="solicitacao">
-            <div class="deposito">
-                <h2>Depósito</h2>
-                <div class="campo-triplo">
+        <div class="container">
+            <a href="{{ url_for('gerenciar') }}" class="voltar">&lt voltar</a>
+            <section class="solicitacao">
+                <h2> Confirmação de depósito</h2>
+                <div class="campo-unico">
                     <div class="info-conta">
-                        <label>Saldo Atual</label>
-                        <span>{{ session["saldoAtualUsuario"] }}</span>
-                    </div>
-                    <div class="info-conta">
-                        <label>Valor de Depósito</label>
-                        <span>{{ session["valorDepositoUsuario"] }}</span>
-                    </div>
-                    <div class="info-conta">
-                        <label>Saldo Final</label>
-                        <span>{{ session["saldoFinalUsuario"] }}</span>
+                        <label>Nome </label>
+                        <span>{{ session["nomeUsuario"] }}</span>
                     </div>
                 </div>
+                <div class="campo-duplo">
+                    <div class="info-conta">
+                        <label>Número da conta</label>
+                        <span>{{ session["contaUsuario"] }}</span>
+                    </div>
+                    <div class="info-conta">
+                        <label>Agência</label>
+                        <span>{{ session["agenciaBancariaUsuario"] }}</span>
+                    </div>
+                </div>
+            </section>
+            <section class="solicitacao">
+                <div class="deposito">
+                    <h2>Depósito</h2>
+                    <div class="campo-triplo">
+                        <div class="info-conta">
+                            <label>Saldo Atual</label>
+                            <span>{{ session["saldoAtualUsuario"] }}</span>
+                        </div>
+                        <div class="info-conta">
+                            <label>Valor de Depósito</label>
+                            <span>{{ session["valorDepositoUsuario"] }}</span>
+                        </div>
+                        <div class="info-conta">
+                            <label>Saldo Final</label>
+                            <span>{{ session["saldoFinalUsuario"] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="botoes">
+                <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
+                <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
             </div>
-        </section>
-        <div class="botoes">
-            <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
-            <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
-        </div>
-        {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <ul class=flashes>
+            <ul class=flashes>
                 {% for message in messages %}
-                    <div class="error">{{ message }}</div>
+                <div class="error">{{ message }}</div>
                 {% endfor %}
-                </ul>
+            </ul>
             {% endif %}
-        {% endwith %}
+            {% endwith %}
     </form>
     </div>
 

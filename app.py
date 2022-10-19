@@ -273,7 +273,7 @@ def deposito():
         session['saldoUsuario'] = saldoFormatado.replace('.',',')
         return redirect (url_for('deposito'))
 
-    return render_template("tela-deposito.html", error = error)
+    return render_template("tela-deposito.html", titulo="Depósito", error = error)
 
 #Rota para página saque.
 @app.route("/saque", methods=["GET", "POST"])
@@ -323,12 +323,12 @@ def saque():
         session['saldoUsuario'] = saldoFormatado.replace('.',',')
         return redirect (url_for('saque'))
 
-    return render_template("tela-saque.html", error = error)
+    return render_template("tela-saque.html", titulo="Saque", error = error)
 
 @app.route("/comprovante", methods=["GET", "POST"])
 def comprovante():
 
-    return render_template("tela-comprovante.html")
+    return render_template("tela-comprovante.html", titulo="Comprovante")
 
 #Rota para logout. Se o usuário clicar em sair nas páginas da Home, sua sessão é limpa, apagando todos os dados do cache do navegador. Ele é redirecionado à tela de Login e uma mensagem aparece informando que o Usuário foi deslogado.
 @app.route("/logout", methods=["GET","POST"])
@@ -399,7 +399,7 @@ def extrato():
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             #Se a dataMovimentacao e o tipoTransacao forem especificados, mostrar a dataMovimentacao e o tipo de Transacao especificado
             elif dataMovimentacaoInicial and dataMovimentacaoLimite and tipoTransacao != "todos":
@@ -417,7 +417,7 @@ def extrato():
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             #Se não for especificado nenhum dado para dataMovimentacao, mas ser para o tipoTransacao, mostrar todos os dados do tipoTransacao em todas as datas
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
@@ -435,7 +435,7 @@ def extrato():
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == None:
                 #session.pop('saldoUsuario', None)
@@ -453,7 +453,7 @@ def extrato():
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns =['Data','Movimentação', 'Tipo de Movimentação'])
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == True:
                 cur = mysql.connection.cursor()
@@ -470,7 +470,7 @@ def extrato():
 
                 tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
         if "imprimir" in request.form:
             #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
@@ -512,7 +512,7 @@ def extrato():
 
                 tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             elif dataMovimentacaoInicial and dataMovimentacaoLimite and tipoTransacao != "todos":
                 cur = mysql.connection.cursor()
@@ -531,7 +531,7 @@ def extrato():
 
                 tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao != "todos":
                 cur = mysql.connection.cursor()
@@ -550,7 +550,7 @@ def extrato():
 
                 tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == None:
                 #session.pop('saldoUsuario', None)
@@ -570,7 +570,7 @@ def extrato():
 
                 tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
             elif not dataMovimentacaoInicial and not dataMovimentacaoLimite and tipoTransacao == "todos" and session["cacheApagado"] == True:
                 cur = mysql.connection.cursor()
@@ -590,7 +590,7 @@ def extrato():
                 tabelaMovimentacao.to_csv(r'extrato.txt', header=True, index=False, sep='\t', mode='a')
                 flash("Extrato impresso com sucesso!")
 
-                return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+                return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
     #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
     else:
@@ -615,7 +615,7 @@ def extrato():
 
             tabelaMovimentacao = pd.DataFrame(list(zip(dataMovimentacao, movimentacao, tipoMovimentacao)), columns = ['Data','Movimentação', 'Tipo de Movimentação'])
 
-            return render_template("tela-extrato.html", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
+            return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
@@ -690,8 +690,8 @@ def clientes():
         colunas = ("Cliente", "Visualizar")
         dados = list(zip(usuarioSolicitacao, aberturaId))
 
-        return render_template("tela-clientes.html", colunas = colunas, dados = dados)
-    return render_template("tela-clientes.html")
+        return render_template("tela-clientes.html", titulo="Clientes", colunas = colunas, dados = dados)
+    return render_template("tela-clientes.html", titulo="Clientes")
 
 @app.route("/informacoes-cliente", methods=["GET", "POST"])
 def infoCliente():
@@ -718,7 +718,7 @@ def infoCliente():
     session["agenciaBancariaCadastro"] = dadosUsuarioCadastro[6]
     session["saldoBancarioCadastro"] = dadosUsuarioCadastro[7]
 
-    return render_template("tela-info-cliente.html", idCliente = idCliente)
+    return render_template("tela-info-cliente.html", titulo="Cliente", idCliente = idCliente)
 
 @app.route("/gerenciar", methods=["GET", "POST"])
 def gerenciar():
@@ -774,7 +774,7 @@ def gerenciar():
 
             app.logger.info(dados)
 
-            return render_template("tela-gerenciar.html", colunas = colunas, dados = dados)
+            return render_template("tela-gerenciar.html", titulo="Solicitações", colunas = colunas, dados = dados)
 
         #Se a dataMovimentacao e o tipoTransacao forem especificados, mostrar a dataMovimentacao e o tipo de Transacao especificado
         elif dataSolicitacaoInicial and dataSolicitacaoLimite and tipoSolicitacao != "todos":
@@ -795,7 +795,7 @@ def gerenciar():
             colunas = ("Data", "Usuário", "Tipo de Solicitação", "Visualizar")
             dados = list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacaoBanco, solicitacaoId))
 
-            return render_template("tela-gerenciar.html", colunas = colunas, dados = dados)
+            return render_template("tela-gerenciar.html", titulo="Solicitações", colunas = colunas, dados = dados)
 
         #Se não for especificado nenhum dado para dataMovimentacao, mas ser para o tipoTransacao, mostrar todos os dados do tipoTransacao em todas as datas
         elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao != "todos":
@@ -816,7 +816,7 @@ def gerenciar():
             colunas = ("Data", "Usuário", "Tipo de Solicitação", "Visualizar")
             dados = list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, solicitacaoId))
 
-            return render_template("tela-gerenciar.html", colunas = colunas, dados = dados)
+            return render_template("tela-gerenciar.html", titulo="solicitações", colunas = colunas, dados = dados)
 
         elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao == "todos":
             cur = mysql.connection.cursor()
@@ -836,7 +836,7 @@ def gerenciar():
             colunas = ("Data", "Usuário", "Tipo de Solicitação", "Visualizar")
             dados = list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, solicitacaoId))
 
-            return render_template("tela-gerenciar.html", colunas = colunas, dados = dados)
+            return render_template("tela-gerenciar.html", titulo="Solicitações", colunas = colunas, dados = dados)
 
     #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
     else:
@@ -857,7 +857,7 @@ def gerenciar():
             colunas = ("Data", "Usuário", "Tipo de Solicitação", "Visualizar")
             dados = list(zip(dataSolicitacao, usuarioSolicitacao, tipoSolicitacao, solicitacaoId))
 
-            return render_template("tela-gerenciar.html", colunas = colunas, dados = dados)
+            return render_template("tela-gerenciar.html", titulo="Solicitações", colunas = colunas, dados = dados)
 
 @app.route("/confirmacao-deposito", methods = ["GET", "POST"])
 def confirmacaoDeposito():
@@ -896,7 +896,7 @@ def confirmacaoDeposito():
         else:
             flash("Cancelamento de depósito feito com sucesso!")
         
-    return render_template("tela-confirmacao-deposito.html", solicitacaoIdCadastro = solicitacaoIdCadastro)
+    return render_template("tela-confirmacao-deposito.html", titulo="Solicitações", solicitacaoIdCadastro = solicitacaoIdCadastro)
 
 @app.route("/confirmacao-abertura", methods = ["GET", "POST"])
 def confirmacaoAbertura():
@@ -933,15 +933,23 @@ def confirmacaoAbertura():
 
             flash("Cancelamento de abertura de conta feito com sucesso!")
 
-    return render_template("tela-abertura-conta.html", solicitacaoIdAbertura = solicitacaoIdAbertura)
+    return render_template("tela-abertura-conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
 
 @app.route("/editar-gerente", methods=["GET", "POST"])
 def editarGerente():
-    return render_template("editar_gerente.html")
+    return render_template("editar_gerente.html", titulo="Editar Gerente")
 
 @app.route("/gerentes", methods=["GET", "POST"])
 def gerentes():
     return render_template("gerentes.html")
+
+@app.route("/informacoes-gerente", methods=["GET", "POST"])
+def infoGerente():
+    return render_template("info_gerente.html", titulo="Gerente")
+
+@app.route("/home-gerente-geral", methods=["GET", "POST"])
+def homeGerenteGeral():
+    return render_template("home_gg.html")
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

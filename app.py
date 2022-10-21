@@ -617,9 +617,17 @@ def extrato():
 
             return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
-@app.route("/configuracoes", methods=["GET", "POST"])
-def configuracoes():
-    return render_template("configuracoes.html")
+@app.route("/meus-dados", methods=["GET", "POST"])
+def meusDados():
+    return render_template("meus_dados.html", titulo="Meus Dados")
+
+@app.route("/alterar-dados", methods=["GET", "POST"])
+def alterarDados():
+    return render_template("alterar_dados.html", titulo="Alterar Dados")
+
+@app.route("/encerrar-conta", methods=["GET", "POST"])
+def encerrarConta():
+    return render_template("encerrar_conta.html", titulo="Encerrar Conta")
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():

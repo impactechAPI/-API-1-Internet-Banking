@@ -1,0 +1,65 @@
+{% extends 'base-cliente.html' %}
+
+{% block contents %}
+<div class="container">
+
+    <a href="{{ url_for('meusDados') }}" class="voltar">&lt voltar</a><br><br>
+    <form method="post" action="{{ url_for('alterarDados') }}">
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
+                <input type="text" name="nome" value="{{ session['nomeUsuario'] }}">
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF (Apenas números)</label>
+                <input type="text" maxlength="11" name="cpf" value="{{ session[''] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Data de nascimento</label>
+                <input type="date" name="dataAniversario" value="{{ session[''] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Gênero</label>
+                <select name="genero" id="genero" class="genero" aria-selected="{{ session['generoUsuario'] }}">
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
+                <input type="text" name="endereco" value="{{ session[''] }}">
+            </div>
+        </div>
+
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>Senha</label>
+                <input type="text" name="senhaUsuario">
+            </div>
+            <div class="info-conta">
+                <label>Confirmar senha</label>
+                <input type="text" name="confirmacaoSenha" placeholder="Confirme sua senha">
+            </div>
+            <!-- /info-conta -->
+        </div>
+
+        <aside class="botoes">
+            <input type="submit" name="confirmar" class="confirmar" value="Salvar alterações">
+            <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+        </aside>
+
+    </form>
+
+</div>
+
+{% endblock %}

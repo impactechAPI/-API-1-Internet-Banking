@@ -13,6 +13,8 @@
 
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
+    <link rel="stylesheet" href="../static/styles/formularios.css">
+    <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/telas-home.css">
     <link rel="stylesheet" href="../static/styles/telas-transacoes.css">
@@ -79,11 +81,10 @@
                 </li>
 
                 <li>
-                    <a href="#">
-                        <!-- {{ url_for('configuracoes') }} -->
-                        <img src="../static/icones/configuracoes.png" alt="configurações">
-                        <span class="links-name">Configurações</span>
-                        <span class="tooltip">Configurações</span>
+                    <a href="{{ url_for('meusDados') }}">
+                        <img src="../static/icones/meus_dados.png" alt="meus dados">
+                        <span class="links-name">Meus Dados</span>
+                        <span class="tooltip">Meus Dados</span>
                     </a>
                 </li>
             </ul>

@@ -2,7 +2,6 @@ body {
     position: relative; /* alterar a posição de um elemento tendo como referêcia a posição inicial */
     min-height: 100vh;
     width: 100%;
-    overflow: hidden; /* o conteúdo é cortado, não exibe barra de rolagem */
 }
 
 /* sidebar */
@@ -144,7 +143,7 @@ body {
 
 .tooltip {
     position: absolute;
-    left: 60px;
+    left: 55px;
     transform: translate(0, -50%);
     width: 0px;
     height: 50px;

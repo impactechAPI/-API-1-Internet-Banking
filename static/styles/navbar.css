@@ -1,0 +1,43 @@
+/* CABEÇALHO TELAS LOGIN E CADASTRO */
+
+
+/* cabeçalho */
+.body_index header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    height: 3.5rem;
+    right: 0;
+    width: 100%;
+}
+
+/* logo login */
+.body_index header .logo {
+    width: 8rem;
+    margin-left: 1rem;
+}
+
+/* links 'Cliente' e 'Gerente' */
+.body_index header .links {
+    display: flex;
+    align-items: center;
+    color: #343434;
+}
+
+/* espaçamento entre links */
+.body_index header a {
+    padding: 1rem;
+}
+
+/* link ao passar o mouse */
+.body_index header .cliente:hover,
+.body_index header .gerente:hover {
+    background-color: #08C746;
+    transition: all .5s ease; /* ease: começo e fim lentos */
+}
+
+/* link visitado */
+.body_index header a:visited {
+    color: #343434;
+}

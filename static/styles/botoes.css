@@ -8,7 +8,8 @@
 
 /* botões cadastrar/confirmar/salvar */
 
-.confirmar {
+.confirmar,
+.cadastrar {
     background-color: #08C746;
     width: 48%;
     color: aliceblue;
@@ -22,9 +23,14 @@
     border-radius: 3px;
 }
 
-.confirmar:hover {
+.confirmar:hover,
+.cadastrar:hover {
     background-color: #419E5E;
     transition: 0.3s all;
+}
+
+.cadastrar {
+    margin: 2rem auto 0 auto;
 }
 
 /* botão cancelar */
@@ -41,7 +47,8 @@
 }
 
 /* botão cancelar ao passar o mouse */
-.cancelar:hover {
+.cancelar:hover,
+.encerrar_conta:hover {
     background-color: #810e08;
     transition: 0.3s all;;
 }
@@ -63,4 +70,13 @@
 .img_editar {
     width: 1.5rem;
     margin-right: .3rem;
+}
+
+.encerrar_conta {
+    border: none;
+    background-color: #C71308;
+    color: aliceblue;
+    margin-left: 1rem;
+    padding: .5rem;
+    cursor: pointer;
 }

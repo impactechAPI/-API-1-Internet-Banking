@@ -66,22 +66,65 @@ input,
     color: #343434;
 }
 
+.container .data_inicio {
+    margin-top: 2rem;
+}
+
 /* retira as setas padrão de input type number */
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
 input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
 
-.container .data_inicio {
-    margin-top: 2rem;
-}
-
 
 /* TELA INFO GERENTE */
 
-
-.container .solicitacao .data-botao {
+/* div data inicial + botão editar */
+.container .data-botao {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+
+/* TELA SAQUE/DEPÓSITO/TRANSFERÊNCIA */
+.container .transacao {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* TELA MEUS DADOS */
+
+
+.container .div_encerrar_conta label {
+    margin-bottom: 1rem;
+    text-transform: lowercase;
+}
+
+.container .div_encerrar_conta span {
+    text-transform: capitalize;
+}
+
+/* link 'Encerrar conta' */
+.container .div_encerrar_conta #confirmar_encerrar {
+    display: none;
+}
+
+/* link 'Encerrar conta' */
+#btn_encerrar {
+    display: flex;
+    justify-content: left;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    color: #C71308;
+    width: 8rem;
+    font-size: 1rem;
 }

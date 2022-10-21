@@ -1,0 +1,40 @@
+{% extends "base_index.html" %}
+
+{% block contents %}
+<div class="login_cliente">
+
+    <section class="abra_conta">
+        <h1 class="titulo">Gerencie suas finanças <br> de forma inteligente</h1>
+        <img src="../static/icones/capa.png" alt="capa" class="capa">
+        <div class="div_abra_conta">
+            <a href="{{ url_for('indexCadastro') }}"><span>Abra sua conta</span></a>
+        </div>
+    </section>
+
+    <section class="container_login">
+        <form method="post">
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                            <div class="error">{{ message }}</div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            {% if error %}
+                <p class=error><strong>Erro:</strong> {{ error }}
+            {% endif %}
+
+            <h2>Faça seu login</h2>
+            <label>Número da conta</label>
+            <input type="number" name="numContaUsuario" class="conta" placeholder="Informe sua conta">
+            <label>Senha</label>
+            <input type="password" name="senhaLogin" class="senha" placeholder="Informe sua senha">
+            <input type="submit" class="entrar" value="Entrar">
+        </form>
+    </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base_index.html" %}
+
+{% block contents %}
+<div class="login_gerente">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <div class="error">{{ message }}</div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% if error %}
+        <p class=error><strong>Erro:</strong> {{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        <h1>SiriusBank</h1>
+        <label>Matrícula</label>
+        <input type="number" name="numMatricula" id="" placeholder="Matrícula">
+        <label>Senha</label>
+        <input type="password" name="senhaLogin" id="" placeholder="Senha">
+        <input type="submit" value="Entrar" class="entrar">
+    </form>
+
+</main>
+{% endblock %}

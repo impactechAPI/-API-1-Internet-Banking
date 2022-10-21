@@ -12,32 +12,33 @@
     <link rel="icon" href="../static/icones/logo-parcial.png">
 
     <!-- links css -->
+    <link rel="stylesheet" href="../static/styles/navbar.css">
     <link rel="stylesheet" href="../static/styles/formularios.css">
     <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
-    <link rel=" stylesheet" href="../static/styles/telas-login.css">
-    <link rel="stylesheet" href="../static/styles/tela-cadastro.css">
+    <link rel=" stylesheet" href="../static/styles/login.css">
     {% endblock %}
 </head>
 
 <body class="body_index">
+
     <!-- cabeçalho -->
     {% block header %}
-    <header class="header">
+    <header>
         <div>
             <img src="../static/icones/logo.png" alt="logo" class="logo">
         </div>
-        <div class="nav">
-            <a href="{{ url_for('indexHome') }}" class="ativo">Cliente</a>
-            <a href="{{ url_for('indexGerente') }}" class="ativo">Gerente</a>
+        <div class="links">
+            <a href="{{ url_for('indexHome') }}" class="cliente">Cliente</a>
+            <a href="{{ url_for('indexGerente') }}" class="gerente">Gerente</a>
         </div>
     </header>
     {% endblock %}
 
     <!-- conteúdo da página -->
-    {% block contents%}
-
-    {% endblock %}
+    <main>
+        {% block contents%}{% endblock %}
+    </main>
 
     <!-- rodapé -->
     {% block footer %}

@@ -72,8 +72,8 @@ def indexHome():
             statusSolicitacao = retornoStatusSolicitacao[0] 
 
         except Exception as ex:
-             flash("Conta Bancária não existe no sistema! Cadastre-se para continuar.")
-             return render_template("tela-login.html", tituloNavegador="Bem-vindo!")
+             flash("Conta não existe no sistema! Cadastre-se para continuar.")
+             return render_template("login_cliente.html", tituloNavegador="Bem-vindo!")
         
         #Se a senhaCriptografada estiverem corretos ele loga, se não fica preso na tela de Login:
         if check_password_hash(senhaCriptografada, senhaLogin):
@@ -91,9 +91,9 @@ def indexHome():
                 return redirect (url_for('indexHome'))
         else:
             flash("Senha incorreta!")
-            return render_template("tela-login.html", tituloNavegador="Bem-vindo!")
+            return render_template("login_cliente.html", tituloNavegador="Bem-vindo!")
 
-    return render_template("tela-login.html", tituloNavegador="Bem-vindo!", error = error)
+    return render_template("login_cliente.html", tituloNavegador="Bem-vindo!", error = error)
 
 #Rota da página cadastro
 @app.route("/cadastro", methods=["GET", "POST"])
@@ -130,7 +130,7 @@ def indexCadastro():
 
         #Critério preenchimento campos do cadastro, incluindo as duas senhas, que precisam ser iguais para que ela seja transformada em Hash criptografado e seja mandado pro banco de dados protegida.
         if not name or not cpf or not dataAniversario or not genero or not endereco or not senha or not confirmacaoSenha:
-            flash("Preencha todos os campos do formulário")
+            flash("Preencha todos os campos do formulário!")
             return redirect (url_for("indexCadastro"))
 
         #ATENÇÃO! trecho retirado não descomentar por enquanto
@@ -204,7 +204,7 @@ def indexCadastro():
             mysql.connection.commit()
             cur.close()
 
-            flash(f"Cadastro criado com sucesso!\nATENÇÃO! Para entrar em sua conta você precisa do nº de sua Conta Bancária, anote-a por segurança:\n {str(session.get('contaUsuario'))}")
+            flash(f"Cadastro criado com sucesso!\nATENÇÃO! Para entrar você precisa do nº de sua Conta, anote-a por segurança:\n {str(session.get('contaUsuario'))}")
             if request.method == "POST":
                 voltarLogin = True
                 if voltarLogin == True:
@@ -213,7 +213,7 @@ def indexCadastro():
             flash("Algo deu errado com seu cadastro, tente novamente e atente-se aos campos e senha!")
             return redirect (url_for('indexCadastro'))
 
-    return render_template("tela-cadastro.html", tituloNavegador="Novo Cliente")
+    return render_template("cadastro.html", tituloNavegador="Novo Cliente")
 
 #Rota home
 @app.route("/deposito", methods=["GET", "POST"])
@@ -619,7 +619,7 @@ def extrato():
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
-    return render_template("editar_agencia.html")
+    return render_template("configuracoes.html")
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():
@@ -650,8 +650,8 @@ def indexGerente():
 
         except Exception as ex:
 
-             flash("Conta de Gerente de Agência não existe no sistema! Solicite a um Gerente Geral o cadastro para continuar.")
-             return render_template("tela-login-ga.html", tituloNavegador="Bem-vindo!")
+             flash("Conta não existe no sistema! Solicite o cadastro a um Gerente Geral para continuar.")
+             return render_template("login_gerente.html", tituloNavegador="Bem-vindo!")
 
         if senhaGerente == senhaGravada:
             session.pop('gerenteLogado', None)
@@ -659,9 +659,9 @@ def indexGerente():
             return redirect (url_for('homeGerente'))
         else:
             flash("Senha incorreta!")
-            return render_template("tela-login-ga.html", tituloNavegador="Bem-vindo!")
+            return render_template("login_gerente.html", tituloNavegador="Bem-vindo!")
 
-    return render_template("tela-login-ga.html", tituloNavegador="Bem-vindo!", error = error)
+    return render_template("login_gerente.html", tituloNavegador="Bem-vindo!", error = error)
 
 @app.route("/homeGerente", methods=["GET", "POST"])
 def homeGerente():

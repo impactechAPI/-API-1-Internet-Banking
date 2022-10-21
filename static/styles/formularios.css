@@ -66,14 +66,18 @@ input,
     color: #343434;
 }
 
+.container .data_inicio {
+    margin-top: 2rem;
+}
+
 /* retira as setas padrão de input type number */
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
 input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
-}
-
-.container .data_inicio {
-    margin-top: 2rem;
 }
 
 

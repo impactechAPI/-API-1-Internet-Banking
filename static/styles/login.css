@@ -1,0 +1,159 @@
+.body_index {
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+}
+
+/* botão "Entrar" */
+.entrar {
+    background-color: #08C746;
+    width: 100%;
+    color: aliceblue;
+    font-size: 1.2rem;
+    height: 3.5rem;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+    margin-top: 1rem;
+}
+
+/* botão "Entrar" ao passar o mouse */
+.entrar:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}
+
+
+/* LOGIN CLIENTE */
+
+
+/* conteúdo da página */
+.login_cliente {
+    display: flex;
+    height: 40rem;
+}
+
+/* conteúdo esquerdo da página */
+.login_cliente .abra_conta {
+    width: 100%;
+    font-size: 1.3rem;
+    color: aliceblue;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+/* imagem de capa */
+.login_cliente .abra_conta .capa {
+    margin: 0 auto;
+    text-align: center;
+    height: 25rem ;
+    filter: drop-shadow(5px 5px 5px #343434); /* sombra da imagem */
+}
+
+/* div "Abra sua conta" */
+.login_cliente .abra_conta .div_abra_conta {
+    width: 65%;
+    background-color: #08C746;
+    padding: 0.8rem 2rem 0.8rem 0.8rem;
+    margin-bottom: 3rem;
+    border-radius: 0 5px 5px 0;
+    text-align: right;
+    box-shadow: 5px 5px 50px 1px #00000038; /* sombra do botão */
+}
+
+/* link 'Abra sua conta' */
+.login_cliente .abra_conta .div_abra_conta a {
+    color: aliceblue;
+    cursor: pointer;
+    text-transform: uppercase; /* texto em caixa alta */
+}
+
+/* div ao passar  mouse */
+.div_abra_conta:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}
+
+/* conteúdo lado direito */
+.container_login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 75%;
+}
+
+/* formulário login */
+.container_login form {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    background-color: aliceblue;
+    width: 25rem;
+    padding: 2rem 2.5rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 50px 1px #00000038;
+}
+
+/* formulário título */
+.container_login form h2 {
+    font-weight: normal;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* nome dos campos de input */
+.container_login form label {
+    margin: 0 auto 0 0;
+}
+
+/* campos de input */
+.container_login form .conta,
+.container_login form .senha {
+    height: 3rem;
+    border: none;
+    background-color: #dddada;
+    width: 100%;
+    border-radius: 5px;
+    outline-color: #08C746;
+    padding: 0 0 0 1rem;
+}
+
+
+/* TELA LOGIN GERENTE */
+
+
+/* conteúdo da página */
+.login_gerente {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+    height: 87vh;
+}
+
+/* formulário login */
+.login_gerente form {
+    display: flex;
+    flex-direction: column;
+    color: aliceblue;
+}
+
+/* formulário título */
+.login_gerente form h1 {
+    font-size: 4rem;
+    font-family: 'Monda', sans-serif;
+    margin-bottom: 1rem;
+}
+
+/* nome dos campos input */
+.login_gerente form label {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+/* campos inputs */
+.login_gerente form input {
+    width: 20rem;
+    padding: 1rem;
+    border: none;
+}

@@ -8,7 +8,8 @@
 
 /* botões cadastrar/confirmar/salvar */
 
-.confirmar {
+.confirmar,
+.cadastrar {
     background-color: #08C746;
     width: 48%;
     color: aliceblue;
@@ -22,9 +23,14 @@
     border-radius: 3px;
 }
 
-.confirmar:hover {
+.confirmar:hover,
+.cadastrar:hover {
     background-color: #419E5E;
     transition: 0.3s all;
+}
+
+.cadastrar {
+    margin: 2rem auto 0 auto;
 }
 
 /* botão cancelar */

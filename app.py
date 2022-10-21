@@ -627,7 +627,7 @@ def alterarDados():
 
 @app.route("/encerrar-conta", methods=["GET", "POST"])
 def encerrarConta():
-    return render_template("encerrar_conta.html", titulo="Encerrar Conta")
+    return
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():

@@ -58,13 +58,38 @@
         </div>
 
         <aside class="data-botao">
-            <p class="data_inicio">Gerente desde: {{ session["dataInicioGeAgencia"] }}</p>
+            <p class="data_inicio">Cliente desde: {{ session[''] }}</p>
             <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar"> Editar</button>
         </aside>
     </form>
 
-    <a href="{{ url_for('encerrarConta') }}" class="encerrar_conta">Encerrar Conta</a>
+    <aside class="div_encerrar_conta">
+        <span id="encerrar_conta"></span>
+        <span id="confirmar_encerrar">
+            <label><span>Tem</span> certeza que deseja encerrar sua conta?</label>
+            <input type="submit" name="encerrarConta" class="encerrar_conta" value="Encerrar conta">
+        </span>
+        <button onclick="encerrar()" id="btn_encerrar">Encerrar Conta</button>
+    </aside>
 
 </div>
+
+<script>
+    function encerrar() {
+        var encerrarConta = document.getElementById("encerrar_conta");
+        var confirmar_encerrar = document.getElementById("confirmar_encerrar");
+        var btnEncerrar = document.getElementById("btn_encerrar")
+
+        if(encerrarConta.style.display === "none"){
+            encerrarConta.style.display = "inline";
+            confirmar_encerrar.style.display = "none";
+            btnEncerrar.innerHTML = "Encerrar conta";
+        }else{
+            encerrarConta.style.display = "none";
+            confirmar_encerrar.style.display = "inline";
+            btnEncerrar.innerHTML = "Cancelar"
+        }
+    }
+</script>
 
 {% endblock %}

@@ -98,3 +98,33 @@ input[type="number"] {
     display: flex;
     flex-direction: column;
 }
+
+
+/* TELA MEUS DADOS */
+
+
+.container .div_encerrar_conta label {
+    margin-bottom: 1rem;
+    text-transform: lowercase;
+}
+
+.container .div_encerrar_conta span {
+    text-transform: capitalize;
+}
+
+/* link 'Encerrar conta' */
+.container .div_encerrar_conta #confirmar_encerrar {
+    display: none;
+}
+
+/* link 'Encerrar conta' */
+#btn_encerrar {
+    display: flex;
+    justify-content: left;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    color: #C71308;
+    width: 8rem;
+    font-size: 1rem;
+}

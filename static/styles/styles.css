@@ -67,11 +67,6 @@ hr {
     font-size: 1.8rem;
 }
 
-/* link 'Encerrar conta' */
-.encerrar_conta {
-    color: #C71308;
-}
-
 /* mensagens de erro */
 .error {
     background-color: #f7bcb9;

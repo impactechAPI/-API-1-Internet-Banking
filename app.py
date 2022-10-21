@@ -619,7 +619,7 @@ def extrato():
 
 @app.route("/configuracoes", methods=["GET", "POST"])
 def configuracoes():
-    return render_template("configuracoes.html")
+    return render_template("editar_agencia.html")
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():
@@ -939,13 +939,17 @@ def confirmacaoAbertura():
 def editarGerente():
     return render_template("editar_gerente.html", titulo="Editar Gerente")
 
+@app.route("/editar-agencia", methods=["GET", "POST"])
+def editarAgencia():
+    return render_template("editar_agencia.html", titulo="Editar Agência") 
+
 @app.route("/gerentes", methods=["GET", "POST"])
 def gerentes():
-    return render_template("gerentes.html")
+    return render_template("gerentes.html", titulo="Gerentes")
 
 @app.route("/informacoes-gerente", methods=["GET", "POST"])
 def infoGerente():
-    return render_template("info_gerente.html", titulo="Gerente")
+    return render_template("info_gerente.html", titulo="Gerente") 
 
 @app.route("/home-gerente-geral", methods=["GET", "POST"])
 def homeGerenteGeral():

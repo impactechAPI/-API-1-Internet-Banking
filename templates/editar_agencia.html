@@ -1,0 +1,47 @@
+{% extends 'base-gerente.html' %}
+
+{% block contents %}
+<main>
+
+    <div class="container">
+        <a href="{{ url_for('gerentes') }}" class="voltar">&lt voltar</a><br><br>
+        <form method="post" action="{{ url_for('editarGerente') }}" class="solicitacao">
+            <div class="campo-duplo">
+                <div class="info-conta">
+                    <label>Número</label>
+                    <input type="number" value="{{ session['numAgencia'] }}" name="numAgencia">
+                </div>
+                <!-- /info-conta -->
+                <div class="info-conta">
+                    <label>Número de clientes</label>
+                    <input type="number" value="{{ session['numClientes']}}" name="numClientes">
+                </div>
+                <!-- /info-conta -->
+            </div>
+            <!-- /campo-duplo -->
+            <div class="campo-unico">
+                <label>Gerente</label>
+                <input type="text" value="{{ session['gerenteAgencia'] }}" name="gerenteAgencia">
+            </div>
+            <!-- /campo-unico -->
+            <div class="campo-unico">
+                <label>Endereço</label>
+                <input type="text" value="{{ session['enderecoAgencia'] }}" name="enderecoAgencia">
+            </div>
+            <!-- campo-unico -->
+
+            <aside>
+                <p class="data-inicio">Criada em: {{ session["dataInicioAgencia"] }}</p>
+                <section class="botoes">
+                    <input type="submit" name="confirmar" class="confirmar" value="Salvar">
+                    <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+                </section>
+                <!-- /botoes -->
+            </aside>
+        </form>
+        <!-- /solicitação -->
+    </div>
+    <!-- /container -->
+
+</main>
+{% endblock %}

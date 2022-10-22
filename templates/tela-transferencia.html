@@ -1,0 +1,40 @@
+{% extends "base-cliente.html" %}
+
+{% block contents %}
+
+<main>
+
+    <!-- transferencia -->
+    <div class="container">
+        <h2>para quem você quer transferir?</h2>
+        <form method="post" action="">
+            <div class="transacao">
+                <div class="saldo">
+                    <label>Saldo disponível</label>
+                    <span>R$ {{ session['saldoUsuario'] }}</span>
+                </div>
+                <label class="valor">Valor<br>
+                    <input type="text" name="valorTransferencia" placeholder="R$ 0,00" step="0.01">
+                </label>
+                <label class="conta">Número da conta<br>
+                    <input type="text" name="numeroConta" placeholder="xxxxxxxx">
+                </label>
+                <label class="agencia">Agência<br>
+                    <input type="text" name="numeroAgencia" placeholder="xxxx">
+                </label>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
+                </ul>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            <input type="submit" class="button" value="Transferir">
+        </form>
+    </div>
+
+</main>
+{% endblock %}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- aba navegador -->
+    <title>SiriusBank</title>
+    <link rel="icon" href="../static/icones/logo-parcial.png">
+
+    <!-- links css -->
+    <link rel="stylesheet" href="../static/styles/menu-lateral.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/telas-home.css">
+    <link rel="stylesheet" href="../static/styles/tabelas-filtros.css">
+    <link rel="stylesheet" href="../static/styles/telas-gerenciar.css">
+    {% endblock %}
+</head>
+
+<body>
+
+    <div class="pagina">
+
+        <!-- menu lateral -->
+        {% block menu %}
+        <div class="sidebar">
+            <section class="logoContent">
+                <div class="logo">
+                    <img src="../static/icones/logo.png" alt="logo">
+                </div>
+                <!-- /logo -->
+                <img src="../static/icones/menu.png" alt="menu" id="btn">
+            </section>
+            <!-- /logoContent -->
+            <ul class="nav-list">
+                <li>
+                    <a href="{{ url_for('homeGerenteGeral') }}">
+                        <img src="../static/icones/home.png" alt="home">
+                        <span class="links-name">Home</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('clientes') }}">
+                        <img src="../static/icones/clientes.png" alt="clientes">
+                        <span class="links-name">Clientes</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('gerentes') }}">
+                        <img src="../static/icones/gerentes.png" alt="gerentes">
+                        <span class="links-name">Gerentes</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('agencias') }}">
+                        <img src="../static/icones/agencias.png" alt="agencias">
+                        <span class="links-name">Agências</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('solicitacoes') }}">
+                        <img src="../static/icones/solicitacoes.png" alt="solicitacoes">
+                        <span class="links-name">Solicitações</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <!-- {{ url_for('configuracoes') }} -->
+                        <img src="../static/icones/configuracoes.png" alt="configurações">
+                        <span class="links-name">Configurações</span>
+                    </a>
+                </li>
+
+            </ul>
+            <!-- /nav-list -->
+            <section class="profileContent">
+                <div class="profile">
+                    <div class="profileDetail">
+                        <img src="../static/icones/perfil.jpg" alt="usuário">
+                        <span class="name">{{ session['nomeGerenteGeral'] }}</span>
+                    </div>
+                    <!-- /profileDetail -->
+                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair" id="logout"></a>
+                </div>
+                <!-- /profile -->
+            </section>
+            <!-- /profileContent -->
+        </div>
+        <!-- /sidebar -->
+        {% endblock %}
+
+        <section class="pageContent">
+            <!-- conteúdo da página -->
+            {% block contents %}
+
+            {% endblock %}
+        </section>
+    </div>
+
+    <!-- script botão do menu lateral (abrir e fechar) -->
+    <script>
+        // variáveis
+        const btn = document.querySelector('#btn');
+        const sidebar = document.querySelector('.sidebar');
+        const home = document.querySelector('.pageContent');
+
+        // eventos de escuta do click
+        btn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            home.classList.toggle('active');
+        });
+    </script>
+</body>
+
+</html>

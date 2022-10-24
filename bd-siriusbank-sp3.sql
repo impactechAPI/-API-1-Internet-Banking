@@ -90,6 +90,11 @@ GG_num_matricula,
 GG_num_senha)
 VALUES ('Gerente Geral', 00001, 123);
 
+create table listaAgencias (
+id_numAgencia int not null primary key auto_increment,
+numAgencia text(4) not null);
+
+
 select * from users;
 select * from movimentacaoConta;
 select * from gerenciamentoUsuarios;
@@ -97,3 +102,4 @@ select * from confirmacaoDeposito;
 select * from confirmacaoAbertura;
 select * from gerenteAgencia;
 select * from gerenteGeral;
+select * from listaAgencias;

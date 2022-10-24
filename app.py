@@ -943,9 +943,39 @@ def confirmacaoAbertura():
 
     return render_template("tela-abertura-conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
 
-@app.route("/editar-gerente", methods=["GET", "POST"])
-def editarGerente():
-    return render_template("editar_gerente.html", titulo="Editar Gerente")
+@app.route("/editar-gerentes", methods=["GET", "POST"])
+def editarGerentes():
+    #idGerente = request.args.get("idGerente")
+    idGerenteLista = 1
+    cur = mysql.connection.cursor()
+    
+    cur.execute("SELECT gerente_id from gerenteAgencia where gerente_id = %s", ([idGerenteLista]))
+    idGerenteRetorno = cur.fetchone()
+    idGerenteAgencia = idGerenteRetorno[0]
+
+    cur.execute("SELECT gerente_nome, num_matricula, num_agencia FROM gerenteAgencia WHERE gerente_id = %s", ([idGerenteAgencia]))
+    dadosGerenteCadastro = cur.fetchone()
+
+    session["nomeGerenteCadastro"] = dadosGerenteCadastro[0]
+    session["matriculaGerenteCadastro"] = dadosGerenteCadastro[1]
+    session["numAgenciaCadastro"] = dadosGerenteCadastro[2]
+
+    if request.method == 'POST':
+        if "confirmar" in request.form:
+
+            novoNomeGerente = request.form['nomeGerenteCadastro']
+            novoNumMatriculaGerente = request.form['matriculaGerenteCadastro']
+            novoNumAgenciaGerente = request.form['numAgenciaCadastro']
+
+            cur.execute("UPDATE gerenteAgencia SET gerente_nome = %s, num_matricula = %s, num_agencia = %s WHERE gerente_id = %s", ([novoNomeGerente], [novoNumMatriculaGerente], [novoNumAgenciaGerente], [idGerenteAgencia]))
+            mysql.connection.commit()
+            cur.close()
+            flash("Dados atualizados com sucesso!")
+            return redirect(url_for("editarGerentes"))
+        else:
+            flash("Dados não atualizados.")
+            return redirect(url_for("editarGerentes"))
+    return render_template("editar_gerente.html")
 
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():

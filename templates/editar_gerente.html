@@ -3,17 +3,25 @@
 {% block contents %}
 <main>
 
+    <!-- título -->
+    <aside class="fundo">
+        <div class="titulo">
+            <h1>Gerente</h1>
+            <hr>
+        </div>
+    </aside>
+
     <div class="container">
-        <a href="{{ url_for('gerentes') }}" class="voltar">&lt voltar</a><br><br>
-        <form method="post" action="{{ url_for('editarGerente') }}" class="solicitacao">
+        <a href="{{ url_for('listaGerentes') }}" class="voltar">&lt voltar</a><br><br>
+        <form method="post" action="" class="solicitacao">
             <div class="campo-unico">
                 <label>Nome</label><br>
-                <input type="text" value="{{ session['nomeGeAgencia'] }}" name="nomeGeAgencia">
+                <input type="text" value="{{ session['nomeGerenteCadastro'] }}" name="nomeGerenteCadastro">
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>CPF</label>
-                    <input type="number" maxlength="11" value="{{ session['cpfGeAgencia'] }}" name="cpfGeAgencia">
+                    <input type="text" maxlength="11" value="{{ session['cpfG'] }}" name="cpfGeAgencia">
                 </div>
                 <div class="info-conta">
                     <label>Data de nascimento</label>
@@ -22,10 +30,10 @@
                 <div class="info-conta">
                     <label>Gênero</label>
                     <select name="generoGeAgencia" class="genero" id="generoGeAgencia" aria-selected="{{ session['generoGeAgencia'] }}">
-                        <option value="Selecionar" disabled></option>
-                        <option value="Feminino"></option>
-                        <option value="Masculino"></option>
-                        <option value="Outro"></option>
+                        <option value="Selecionar" disabled>Selecionar</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Outro">Outro</option>
                     </select>
                 </div>
             </div>
@@ -36,7 +44,7 @@
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>Número de matrícula</label>
-                    <input type="number" value="{{ session['matriculaGeAgencia'] }}" name="matriculaGeAgencia">
+                    <input type="text" value="{{ session['matriculaGerenteCadastro'] }}" name="matriculaGerenteCadastro">
                 </div>
                 <div class="info-conta">
                     <label>Função</label>
@@ -44,7 +52,7 @@
                 </div>
                 <div class="info-conta">
                     <label>Agência</label>
-                    <input type="number" value="{{ session['agenciaGeAgencia'] }}" name="agenciaGeAgencia">
+                    <input type="text" value= "{{ session['numAgenciaCadastro'] }}" name="numAgenciaCadastro">
                 </div>
             </div>
 
@@ -55,6 +63,15 @@
                     <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
                 </section>
             </aside>
+            {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <ul class=flashes>
+                            {% for message in messages %}
+                            <div class="error">{{ message }}</div>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    {% endwith %}
         </form>
     </div>
 

@@ -163,23 +163,23 @@ Extrato de conta:
 
 Confirmação de abertura de conta:
 
-![](/static/icones/confirmação_abertura.gif)
+![](/static/gif/confirmação_abertura.gif)
 
 Confirmação de depósito:
 
-![](/static/icones/confirmacao_deposito.gif)
+![](/static/gif/confirmacao_deposito.gif)
 
 Comprovante de depósito:
 
-![](/static/icones/deposito_comprovante.gif)
+![](/static/gif/deposito_comprovante.gif)
 
 Comprovante de saque:
 
-![](/static/icones/saque_comprovante.gif)
+![](/static/gif/saque_comprovante.gif)
 
 Extrato de conta:
 
-![](/static/icones/extrato_conta.gif)
+![](/static/gif/extrato_conta.gif)
 
 
 <span id="tecnologias">

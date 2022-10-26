@@ -7,7 +7,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    height: 3.5rem;
+    height: 8vh;
     right: 0;
     width: 100%;
 }
@@ -27,7 +27,7 @@
 
 /* espaçamento entre links */
 .body_index header a {
-    padding: 1rem;
+    padding: .8rem;
 }
 
 /* link ao passar o mouse */

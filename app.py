@@ -984,7 +984,7 @@ def editarGerentes():
         else:
             flash("Dados não atualizados.")
             return redirect(url_for("editarGerentes"))
-    return render_template("editar_gerente.html")
+    return render_template("editar_gerente.html", titulo="Editar Gerente")
 
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():

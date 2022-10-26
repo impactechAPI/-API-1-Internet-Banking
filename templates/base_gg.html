@@ -91,25 +91,23 @@
 
         <section class="pageContent">
             <!-- conteúdo da página -->
-            {% block contents %}
 
+            {% block header %}
+            <!-- título -->
+            <header class="fundo">
+                <div class="titulo">
+                    <h1>{{ Gerentes }}</h1>
+                    <hr>
+                </div>
+            </header>
+            {% endblock %}
+        
+            {% block contents %}
+        
             {% endblock %}
         </section>
     </div>
 
-    {% block header %}
-    <!-- título -->
-    <header class="fundo">
-        <div class="titulo">
-            <h1>{{ Gerentes }}</h1>
-            <hr>
-        </div>
-    </header>
-    {% endblock %}
-
-    {% block contents %}
-
-    {% endblock %}
 </section>
 
     <!-- script botão do menu lateral (abrir e fechar) -->

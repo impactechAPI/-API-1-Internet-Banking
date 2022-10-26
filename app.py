@@ -953,21 +953,30 @@ def editarGerentes():
     idGerenteRetorno = cur.fetchone()
     idGerenteAgencia = idGerenteRetorno[0]
 
-    cur.execute("SELECT gerente_nome, num_matricula, num_agencia FROM gerenteAgencia WHERE gerente_id = %s", ([idGerenteAgencia]))
+    cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia FROM gerenteAgencia WHERE gerente_id = %s", ([idGerenteAgencia]))
     dadosGerenteCadastro = cur.fetchone()
 
     session["nomeGerenteCadastro"] = dadosGerenteCadastro[0]
-    session["matriculaGerenteCadastro"] = dadosGerenteCadastro[1]
-    session["numAgenciaCadastro"] = dadosGerenteCadastro[2]
+    session["cpfGerenteCadastro"] = dadosGerenteCadastro[1]
+    session["nascGerenteCadastro"] = dadosGerenteCadastro[2]
+    session["generoGerenteCadastro"] = dadosGerenteCadastro[3]
+    session["endGerenteCadastro"] = dadosGerenteCadastro[4]
+    session["matriculaGerenteCadastro"] = dadosGerenteCadastro[5]
+    session["numAgenciaCadastro"] = dadosGerenteCadastro[6]
 
     if request.method == 'POST':
         if "confirmar" in request.form:
 
             novoNomeGerente = request.form['nomeGerenteCadastro']
+            novoNumCpfGerente = request.form['cpfGerenteCadastro']
+            novoNascGerente = request.form['nascGerenteCadastro']
+            novoGeneroGerente = request.form['generoGerenteCadastro']
+            novoEndGerente = request.form['endGerenteCadastro']
             novoNumMatriculaGerente = request.form['matriculaGerenteCadastro']
             novoNumAgenciaGerente = request.form['numAgenciaCadastro']
 
-            cur.execute("UPDATE gerenteAgencia SET gerente_nome = %s, num_matricula = %s, num_agencia = %s WHERE gerente_id = %s", ([novoNomeGerente], [novoNumMatriculaGerente], [novoNumAgenciaGerente], [idGerenteAgencia]))
+
+            cur.execute("UPDATE gerenteAgencia SET gerente_nome = %s, gerente_cpf = %s, gerente_nasc = %s, gerente_genero = %s, gerente_end = %s num_matricula = %s, num_agencia = %s WHERE gerente_id = %s", ([novoNomeGerente], [novoNumCpfGerente], [novoNascGerente], [novoGeneroGerente], [novoEndGerente], [novoNumMatriculaGerente], [novoNumAgenciaGerente], [idGerenteAgencia]))
             mysql.connection.commit()
             cur.close()
             flash("Dados atualizados com sucesso!")
@@ -979,7 +988,37 @@ def editarGerentes():
 
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():
-    return render_template("editar_agencia.html", titulo="Editar Agência") 
+    #idAgencia = request.args.get("idAgencia")
+    idAgenciaLista = 1
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT agencia_id from agencias where agencia_id = %s", ([idAgenciaLista]))
+    idAgenciaRetorno = cur.fetchone()
+    idAgencias = idAgenciaRetorno[0]
+
+    cur.execute("SELECT numero_agencia, numero_clientes, nome_gerente, end_agencia FROM agencias WHERE agencia_id = %s", ([idAgencias]))
+    dadosAgencia = cur.fetchone()
+
+    session["numeroAgencia"] = dadosAgencia[0]
+    session["numeroClientes"] = dadosAgencia[1]
+    session["nomeGerente"] = dadosAgencia[2]
+    session["enderecoAgencia"] = dadosAgencia[3]
+
+    if request.method == 'POST':
+        if "confirmar" in request.form:
+            novoNumeroAgencia = request.form['numeroAgencia']
+            novoNomeGerente = request.form['nomeGerente']
+            novoEndAgencia = request.form['enderecoAgencia']
+
+            cur.execute("UPDATE agencias SET numero_agencia = %s, nome_gerente = %s, end_agencia = %s WHERE agencia_id = %s", ([novoNumeroAgencia], [novoNomeGerente], [novoEndAgencia]))
+            mysql.connection.commit()
+            cur.close()
+            flash("Dados atualizados com sucesso!")
+            return redirect(url_for("editarAgencia"))
+        else:
+            flash("Dados não atualizados.")
+            return redirect(url_for("editarAgencia"))
+    return render_template("editar_agencia.html")
 
 @app.route("/gerentes", methods=["GET", "POST"])
 def gerentes():

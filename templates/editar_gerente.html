@@ -12,16 +12,16 @@
         <div class="campo-triplo">
             <div class="info-conta">
                 <label>CPF</label>
-                <input type="text" maxlength="11" value="{{ session['cpfG'] }}" name="cpfGeAgencia">
+                <input type="text" maxlength="11" value="{{ session['cpfGerenteCadastro'] }}" name="cpfGerenteCadastro">
             </div>
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <input type="date" value="{{ session['dataNascGeAgencia'] }}" name="dataNascGeAgencia">
+                <input type="date" value="{{ session['nascGerenteCadastro'] }}" name="nascGerenteCadastro">
             </div>
             <div class="info-conta">
                 <label>Gênero</label>
-                <select name="generoGeAgencia" class="genero" id="generoGeAgencia"
-                    aria-selected="{{ session['generoGeAgencia'] }}">
+                <select name="generoGeAgencia" class="genero" id="generoGerenteCadastro"
+                    aria-selected="{{ session['generoGerenteCadastro'] }}">
                     <option value="Selecionar" disabled>Selecionar</option>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
@@ -31,7 +31,7 @@
         </div>
         <div class="campo-unico">
             <label>Endereço</label>
-            <input type="text" value="{{ session['enderecoGeAgencia'] }}" name="enderecoGeAgencia">
+            <input type="text" value="{{ session['endGerenteCadastro'] }}" name="endGerenteCadastro">
         </div>
         <div class="campo-triplo">
             <div class="info-conta">
@@ -65,6 +65,7 @@
         {% endif %}
         {% endwith %}
     </form>
+
 </main>
 
 {% endblock %}

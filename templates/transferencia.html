@@ -2,44 +2,40 @@
 
 {% block contents %}
 
-<main>
-
-<!-- transferencia -->
-    <div class="container">
-        <h2>Para quem você quer transferir?</h2>
-        <form method="post" class="transacao">
-            <div class="campo-duplo">
-                <div class="info-conta">
-                    <label>Saldo disponível:</label>
-                    <span>R$ {{ session['saldoUsuario'] }}</span>
-                </div>
-                
-                <label class="info-conta">Valor:<br>
-                    <input type="number" name="valorTransferencia" placeholder="R$ 0,00" step="0.01">
-                </label>
+<main class="container">
+    <h2>Para quem você quer transferir?</h2>
+    <form method="post" class="transacao">
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>Saldo disponível:</label>
+                <span>R$ {{ session['saldoUsuario'] }}</span>
             </div>
 
-            <div class="campo-duplo">
-                <label class="info-conta">Número da conta:<br>
-                    <input type="number" name="numeroConta">
-                </label>
-            
-                <label class="info-conta">Agência:<br>
-                    <input type="number" name="numeroAgencia">
-                </label>
-            </div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
-                </ul>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
-            <input type="submit" class="button" value="Transferir">
-        </form>
-    </div>
+            <label class="info-conta">Valor:<br>
+                <input type="number" name="valorTransferencia" placeholder="R$ 0,00" step="0.01">
+            </label>
+        </div>
 
+        <div class="campo-duplo">
+            <label class="info-conta">Número da conta:<br>
+                <input type="number" name="numeroConta">
+            </label>
+
+            <label class="info-conta">Agência:<br>
+                <input type="number" name="numeroAgencia">
+            </label>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
+        </ul>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <input type="submit" class="button" value="Transferir">
+    </form>
 </main>
+
 {% endblock %}

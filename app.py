@@ -350,7 +350,7 @@ def home():
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
-    return render_template("tela-transferencia.html", titulo="Transferência")
+    return render_template("transferencia.html", titulo="Transferência")
 
 #Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])

@@ -3,31 +3,4 @@
     justify-content: space-between;
     margin: 2rem auto 0 auto;
     width: 60%;
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-
-/* botão */
-.button {
-    background-color: #08C746;
-    width: 40%;
-    color: white;
-    font-size: 1.2em;
-    height: 3em;
-    cursor: pointer;
-    display: flex;
-    margin: 0 auto;
-    justify-content: center;
-    border: none;
-    margin-top: 2em;
-}
-
-/* botão ao passar o mouse */
-.button:hover {
-    background-color: #419E5E;
-    transition: 0.3s all;
-=======
->>>>>>> 030a90a8a1940c48073dac2d0ff0d083e00a0ed7
-=======
->>>>>>> 030a90a8a1940c48073dac2d0ff0d083e00a0ed7
 }

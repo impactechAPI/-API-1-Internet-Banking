@@ -20,16 +20,17 @@
 hr {
     color: white;
     margin: .5rem auto 2rem auto;
-    width: 75%;    
+    width: 100%;    
 }
 
-/* título da página */
-.container h1, 
-.container h2 {
-    font-weight: normal;
-    font-size: 1.8rem;
+.fundo-home hr {
+    width: 75%;
 }
 
+/* navbar */
+.pageContent .nav {
+    display: none;
+}
 
 /* TELAS HOME */
 
@@ -124,7 +125,42 @@ hr {
 
 
 @media (max-width: 850px) {
-    .container_cadastro hr {
-        width: 100%;
+    /* navbar aparece */
+    .pageContent .nav {
+        display: inline;
+    }
+
+    .nav .logo {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 2.5rem;
+    }
+
+    /* logo */
+    .nav img {
+        width: 6rem;
+    }
+
+    .fundo-home {
+        height: 12rem;
+    }
+
+    .fundo-home .info-usuario,
+    .fundo-home hr {
+        width: 80%;
+    }
+
+    .fundo-home .info-usuario .info h1,
+    .fundo-home .info-usuario .info span {
+        font-size: 20px;
+    }
+
+    .fundo-home .info-usuario .info label {
+        font-size: 12px;
+    }
+
+    .fundo-home .info-usuario .info h2 {
+        font-size: 16px;
     }
 }

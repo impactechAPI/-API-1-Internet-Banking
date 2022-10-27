@@ -39,6 +39,18 @@ body {
     margin: 2rem auto 2rem auto;
 }
 
+/* título da página */
+.container h1, 
+.container h2 {
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+
+/* parágrafo "Fique à vontade..." */
+.container p {
+    font-size: 1.3rem;
+}
+
 /* mensagens de erro */
 .error {
     background-color: #f7bcb9;
@@ -95,7 +107,7 @@ footer {
 }
 
 
-/* MEDIA QUERIES TELA CADASTRO */
+/* MEDIA QUERIES */
 
 
 @media (max-width: 900px) {
@@ -106,13 +118,34 @@ footer {
 }
 
 @media (max-width: 850px) {
+    /* container tela de cadastro */
     .container_cadastro {
         width: 90%;
         height: 100%;
         padding: 1.5rem;
     }
 
+    /* título*/
     .container_cadastro h1 {
         font-size: 1.5rem;
+    }
+
+    /* tamanho da linha abaixo do título */
+    .container_cadastro hr {
+        width: 100%;
+    }
+
+    /* container demais telas */
+    .container {
+        width: 100%;
+        min-height: 75vh;
+    }
+
+    .container h2 {
+        font-size: 20px;
+    }
+
+    .container p {
+        font-size: 14px;
     }
 }

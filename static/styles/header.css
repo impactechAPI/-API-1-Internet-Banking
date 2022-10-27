@@ -1,0 +1,130 @@
+/* fundo com título da página */
+.fundo {
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+    height: 12rem;
+}
+
+.titulo {
+    width: 78%;
+    margin: 0 auto;
+}
+
+/* fundo título da página */
+.fundo h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: normal;
+    padding-top: 2rem;
+}
+
+hr {
+    color: white;
+    margin: .5rem auto 2rem auto;
+    width: 75%;    
+}
+
+/* título da página */
+.container h1, 
+.container h2 {
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+
+
+/* TELAS HOME */
+
+
+/* fundo azul com info cliente */
+.fundo-home {
+    height: 15rem;
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+}
+
+/* div info cliente + div saldo disponível */
+.info-usuario {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    margin: 0 auto;
+    padding-top: 2rem;
+    color: aliceblue;
+}
+
+/* título "Olá, Cliente" */
+.info h1 {
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+/* info agência e conta */
+.info label {
+    display: flex;
+}
+
+/* título "Saldo disponível" */
+.info h2 {
+    font-weight: normal;
+}
+
+/* valor do saldo em R$ */
+.info span {
+    display: flex;
+    justify-content: right;
+    font-size: 2rem;
+}
+
+
+/* CABEÇALHO TELAS LOGIN E CADASTRO */
+
+
+/* cabeçalho */
+.body_index header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    height: 60px;
+    right: 0;
+    width: 100%;
+}
+
+/* logo login */
+.body_index header .logo {
+    width: 8rem;
+    margin-left: 1rem;
+}
+
+/* links 'Cliente' e 'Gerente' */
+.body_index header .links {
+    display: flex;
+    align-items: center;
+    color: #343434;
+}
+
+/* espaçamento entre links */
+.body_index header a {
+    padding: 18px;
+    color: #343434;
+}
+
+/* link ao passar o mouse */
+.body_index header .cliente:hover,
+.body_index header .gerente:hover {
+    background-color: #08C746;
+    transition: all .5s ease; /* ease: começo e fim lentos */
+}
+
+/* link visitado */
+.body_index header a:visited {
+    color: #343434;
+}
+
+
+/* MEDIA QUERIES HEADER */
+
+
+@media (max-width: 850px) {
+    .container_cadastro hr {
+        width: 100%;
+    }
+}

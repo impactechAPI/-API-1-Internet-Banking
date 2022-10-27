@@ -350,7 +350,7 @@ def home():
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
-    return render_template("tela-abertura-de-conta.html")
+    return render_template("tela-transferencia.html", titulo="Transferência")
 
 #Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])
@@ -1031,6 +1031,14 @@ def infoGerente():
 @app.route("/home-gerente-geral", methods=["GET", "POST"])
 def homeGerenteGeral():
     return render_template("home_gg.html")
+
+@app.route("/nova-agencia", methods=["GET", "POST"])
+def novaAgencia():
+    return render_template("nova_agencia.html", titulo="Nova Agência")
+
+@app.route("/novo-gerente", methods=["GET", "POST"])
+def novoGerente():
+    return render_template("novo_gerente.html", titulo="Novo Gerente")
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

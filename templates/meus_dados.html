@@ -1,7 +1,7 @@
 {% extends 'base-cliente.html' %}
 
 {% block contents %}
-<div class="container">
+<main class="container">
 
     <form method="post" action="{{ url_for('alterarDados') }}">
         <div class="campo-unico">
@@ -24,7 +24,8 @@
 
             <div class="info-conta">
                 <label>Gênero</label>
-                <select name="genero" id="genero" class="genero" aria-selected="{{ session['generoUsuario'] }}" disabled>
+                <select name="genero" id="genero" class="genero" aria-selected="{{ session['generoUsuario'] }}"
+                    disabled>
                     <option value="selecione" disabled>Selecione</option>
                     <option value="feminino">Feminino</option>
                     <option value="masculino">Masculino</option>
@@ -59,32 +60,41 @@
 
         <aside class="data-botao">
             <p class="data_inicio">Cliente desde: {{ session[''] }}</p>
-            <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar"> Editar</button>
+            <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar">
+                Editar</button>
         </aside>
     </form>
 
     <aside class="div_encerrar_conta">
         <span id="encerrar_conta"></span>
         <span id="confirmar_encerrar">
-            <label><span>Tem</span> certeza que deseja encerrar sua conta?</label>
+            <label class="titulo"><span>Tem</span> certeza que deseja encerrar sua conta?</label>
+            <div class="alerta">
+                <img src="../static/icones/alert.png" alt="alert">
+                <label>Uma solicitação de encerramento será enviada ao gerente de sua agência, após confirmada, sua
+                conta será excluída permanentemente.</label>
+            </div>
             <input type="submit" name="encerrarConta" class="encerrar_conta" value="Encerrar conta">
         </span>
         <button onclick="encerrar()" id="btn_encerrar">Encerrar Conta</button>
     </aside>
 
-</div>
+</main>
 
 <script>
     function encerrar() {
+        // pegando itens do html pelo id
         var encerrarConta = document.getElementById("encerrar_conta");
         var confirmar_encerrar = document.getElementById("confirmar_encerrar");
         var btnEncerrar = document.getElementById("btn_encerrar")
 
-        if(encerrarConta.style.display === "none"){
+        // ao clicar no link 'Encerrar conta' mostra abaixo dele o aviso de exclusão permanente da conta e o 'Encerrar conta' vira 'Cancelar'
+        // ao clicar no link 'Cancelar' esconde o aviso
+        if (encerrarConta.style.display === "none") {
             encerrarConta.style.display = "inline";
             confirmar_encerrar.style.display = "none";
             btnEncerrar.innerHTML = "Encerrar conta";
-        }else{
+        } else {
             encerrarConta.style.display = "none";
             confirmar_encerrar.style.display = "inline";
             btnEncerrar.innerHTML = "Cancelar"

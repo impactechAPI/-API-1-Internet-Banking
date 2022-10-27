@@ -9,17 +9,14 @@
 
     <!-- aba navegador -->
     <title>SiriusBank</title>
-    <link rel="icon" href="../static/img/logo-parcial.png">
+    <link rel="icon" href="../static/icones/logo-parcial.png">
 
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
-    <link rel="stylesheet" href="../static/styles/formularios.css">
-    <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/telas-home.css">
-    <link rel="stylesheet" href="../static/styles/telas-transacoes.css">
     <link rel="stylesheet" href="../static/styles/tabelas-filtros.css">
-    <link rel="stylesheet" href="../static/styles/comprovante.css">
+    <link rel="stylesheet" href="../static/styles/telas-gerenciar.css">
     {% endblock %}
 </head>
 
@@ -32,7 +29,7 @@
         <div class="sidebar">
             <section class="logoContent">
                 <div class="logo">
-                    <img src="../static/img/logo.png" alt="logo">
+                    <img src="../static/icones/logo.png" alt="logo">
                 </div>
                 <!-- /logo -->
                 <img src="../static/icones/menu.png" alt="menu" id="btn">
@@ -40,64 +37,50 @@
             <!-- /logoContent -->
             <ul class="nav-list">
                 <li>
-                    <a href="{{ url_for('home') }}">
+                    <a href="{{ url_for('homeGerenteGeral') }}">
                         <img src="../static/icones/home.png" alt="home">
                         <span class="links-name">Home</span>
-                        <span class="tooltip">Home</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url_for('deposito') }}">
-                        <img src="../static/icones/deposito.png" alt="depósito">
-                        <span class="links-name">Depósito</span>
-                        <span class="tooltip">Depósito</span>
+                    <a href="{{ url_for('clientes') }}">
+                        <img src="../static/icones/clientes.png" alt="clientes">
+                        <span class="links-name">Clientes</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url_for('saque') }}">
-                        <img src="../static/icones/saque.png" alt="saque">
-                        <span class="links-name">Saque</span>
-                        <span class="tooltip">Saque</span>
+                    <a href="{{ url_for('gerentes') }}">
+                        <img src="../static/icones/gerentes.png" alt="gerentes">
+                        <span class="links-name">Gerentes</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
-                        <!-- {{ url_for('transferencia') }} -->
-                        <img src="../static/icones/transferencia.png" alt="transferência">
-                        <span class="links-name">Transferência</span>
-                        <span class="tooltip">Transferência</span>
+                    <a href="{{ url_for('agencias') }}">
+                        <img src="../static/icones/agencias.png" alt="agencias">
+                        <span class="links-name">Agências</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url_for('extrato') }}">
-                        <img src="../static/icones/extrato.png" alt="extrato">
-                        <span class="links-name">Extrato</span>
-                        <span class="tooltip">Extrato</span>
+                    <a href="{{ url_for('gerenciar') }}">
+                        <img src="../static/icones/solicitacoes.png" alt="solicitacoes">
+                        <span class="links-name">Solicitações</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ url_for('meusDados') }}">
-                        <img src="../static/icones/meus_dados.png" alt="meus dados">
-                        <span class="links-name">Meus Dados</span>
-                        <span class="tooltip">Meus Dados</span>
-                    </a>
-                </li>
             </ul>
             <!-- /nav-list -->
             <section class="profileContent">
                 <div class="profile">
                     <div class="profileDetail">
                         <img src="../static/icones/perfil.jpg" alt="usuário">
-                        <span class="name">{{ session['nomeUsuario'] }}</span>
+                        <span class="name">{{ session['nomeGerenteGeral'] }}</span>
                     </div>
                     <!-- /profileDetail -->
-                    <a href="{{ url_for('indexHome') }}"><img src="../static/icones/sair.png" alt="sair"
-                            id="logout"></a>
+                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair" id="logout"></a>
                 </div>
                 <!-- /profile -->
             </section>
@@ -106,23 +89,26 @@
         <!-- /sidebar -->
         {% endblock %}
 
-        <!-- conteúdo da página -->
         <section class="pageContent">
+            <!-- conteúdo da página -->
+
             {% block header %}
             <!-- título -->
             <header class="fundo">
                 <div class="titulo">
-                    <h1>{{ titulo }}</h1>
+                    <h1>{{ Gerentes }}</h1>
                     <hr>
                 </div>
             </header>
             {% endblock %}
-
+        
             {% block contents %}
-
+        
             {% endblock %}
         </section>
     </div>
+
+</section>
 
     <!-- script botão do menu lateral (abrir e fechar) -->
     <script>

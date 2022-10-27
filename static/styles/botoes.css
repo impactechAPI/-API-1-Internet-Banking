@@ -6,77 +6,154 @@
     width: 60%;
 }
 
-/* botões cadastrar/confirmar/salvar */
-
-.confirmar,
-.cadastrar {
-    background-color: #08C746;
-    width: 48%;
-    color: aliceblue;
-    font-size: 1.2em;
-    height: 3.5rem;
-    cursor: pointer;
+/* div botão pesquisar + ícone */
+.pesquisar,
+.pesquisar_nome {
+    margin: 2rem 0 .8rem 0;
+    width: 8%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.pesquisar_nome {
+    margin-top: 0;
+}
+
+/* div botão imprimir + ícone */
+.imprimir {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* itens em comum botões confirmação */
+.btn_pesquisar,
+.confirmar,
+.cadastrar,
+.editar,
+.btn_imprimir,
+.btn_imprimir_comprovante,
+.button {
+    background-color: #08C746;
+    padding: 0;
     border: none;
+    color: aliceblue;
+    cursor: pointer;
     border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
 }
 
-.confirmar:hover,
-.cadastrar:hover {
-    background-color: #419E5E;
-    transition: 0.3s all;
+/* botão pesquisar (lupa) */
+.btn_pesquisar {
+    width: 5rem;
+    height: 2.5rem;
+    margin: auto 0 .1rem 0;
 }
 
+/* ícone de lupa e impressora */
+.lupa,
+.print {
+    position: absolute;
+    width: 2rem;
+    text-align: center;
+}
+
+/* botão imprimir */
+.btn_imprimir {
+    width: 30%;
+    height: 3rem;
+}
+
+.btn_imprimir_comprovante {
+    width: 50%;
+    height: 3rem;
+}
+
+/* ícone impressora */
+.print {
+    margin-right: 120px;
+    padding-bottom: .5rem;
+    width: 1.5rem;
+}
+
+/* botões cadastrar e confirmar */
+.confirmar,
+.cadastrar {
+    width: 48%;
+    height: 3.5rem;
+}
+
+/* botão cadastrar */
 .cadastrar {
     margin: 2rem auto 0 auto;
 }
 
-/* botão cancelar */
-.cancelar {
-    background-color: #C71308;
-    width: 48%;
-    color: aliceblue;
-    font-size: 1.2em;
-    height: 3.5rem;
-    cursor: pointer; 
-    justify-content: center;
-    border: none;
-    border-radius: 3px;
-}
-
-/* botão cancelar ao passar o mouse */
-.cancelar:hover,
-.encerrar_conta:hover {
-    background-color: #810e08;
-    transition: 0.3s all;;
-}
-
 /* botão editar */
 .editar {
-    background-color: #08C746;
-    color: aliceblue;
     height: 2.5rem;
     width: 90px;
-    border: none;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    font-size: 1rem;
 }
 
+/* imagem do botão editar */
 .img_editar {
     width: 1.5rem;
     margin-right: .3rem;
 }
 
+/* botão depósito/saque/transferência/imprimir */
+.button {
+    width: 30%;
+    height: 3rem;
+    margin: 2rem auto 0 auto;
+}
+
+/* botões de confirmação ao passar o mouse */
+.confirmar:hover,
+.cadastrar:hover,
+.pesquisar:hover,
+.editar:hover,
+.pesquisar:hover,
+.button:hover {
+    background-color: #419E5E;
+    transition: 0.3s all;
+}
+
+/* itens em comum cancelar e encerrar */
+.cancelar,
 .encerrar_conta {
-    border: none;
     background-color: #C71308;
+    padding: 0;
+    border: none;
     color: aliceblue;
-    margin-left: 1rem;
-    padding: .5rem;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 1.2rem;
+}
+
+/* botão cancelar */
+.cancelar {
+    width: 48%;
+    height: 3.5rem; 
+}
+
+/* botão encerrar conta */
+.encerrar_conta {
+    padding: .5rem;
+    font-size: 1rem;
+    width: 30%;
+}
+
+/* botões cancelar e encerrar ao passar o mouse */
+.cancelar:hover,
+.encerrar_conta:hover {
+    background-color: #810e08;
+    transition: 0.3s all;;
 }

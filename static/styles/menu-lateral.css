@@ -137,7 +137,7 @@ body {
     position: absolute;
     top: 0;
     left: 78px;
-    width: 100%;
+    width: calc(100% - 78px);
     transition: all 0.5s ease;
 }
 
@@ -186,6 +186,7 @@ body {
 
 .sidebar.active .logoContent .logo {
     opacity: 1;
+    overflow: hidden;
 }
 
 .sidebar.active #btn {

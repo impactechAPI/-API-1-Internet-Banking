@@ -28,7 +28,7 @@
 /* conteúdo da página */
 .login_cliente {
     display: flex;
-    height: 40rem;
+    min-height: 86vh;
 }
 
 /* conteúdo esquerdo da página */
@@ -128,7 +128,7 @@
     justify-content: center;
     align-items: center;
     background-image: linear-gradient(#1A20BD, #22D6C3);
-    height: 87vh;
+    height: 86vh;
 }
 
 /* formulário login */
@@ -156,4 +156,5 @@
     width: 20rem;
     padding: 1rem;
     border: none;
+    outline-color: #08C746;
 }

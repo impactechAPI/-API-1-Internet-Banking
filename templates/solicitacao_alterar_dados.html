@@ -1,16 +1,16 @@
-{% extends 'base-gerente.html' %}
+{% extends "base-gerente.html" %}
 
 {% block contents %}
 <main class="container">
 
     <a href="{{ url_for('gerenciar') }}" class="voltar">&lt voltar</a>
 
-    <form method="post" action="{{ url_for('encerramentoConta') }}">
-        <h2>Solicitação de Encerramento de Conta</h2>
+    <form method="post">
+        <h2>Solicitação de Alteração de Dados Cadastrais</h2>
         <div class="campo-unico">
             <div class="info-conta">
-                <label>Nome</label>
-                <span>{{ session['nomeUsuarioCadastro'] }}</span>
+                <label>Nome </label>
+                <span>{{ session["nomeUsuario"] }}</span>
             </div>
         </div>
 
@@ -38,30 +38,34 @@
             </div>
         </div>
 
-        <div class="campo-triplo">
+        <div class="campo-duplo">
             <div class="info-conta">
                 <label>Número da conta</label>
-                <span>{{ session['contaBancariaCadastro'] }}</span>
+                <span>{{ session["contaUsuario"] }}</span>
             </div>
 
             <div class="info-conta">
                 <label>Agência</label>
-                <span>{{ session['agenciaBancariaCadastro'] }}</span>
-            </div>
-
-            <div class="info-conta">
-                <label>Saldo disponível</label>
-                <span>{{ session['saldoBancarioCadastro'] }}</span>
+                <span>{{ session["agenciaBancariaUsuario"] }}</span>
             </div>
         </div>
 
-        <aside>
-            <p class="data-inicio">Cliente desde: {{ session["dataClientela"] }}</p>
-            <section class="botoes">
-                <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
-                <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
-            </section>
-        </aside>
+        <h2>Alterações</h2>
+        
+        <div class="botoes">
+            <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
+            <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     </form>
 
 </main>

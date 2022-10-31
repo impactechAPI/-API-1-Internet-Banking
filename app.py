@@ -1044,5 +1044,9 @@ def novoGerente():
 def encerramentoConta():
     return render_template("encerramento_conta.html", titulo="Solicitações")
 
+@app.route("/solicitacao-alterar-dados", methods=["GET", "POST"])
+def solicitacaoAlterarDados():
+    return render_template("solicitacao_alterar_dados.html", titulo="Solicitações")
+
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

@@ -158,6 +158,16 @@
     transition: 0.3s all;;
 }
 
+/* link voltar */
+.voltar {
+    color: #343434;
+}
+
+/* link voltar ao passar o mouse */
+.voltar:hover {
+    color: #08C746;
+}
+
 
 /* MEDIA QUERIES BOTÕES */
 

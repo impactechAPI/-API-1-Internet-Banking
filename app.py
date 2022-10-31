@@ -904,7 +904,7 @@ def confirmacaoDeposito():
         else:
             flash("Cancelamento de depósito feito com sucesso!")
         
-    return render_template("tela-confirmacao-deposito.html", titulo="Solicitações", solicitacaoIdCadastro = solicitacaoIdCadastro)
+    return render_template("confirmacao_deposito.html", titulo="Solicitações", solicitacaoIdCadastro = solicitacaoIdCadastro)
 
 @app.route("/confirmacao-abertura", methods = ["GET", "POST"])
 def confirmacaoAbertura():
@@ -941,7 +941,7 @@ def confirmacaoAbertura():
 
             flash("Cancelamento de abertura de conta feito com sucesso!")
 
-    return render_template("tela-abertura-conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
+    return render_template("abertura_conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
 
 @app.route("/editar-gerentes", methods=["GET", "POST"])
 def editarGerentes():
@@ -1039,6 +1039,10 @@ def novaAgencia():
 @app.route("/novo-gerente", methods=["GET", "POST"])
 def novoGerente():
     return render_template("novo_gerente.html", titulo="Novo Gerente")
+
+@app.route("/solicitacao-encerramento", methods=["GET", "POST"])
+def encerramentoConta():
+    return render_template("encerramento_conta.html", titulo="Solicitações")
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

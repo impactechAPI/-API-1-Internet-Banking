@@ -1,11 +1,6 @@
-/* link voltar */
-.container .voltar {
-    color: #343434;
-}
-
-/* link voltar ao passar o mouse */
-.container .voltar:hover {
-    color: #08C746;
+.container form h2 {
+    font-size: 1.5rem;
+    padding: 1rem 0;
 }
 
 /* margin superior  */

@@ -1,11 +1,6 @@
-/* link voltar */
-.container .voltar {
-    color: #343434;
-}
-
-/* link voltar ao passar o mouse */
-.container .voltar:hover {
-    color: #08C746;
+.container form h2 {
+    font-size: 1.5rem;
+    padding: 1rem 0;
 }
 
 /* margin superior  */
@@ -45,7 +40,7 @@
 }
 
 /* select de gênero */
-.container .genero {
+.container .select {
     border: 1px solid #000000;
     border-radius: 3px;
     margin-top: 7px;
@@ -127,4 +122,31 @@ input[type="number"] {
     color: #C71308;
     width: 8rem;
     font-size: 1rem;
+}
+
+
+/* MEDIA QUERIES FORMULÁRIOS */
+
+
+@media (max-width: 850px) {
+    .container .campo-duplo {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .container .info-conta {
+        min-width: 100%;
+    }
+
+    /* termos de uso tela cadastro */
+    .container_cadastro .checkbox {
+        font-size: .8rem;
+        display: flex;
+    }
+
+    /* input type checkbox */
+    .container_cadastro .checkbox input {
+        margin-right: 1rem;
+    }
 }

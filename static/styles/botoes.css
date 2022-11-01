@@ -90,7 +90,7 @@
 
 /* botão cadastrar */
 .cadastrar {
-    margin: 2rem auto 0 auto;
+    margin: 3rem auto 0 auto;
 }
 
 /* botão editar */
@@ -156,4 +156,27 @@
 .encerrar_conta:hover {
     background-color: #810e08;
     transition: 0.3s all;;
+}
+
+/* link voltar */
+.voltar {
+    color: #343434;
+}
+
+/* link voltar ao passar o mouse */
+.voltar:hover {
+    color: #08C746;
+}
+
+
+/* MEDIA QUERIES BOTÕES */
+
+
+@media (max-width: 850px) {
+    /* botão cadastrar */
+    .container_cadastro .cadastrar {
+        width: 60%;
+        height: 3rem;
+        font-size: 1rem;
+    }
 }

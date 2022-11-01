@@ -20,30 +20,6 @@ body {
     display: flex;
 }
 
-/* fundo com título da página */
-.fundo {
-    background-image: linear-gradient(#1A20BD, #22D6C3);
-    height: 12rem;
-}
-
-.titulo {
-    width: 78%;
-    margin: 0 auto;
-}
-
-/* fundo título da página */
-.fundo h1 {
-    color: white;
-    font-size: 2.5rem;
-    font-weight: normal;
-    padding-top: 2rem;
-}
-
-hr {
-    margin-bottom: 2rem;
-    color: white;
-}
-
 /* container home */
 .container {
     width: 70%;
@@ -59,6 +35,8 @@ hr {
 
 .container_cadastro {
     margin-top: 2rem;
+    min-height: 80vh;
+    margin: 2rem auto 2rem auto;
 }
 
 /* título da página */
@@ -66,6 +44,11 @@ hr {
 .container h2 {
     font-weight: normal;
     font-size: 1.8rem;
+}
+
+/* parágrafo "Fique à vontade..." */
+.container p {
+    font-size: 1.3rem;
 }
 
 /* mensagens de erro */
@@ -121,4 +104,48 @@ footer {
     align-items: center;
     justify-content: center;
     font-size: 1em;
+}
+
+
+/* MEDIA QUERIES */
+
+
+@media (max-width: 900px) {
+    .container_cadastro {
+        width: 80%;
+        height: 100vh;
+    }
+}
+
+@media (max-width: 850px) {
+    /* container tela de cadastro */
+    .container_cadastro {
+        width: 90%;
+        height: 100%;
+        padding: 1.5rem;
+    }
+
+    /* título*/
+    .container_cadastro h1 {
+        font-size: 1.5rem;
+    }
+
+    /* tamanho da linha abaixo do título */
+    .container_cadastro hr {
+        width: 100%;
+    }
+
+    /* container demais telas */
+    .container {
+        width: 100%;
+        min-height: 75vh;
+    }
+
+    .container h2 {
+        font-size: 20px;
+    }
+
+    .container p {
+        font-size: 14px;
+    }
 }

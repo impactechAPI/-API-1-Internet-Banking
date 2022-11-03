@@ -350,7 +350,7 @@ def home():
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
-    return render_template("transferencia.html", titulo="Transferência")
+    return render_template("tela-abertura-de-conta.html")
 
 #Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])
@@ -645,26 +645,50 @@ def indexGerente():
             flash("Preencha todos os campos!")
             return redirect (url_for('indexGerente'))
 
+        x = len(numMatriculaGerente)
+        app.logger.info(x)
+
         try:
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT num_senha, gerente_id, gerente_nome, num_matricula, num_agencia FROM gerenteAgencia WHERE num_matricula = %s", [numMatriculaGerente])
-            retornoContaGerente = cur.fetchone()
-            senhaGravada = retornoContaGerente[0]
-            session['idGerente'] = retornoContaGerente[1]
-            session['nomeGerente'] = retornoContaGerente[2]
-            session['matriculaGerente'] = retornoContaGerente[3]
-            session['agenciaGerente'] = retornoContaGerente[4]
-            session['funcaoAdministrativa'] = "Gerente de Agência"
+            if len(numMatriculaGerente) == 5:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT nome, matriculaGerenteAgencia, agencia FROM cadastroGerente WHERE matriculaGerenteAgencia = %s", [numMatriculaGerente])
+                retornoContaGerente = cur.fetchone()
+                #senhaGravada = retornoContaGerente[0]
+                #session['idGerente'] = retornoContaGerente[1]
+                session['nome'] = retornoContaGerente[0]
+                session['matriculaGerente'] = retornoContaGerente[1]
+                session['agenciaGerente'] = retornoContaGerente[2]
+                session['funcaoAdministrativa'] = "Gerente de Agência"
+
+            else:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT num_senha, gerente_id, gerente_nome, num_matricula FROM gerenteGeral WHERE num_matricula = %s", [numMatriculaGerente])
+
+                retornoContaGerenteGeral = cur.fetchone()
+                app.logger.info(retornoContaGerenteGeral)
+
+                senhaGravada = retornoContaGerenteGeral[0]
+                session['idGerente'] = retornoContaGerenteGeral[1]
+                session['nomeGerente'] = retornoContaGerenteGeral[2]
+                session['matriculaGerente'] = retornoContaGerenteGeral[3]
+                session['funcaoAdministrativa'] = "Gerente Geral"
 
         except Exception as ex:
 
              flash("Conta não existe no sistema! Solicite o cadastro a um Gerente Geral para continuar.")
              return render_template("login_gerente.html", tituloNavegador="Bem-vindo!")
 
-        if senhaGerente == senhaGravada:
+        if session['funcaoAdministrativa'] == "Gerente de Agência": #and senhaGerente == senhaGravada:
             session.pop('gerenteLogado', None)
             session["gerenteLogado"] = True
             return redirect (url_for('homeGerente'))
+           
+
+        elif session['funcaoAdministrativa'] == "Gerente Geral" and senhaGerente == senhaGravada:
+            session.pop('gerenteLogado', None)
+            session["gerenteLogado"] = True
+            return redirect (url_for('homeGerenteGeral'))
+        
         else:
             flash("Senha incorreta!")
             return render_template("login_gerente.html", tituloNavegador="Bem-vindo!")
@@ -904,7 +928,7 @@ def confirmacaoDeposito():
         else:
             flash("Cancelamento de depósito feito com sucesso!")
         
-    return render_template("confirmacao_deposito.html", titulo="Solicitações", solicitacaoIdCadastro = solicitacaoIdCadastro)
+    return render_template("tela-confirmacao-deposito.html", titulo="Solicitações", solicitacaoIdCadastro = solicitacaoIdCadastro)
 
 @app.route("/confirmacao-abertura", methods = ["GET", "POST"])
 def confirmacaoAbertura():
@@ -941,7 +965,7 @@ def confirmacaoAbertura():
 
             flash("Cancelamento de abertura de conta feito com sucesso!")
 
-    return render_template("abertura_conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
+    return render_template("tela-abertura-conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
 
 @app.route("/editar-gerentes", methods=["GET", "POST"])
 def editarGerentes():
@@ -1030,23 +1054,64 @@ def infoGerente():
 
 @app.route("/home-gerente-geral", methods=["GET", "POST"])
 def homeGerenteGeral():
+    if session["gerenteLogado"] == False:
+        return redirect (url_for("indexGerenteGeral"))
     return render_template("home_gg.html")
 
-@app.route("/nova-agencia", methods=["GET", "POST"])
-def novaAgencia():
-    return render_template("nova_agencia.html", titulo="Nova Agência")
+@app.route("/cadastroGerente", methods=["GET", "POST"])
+def CadastroGerente():
+    senhaGerenteAgencia=123
+    
+    #Configurando a aquisicão das variaveis do formulario em HTML pelo request em Python (metódo POST)
+    if request.method == "POST":
+        userDetails = request.form
+        name = userDetails["nome"]
+        cpf = userDetails["cpf"]
+        dataAniversario = userDetails["dataAniversario"]
+        genero = userDetails["genero"]
+        endereco = userDetails["endereco"]
+        cargo = userDetails ["funcao"]
+        agencia = userDetails ["agencia"]
+        #cur.close()
+        #cadastro = True
+        numero = []
+        for i in range(1, 6):
+            numero.append(random.randint(0, 9))
+        matriculaGerenteAgencia="".join(map(str,numero))
+        session.pop("horaSistema", None)
+        session["horaSistema"] = dataAgora()
+        #Salvando dados no BD e finalizando operação
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO cadastroGerente (nome, cpf, dataAniversario, genero, endereco, cargo, agencia,matriculaGerenteAgencia,senhaGerenteAgencia) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, cpf, dataAniversario, genero, endereco,cargo, agencia,matriculaGerenteAgencia,senhaGerenteAgencia))
+        mysql.connection.commit()
 
-@app.route("/novo-gerente", methods=["GET", "POST"])
-def novoGerente():
-    return render_template("novo_gerente.html", titulo="Novo Gerente")
+        cur.close()
+        cadastro = True
+    return render_template("cadastroGerente.html")
 
-@app.route("/solicitacao-encerramento", methods=["GET", "POST"])
-def encerramentoConta():
-    return render_template("encerramento_conta.html", titulo="Solicitações")
+@app.route("/cadastroAgencia", methods=["GET", "POST"])
+def CadastroAgencia():
+    
+    
 
-@app.route("/solicitacao-alterar-dados", methods=["GET", "POST"])
-def solicitacaoAlterarDados():
-    return render_template("solicitacao_alterar_dados.html", titulo="Solicitações")
+    if request.method == "POST":
+
+        userDetails = request.form
+        nomeGerente = userDetails["nome"]
+        endereco = userDetails["endereco"] 
+        numAgencia = userDetails["agencia"]
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO cadastroAgencia (nome, endereco, agencia) VALUES(%s, %s, %s)",(nomeGerente, endereco,numAgencia))
+        mysql.connection.commit()
+
+        cur.close()
+        cadastro = True
+    return render_template("cadastroAgencia.html")
+
+       
+
+
+
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

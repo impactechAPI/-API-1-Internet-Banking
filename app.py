@@ -350,7 +350,7 @@ def home():
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
-    return render_template("transferencia.html", titulo="Transferência")
+    return render_template("novo_gerente.html", titulo="Transferência")
 
 #Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])
@@ -1023,6 +1023,10 @@ def editarAgencia():
 @app.route("/gerentes", methods=["GET", "POST"])
 def gerentes():
     return render_template("gerentes.html", titulo="Gerentes")
+
+@app.route("/agencias", methods=["GET", "POST"])
+def agencias():
+    return render_template("agencias.html", titulo="Agências")
 
 @app.route("/informacoes-gerente", methods=["GET", "POST"])
 def infoGerente():

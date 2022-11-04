@@ -14,17 +14,17 @@
         <div class="campo-triplo">
             <div class="info-conta">
                 <label>CPF (Apenas números)</label>
-                <input type="text" maxlength="11" name="cpf" value="{{ session['cpfUsuario'] }}" disabled>
+                <input type="text" maxlength="11" name="cpf" value="{{ session[''] }}" disabled>
             </div>
 
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <input type="date" name="dataAniversario" value="{{ session['dataAniversario'] }}" disabled>
+                <input type="date" name="dataAniversario" value="{{ session[''] }}" disabled>
             </div>
 
             <div class="info-conta">
                 <label>Gênero</label>
-                <select name="genero" id="genero" class="genero" aria-selected="{{ session['generoUsuario'] }}"
+                <select name="genero" id="genero" class="select" aria-selected="{{ session['generoUsuario'] }}"
                     disabled>
                     <option value="selecione" disabled>Selecione</option>
                     <option value="feminino">Feminino</option>
@@ -37,7 +37,7 @@
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Endereço</label>
-                <input type="text" name="endereco" value="{{ session['enderecoUsuario'] }}" disabled>
+                <input type="text" name="endereco" value="{{ session[''] }}" disabled>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
 
             <div class="info-conta">
                 <label>Saldo disponível</label>
-                <input name="saldoUsuario" value="{{ session['saldoBancarioUsuario'] }}" disabled>
+                <input name="saldoUsuario" value="{{ session['saldoUsuario'] }}" disabled>
             </div>
         </div>
 
@@ -71,12 +71,10 @@
             <label class="titulo"><span>Tem</span> certeza que deseja encerrar sua conta?</label>
             <div class="alerta">
                 <img src="../static/icones/alert.png" alt="alert">
-                <label>ATENÇÃO! Uma solicitação de encerramento será enviada ao gerente de sua agência, após confirmada, sua
+                <label>Uma solicitação de encerramento será enviada ao gerente de sua agência, após confirmada, sua
                 conta será excluída permanentemente.</label>
             </div>
-            <form method="post" action="">
-                <input type="submit" name="encerrarConta" class="encerrar_conta" value="Encerrar conta">
-            </form>
+            <input type="submit" name="encerrarConta" class="encerrar_conta" value="Encerrar conta">
         </span>
         <button onclick="encerrar()" id="btn_encerrar">Encerrar Conta</button>
     </aside>

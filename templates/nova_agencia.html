@@ -1,47 +1,44 @@
-{% extends "base-gg.html" %}
+{% extends "base_gg.html" %}
 
 {% block contents %}
 
-<main>
-    
-    <form method="post">
-        <div class="container">
-            <a href="{{ url_for('agencias') }}" class="voltar">&lt voltar</a>
-            <section class="solicitacao">
-                <h2>Nova Agência</h2>
-                <div class="campo-unico">
-                    <label class="info-conta">Número<br>
-                        <input type="number" name="numeroAgencia">
-                    </label>
-                </div>
+<form method="post">
+    <div class="container">
+        <a href="{{ url_for('agencias') }}" class="voltar">&lt voltar</a>
+        <section class="solicitacao">
+            <h2>Nova Agência</h2>
+            <div class="campo-unico">
+                <label class="info-conta">Número<br>
+                    <input type="number" name="numeroAgencia">
+                </label>
+            </div>
 
-                <div class="campo-unico">
-                    <label class="info-conta">Gerente<br>
-                        <input type="text" name="nome">
-                    </label>
-                </div>
+            <div class="campo-unico">
+                <label class="info-conta">Gerente<br>
+                    <input type="text" name="nome">
+                </label>
+            </div>
 
-                <div class="campo-unico">
-                    <label class="info-conta">Endereço<br>
-                        <input type="text" class="linha-inteira" name="endereco">
-                    </label>
-                </div>
+            <div class="campo-unico">
+                <label class="info-conta">Endereço<br>
+                    <input type="text" class="linha-inteira" name="endereco">
+                </label>
+            </div>
 
-                <section class="botoes">
-                    <input type="submit" name="cadastrar" class="cadastrar" value="Cadastrar">
-                </section>
+            <section class="botoes">
+                <input type="submit" name="cadastrar" class="cadastrar" value="Cadastrar">
+            </section>
 
-        </div>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <div class="error">{{ message }}</div>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
-    </form>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <div class="error">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</form>
 
-</main>
 {% endblock %}

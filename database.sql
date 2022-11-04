@@ -1,20 +1,20 @@
 create database flaskapp;
-use flaskapp;
 
-CREATE TABLE `flaskapp`.`users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(40) NOT NULL,
-  `cpf` VARCHAR(11) NOT NULL,
-  `dataAniversario` TEXT(6) NOT NULL,
-  `genero` VARCHAR(30) NOT NULL,
-  `endereco` VARCHAR(150) NOT NULL,
-  `senha` VARCHAR(180) NOT NULL,
-  `confirmacaoSenha` VARCHAR(180) NOT NULL,
-  `contaBancaria` VARCHAR(9) NULL,
-  `agenciaBancaria` VARCHAR(4) NULL,
-  `saldoBancario` DECIMAL(19,2) NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `contaBancaria_UNIQUE` (`contaBancaria` ASC) VISIBLE);
+USE flaskapp;
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(40),
+  cpf VARCHAR(11),
+  dataAniversario TEXT(6),
+  genero VARCHAR(30),
+  endereco VARCHAR(150),
+  senha VARCHAR(180),
+  confirmacaoSenha VARCHAR(180),
+  contaBancaria VARCHAR(9),
+  agenciaBancaria VARCHAR(4),
+  saldoBancario DECIMAL(19,2),
+  UNIQUE INDEX contaBancaria_UNIQUE (contaBancaria ASC));
 
 create table movimentacaoConta
 (gasto_id int primary key auto_increment,
@@ -64,6 +64,10 @@ foreign key(solicitacao_id) references gerenciamentoUsuarios (solicitacao_id));
 CREATE TABLE gerenteAgencia (
   gerente_id INT NOT NULL AUTO_INCREMENT,
   gerente_nome VARCHAR(45) NOT NULL,
+  gerente_cpf VARCHAR(11) NOT NULL,
+  gerente_nasc TEXT(6) NOT NULL,
+  gerente_genero VARCHAR(30) NOT NULL,
+  gerente_end VARCHAR(150) NOT NULL,
   num_matricula VARCHAR(5) NOT NULL,
   num_agencia text(10) NOT NULL,
   num_senha VARCHAR(180) NOT NULL,
@@ -73,10 +77,29 @@ CREATE TABLE gerenteAgencia (
 INSERT INTO gerenteAgencia (
 gerente_id,
 gerente_nome,
+gerente_cpf,
+gerente_nasc,
+gerente_genero,
+gerente_end,
 num_matricula,
 num_agencia,
 num_senha)
-VALUES (4,'Gerente Agencia 2', 33333, '0001', 123);
+VALUES (1, 'Marcia', 12345678910, 1996-02-19, 'masculino', 'rua teste', 55555, 0001, 123);
+
+CREATE TABLE agencias (
+  agencia_id INT PRIMARY KEY AUTO_INCREMENT,
+  numero_agencia VARCHAR(5),
+  numero_clientes VARCHAR(3),
+  nome_gerente VARCHAR (50),
+  end_agencia VARCHAR (150));
+
+INSERT INTO agencias (
+agencia_id,
+numero_agencia,
+numero_clientes,
+nome_gerente,
+end_agencia)
+VALUES (0, 1111, 99, "Joao", "rua da agencia, 777");
 
 CREATE TABLE gerenteGeral (
   GG_id INT NOT NULL primary key AUTO_INCREMENT,
@@ -97,3 +120,13 @@ select * from confirmacaoDeposito;
 select * from confirmacaoAbertura;
 select * from gerenteAgencia;
 select * from gerenteGeral;
+select * from agencias;
+
+drop table agencias;
+drop table gerenteGeral;
+drop table gerenteAgencia;
+drop table confirmacaoAbertura;
+drop table confirmacaoDeposito;
+drop table gerenciamentoUsuarios;
+drop table movimentacaoConta;
+drop table users;

@@ -36,7 +36,12 @@
             </div>
         </div>
 
-        <div class="campo-duplo">
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF (Apenas números)</label>
+                <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+            </div>
+
             <div class="info-conta">
                 <label>Data de nascimento</label>
                 <input type="date" class="data" name="dataAniversario">
@@ -44,7 +49,7 @@
 
             <div class="info-conta">
                 <label>Gênero</label>
-                <select name="genero" id="genero" class="select">
+                <select name="genero" id="genero" class="genero">
                     <option value="selecione" disabled>Selecione</option>
                     <option value="feminino">Feminino</option>
                     <option value="masculino">Masculino</option>
@@ -53,22 +58,6 @@
             </div>
         </div>
 
-        <div class="campo-duplo">
-            <div class="info-conta">
-                <label>CPF</label>
-                <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
-            </div>
-
-            <div class="info-conta">
-                <label>Tipo de conta</label>
-                <select name="tipoConta" id="tipoConta" class="select">
-                    <option value="selecione" disabled>Selecione</option>
-                    <option value="poupanca">Poupança</option>
-                    <option value="conta _corrente">Conta Corrente</option>
-                </select>
-            </div>
-        </div>
-        
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Endereço</label>
@@ -88,9 +77,8 @@
         </div>
 
         <label class="checkbox">
-            <input type="checkbox" name="consentimentoUsuario"> 
-            <span>Li e estou de acordo com os <a href="">Termos de Uso</a>
-            e <a href="">Política de Privacidade</a>.</span>
+            <input type="checkbox" name="consentimentoUsuario"> Li e estou de acordo com os <a href="">Termos de Uso</a>
+            e <a href="">Política de Privacidade</a>.
         </label>
        
         <input type="submit" class="cadastrar" value="Cadastrar">

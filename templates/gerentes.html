@@ -1,4 +1,4 @@
-{% extends "base-gerente-geral.html" %}
+{% extends "base_gg.html" %}
 
 {% block contents %}
 <main>
@@ -7,8 +7,9 @@
     <section class="container">
         <div class="filtros">
             <input type="text" placeholder="Nome" nome="nomeGerente" class="nome">
-            <div>
-                <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
+            <div class="pesquisar_nome">
+                <img src="../static/icones/lupa.png" alt="lupa" class="lupa">
+                <input type="submit" class="btn_pesquisar" value="" name="pesquisar">
             </div>
         </div>
 

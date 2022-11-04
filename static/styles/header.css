@@ -17,7 +17,7 @@
 /* fundo título da página */
 .fundo h1 {
     color: white;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: normal;
     padding-top: 2rem;
 }
@@ -34,10 +34,6 @@ hr {
     color: white;
     margin: .5rem auto 2rem auto;
     width: 100%;    
-}
-
-.fundo-home hr {
-    width: 75%;
 }
 
 /* navbar */
@@ -64,27 +60,36 @@ hr {
     color: aliceblue;
 }
 
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
 /* título "Olá, Cliente" */
 .info h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: normal;
 }
 
 /* info agência e conta */
-.info label {
+.info span {
     display: flex;
 }
 
 /* título "Saldo disponível" */
-.info h2 {
-    font-weight: normal;
+.info .saldo_disponivel {
+    font-size: 1.2rem
 }
 
 /* valor do saldo em R$ */
-.info span {
+.info .saldo {
     display: flex;
     justify-content: right;
-    font-size: 2rem;
+    font-size: 1.5rem;
+}
+
+.fundo-home hr {
+    width: 75%;
 }
 
 
@@ -97,7 +102,7 @@ hr {
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    height: 60px;
+    height: 50px;
     right: 0;
     width: 100%;
 }
@@ -117,7 +122,7 @@ hr {
 
 /* espaçamento entre links */
 .body_index header a {
-    padding: 18px;
+    padding: 13px;
     color: #343434;
 }
 
@@ -125,6 +130,7 @@ hr {
 .body_index header .cliente:hover,
 .body_index header .gerente:hover {
     background-color: #08C746;
+    color: white;
     transition: all .5s ease; /* ease: começo e fim lentos */
 }
 

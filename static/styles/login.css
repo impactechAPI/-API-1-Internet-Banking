@@ -36,9 +36,12 @@
     width: 100%;
     font-size: 1.3rem;
     color: aliceblue;
-    margin-top: 1.5rem;
     text-align: center;
     margin: auto 0;
+}
+
+.login_cliente .abra_conta .titulo {
+    margin-top: 1rem;
 }
 
 /* imagem de capa */

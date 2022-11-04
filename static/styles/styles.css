@@ -43,12 +43,12 @@ body {
 .container h1, 
 .container h2 {
     font-weight: normal;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 /* parágrafo "Fique à vontade..." */
 .container p {
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 /* mensagens de erro */
@@ -73,19 +73,19 @@ body {
 .div_encerrar_conta .alerta {
     display: flex;
     align-items: center;
-
-}
-
-.div_encerrar_conta .alerta label {
     background-color: #FFFDC5;
     padding: .5rem;
     border-radius: 3px;
-    margin: .5rem 0 1rem 1rem;
+    margin: .5rem 0;
 }
 
 /* ícone de alerta */
-.div_encerrar_conta .alert {
-    float: left;
+.div_encerrar_conta .alerta img {
+    margin-right: 1rem;
+}
+
+.div_encerrar_conta .alerta label {
+    margin: auto 0;
 }
 
 
@@ -99,7 +99,7 @@ footer {
     background-color: #343434;
     color: white;
     width: 100%;
-    height: 8vh;
+    height: 10vh;
     display: flex;
     align-items: center;
     justify-content: center;

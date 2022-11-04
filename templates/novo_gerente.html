@@ -1,62 +1,65 @@
-{% extends "base_gg.html" %}
+{% extends "base-gg.html" %}
 
 {% block contents %}
 
-<form method="post">
-    <div class="container">
-        <a href="{{ url_for('gerentes') }}" class="voltar">&lt voltar</a>
-        <section class="solicitacao">
-            <h2>Novo Gerente</h2>
-            <div class="campo-unico">
-                <div class="info-conta">
-                    <label>Nome</label>
-                    <input type="text" name="nome" placeholder="Informe seu nome">
+<main>
+    
+    <form method="post">
+        <div class="container">
+            <a href="{{ url_for('gerentes') }}" class="voltar">&lt voltar</a>
+            <section class="solicitacao">
+                <h2>Novo Gerente</h2>
+                <div class="campo-unico">
+                    <div class="info-conta">
+                        <label>Nome</label>
+                        <input type="text" name="nome" placeholder="Informe seu nome">
+                    </div>
                 </div>
-            </div>
-
-            <div class="campo-triplo">
-                <div class="info-conta">
-                    <label>CPF (Apenas números)</label>
-                    <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+        
+                <div class="campo-triplo">
+                    <div class="info-conta">
+                        <label>CPF (Apenas números)</label>
+                        <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+                    </div>
+        
+                    <div class="info-conta">
+                        <label>Data de nascimento</label>
+                        <input type="date" class="data" name="dataAniversario">
+                    </div>
+        
+                    <div class="info-conta">
+                        <label>Gênero</label>
+                        <select name="genero" id="genero" class="genero">
+                            <option value="selecione" disabled>Selecione</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
                 </div>
-
-                <div class="info-conta">
-                    <label>Data de nascimento</label>
-                    <input type="date" class="data" name="dataAniversario">
+        
+                <div class="campo-unico">
+                    <div class="info-conta">
+                        <label>Endereço</label>
+                        <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
+                    </div>
                 </div>
+        
+                <div class="campo-duplo">
+                    <div class="info-conta">
+                        <label>Função</label>
+                        <input type="text" name="funcaoGerente" disabled>
+                    </div>
 
-                <div class="info-conta">
-                    <label>Gênero</label>
-                    <select name="genero" id="genero" class="genero">
-                        <option value="selecione" disabled>Selecione</option>
-                        <option value="feminino">Feminino</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="outro">Outro</option>
-                    </select>
+                    <div class="info-conta">
+                        <label>Agência</label>
+                        <input type="number" name="numeroAgencia">
+                    </div>
                 </div>
-            </div>
+               
+                <input type="submit" class="cadastrar" value="Cadastrar">
+        </div>
+    </form>
 
-            <div class="campo-unico">
-                <div class="info-conta">
-                    <label>Endereço</label>
-                    <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
-                </div>
-            </div>
-
-            <div class="campo-duplo">
-                <div class="info-conta">
-                    <label>Função</label>
-                    <input type="text" name="funcaoGerente" disabled>
-                </div>
-
-                <div class="info-conta">
-                    <label>Agência</label>
-                    <input type="number" name="numeroAgencia">
-                </div>
-            </div>
-
-            <input type="submit" class="cadastrar" value="Cadastrar">
-    </div>
-</form>
-
+</main>
 {% endblock %}

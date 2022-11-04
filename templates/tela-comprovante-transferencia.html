@@ -1,4 +1,4 @@
-     {% extends "base-cliente.html" %}
+{% extends "base-cliente.html" %}
 
 {% block contents %}
 
@@ -11,16 +11,17 @@
             <div class="linha">
                 <span></span>
             </div>
-            <h3>COMPROVANTE DE <span>{{ session["tipoSolicitacao"] }}</span></h3>
+            <h3>COMPROVANTE DE TRANSFERÊNCIA</h3>
         </section>
         <section>
             <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
             <h4>AGÊNCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
             <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
-            <h4>VALOR <span>{{ session["tipoSolicitacao"] }}</span>: {{ session["valorDeposito"] }}</h4>
-            <h4>SALDO DISPONÍVEL: {{ session['saldoUsuarioAntes'] }}</h4>
-            <h4>SALDO FINAL: {{ session["saldoFinalConfirmacao"] }}</h4>
-            <h5>* Valor sujeito a conferência.</h5>
+            <h4>VALOR DA TRANSFERÊNCIA: {{ session["valorTransferencia"] }}</h4>
+            <h4>CONTA DESTINO: <span>{{ session["numeroContaTransferencia"] }}</span></h4>
+            <h4>AGENCIA DESTINO: <span>{{ session["numeroAgenciaTransferencia"] }}</span></h4>
+            <h4>SALDO DISPONÍVEL: {{ session["saldoUsuarioAntesEnvio"] }}</h4>
+            <h4>SALDO FINAL: {{ session["saldoFinalEnvio"] }}</h4>
             <div class="linha">
                 <span></span>
             </div>

@@ -350,7 +350,89 @@ def home():
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
 @app.route("/transferencia", methods=["GET", "POST"])
 def transferencia():
-    return render_template("tela-abertura-de-conta.html")
+
+    if session["usuarioLogado"] == False:
+        return redirect (url_for("indexHome"))
+
+    if request.method == "POST":
+
+        userDetails = request.form
+
+        valorTransferencia = userDetails["valorTransferencia"]
+        session["valorTransferencia"] = valorTransferencia
+
+        numeroContaTransferencia = userDetails["numeroConta"]
+        session["numeroContaTransferencia"] = numeroContaTransferencia
+
+        numeroAgenciaTransferencia = userDetails["numeroAgencia"]
+        session["numeroAgenciaTransferencia"] = numeroAgenciaTransferencia
+
+        tipoSolicitacaoEnviada = "Transferência enviada para a conta: " + str(session["numeroContaTransferencia"])   
+        tipoSolicitacaoRecebida = "Transferência recebida da conta: " + str(session["contaUsuario"]) 
+
+        app.logger.info(tipoSolicitacaoEnviada)
+        app.logger.info(tipoSolicitacaoRecebida)
+
+        session["tipoSolicitacaoEnviada"] = tipoSolicitacaoEnviada
+        session["tipoSolicitacaoRecebida"] = tipoSolicitacaoRecebida
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session['contaUsuario']])
+        saldoAtualEnvio = cur.fetchone()
+        saldoAtualEnvio = saldoAtualEnvio[0]
+        session["saldoUsuarioAntesEnvio"] = saldoAtualEnvio
+
+        cur.execute("SELECT saldoBancario, user_id FROM users WHERE contaBancaria = %s", [session['numeroContaTransferencia']])
+        retornoDadosContaRecebido = cur.fetchone()
+        saldoAtualRecebido = retornoDadosContaRecebido[0]
+        session["saldoUsuarioAntesRecebido"] = saldoAtualRecebido
+        idUsuarioRecebido = retornoDadosContaRecebido[1]
+        session["idUsuarioRecebido"] = idUsuarioRecebido
+
+        if valorTransferencia and float(valorTransferencia) > 0:
+            #Atualizacao da hora do sistema
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
+            session.pop("horaSistemaComprovante", None)
+            session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+            #Atualização valores de quem ENVIOU 
+            saldoFinalEnvio = float(saldoAtualEnvio) - float(valorTransferencia)
+            session["saldoFinalEnvio"] = saldoFinalEnvio
+
+            cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinalEnvio], session['idUsuario']))
+            cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacaoEnviada], [valorTransferencia], session['idUsuario']))
+            mysql.connection.commit()
+            cur.close()
+
+            #Atualização valores de quem RECEBEU
+            saldoFinalRecebido = float(saldoAtualRecebido) + float(valorTransferencia)
+            session["saldoFinalRecebido"] = saldoFinalRecebido
+            
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinalRecebido], session['idUsuarioRecebido']))
+            cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacaoRecebida], [valorTransferencia], session['idUsuarioRecebido']))
+            mysql.connection.commit()
+            cur.close()
+
+            flash("Transferência realizada com sucesso! Para ver seu comprovante clique ")
+        else:
+            if not valorTransferencia:
+                flash("Digite um valor para transferência!")
+                return redirect (url_for("transferencia"))
+            elif not numeroAgenciaTransferencia or not numeroContaTransferencia:
+                flash("Digite uma conta e agência para transferir")
+                return redirect (url_for("transferencia"))
+            else:
+                flash("Apenas transferências positivas e acima de R$ 0,00 são permitidas!")
+                return redirect (url_for("transferencia"))
+
+        #session.pop remove os dados de 'saldoUsuario'. Em seguida pedi para que o saldo final sofresse uma formatação e ficasse com duas casas após a vírgula. depois renovei o session 'saldoUsuario' para pegar o saldo formatado. Precisei excluir e pegar novamente para atualizar o cache.
+        session.pop('saldoUsuario', None)
+        saldoFormatado = '{0:.2f}'.format(saldoAtualEnvio)
+        session['saldoUsuario'] = saldoFormatado.replace('.',',')
+        return redirect (url_for('transferencia'))
+    return render_template("transferencia.html", titulo="Transferência")
 
 #Rota da página Extrato
 @app.route("/extrato", methods=["GET", "POST"])
@@ -1047,6 +1129,10 @@ def editarAgencia():
 @app.route("/gerentes", methods=["GET", "POST"])
 def gerentes():
     return render_template("gerentes.html", titulo="Gerentes")
+
+@app.route("/agencias", methods=["GET", "POST"])
+def agencias():
+    return render_template("agencias.html", titulo="Agências")
 
 @app.route("/informacoes-gerente", methods=["GET", "POST"])
 def infoGerente():

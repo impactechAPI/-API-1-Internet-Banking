@@ -10,15 +10,15 @@
         <div class="info-usuario">
             <div class="info">
                 <h1>Olá, {{ session['nomeUsuario'] }}</h1>
-                <span>Agência: {{ session['agenciaUsuario'] }}</span>
-                <span>Conta: {{ session['contaUsuario'] }}</span>
+                <label>Agência: {{ session['agenciaUsuario'] }}</label>
+                <label>Conta: {{ session['contaUsuario'] }}</label>
             </div>
             <div class="info">
-                <span class="saldo_disponivel">Saldo disponível</span>
-                <span class="saldo">R$ {{ session['saldoUsuario'] }}</span>
+                <h2>Saldo disponível</h2>
+                <span>R$ {{ session['saldoUsuario'] }}</span>
             </div>
         </div>
-        <hr>
+        <hr class="hr">
     </section>
 
     <!-- home -->

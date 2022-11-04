@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
+from numpy import require
 from werkzeug.security import generate_password_hash, check_password_hash
 import yaml
 import random
@@ -86,6 +87,9 @@ def indexHome():
                 return redirect (url_for('indexHome'))
             elif statusSolicitacao == "Confirmada":
                 return redirect (url_for('home'))
+            elif statusSolicitacao == "Fechada":
+                flash("Sua conta bancária foi apagada conforme requesitado!")
+                return redirect (url_for('indexHome'))
             else:
                 flash("Infelizmente, algo não saiu como esperado em seu cadastro. Não se preocupe, tente novamente se atentando ao registro de seus dados, nós faremos outra avaliação para você!")
                 return redirect (url_for('indexHome'))
@@ -245,6 +249,8 @@ def deposito():
 
             session.pop("horaSistema", None)
             session["horaSistema"] = dataAgora()
+            session.pop("horaSistemaComprovante", None)
+            session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
             cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
 
@@ -252,6 +258,8 @@ def deposito():
 
             cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"]))
             mysql.connection.commit()
+
+            app.logger.info(session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"])
 
             cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
             retornoSolicitacaoId = cur.fetchone()
@@ -264,8 +272,12 @@ def deposito():
 
             flash("Depósito realizado. Aguarde a confirmação do depósito pelo Gerente de sua agência! Para ver seu comprovante clique ")
         else:
-            flash("Apenas depósitos positivos e acima de R$ 0,00 são permitidos!")
-            return redirect (url_for("deposito"))
+            if not valorDeposito:
+                flash("Digite um valor para depositar")
+                return redirect (url_for("deposito"))
+            else:
+                flash("Apenas depósitos positivos e acima de R$ 0,00 são permitidos!")
+                return redirect (url_for("deposito"))
 
         #session.pop remove os dados de 'saldoUsuario'. Em seguida pedi para que o saldo final sofresse uma formatação e ficasse com duas casas após a vírgula. depois renovei o session 'saldoUsuario' para pegar o saldo formatado. Precisei excluir e pegar novamente para atualizar o cache.
         session.pop('saldoUsuario', None)
@@ -305,6 +317,9 @@ def saque():
             
             session.pop("horaSistema", None)
             session["horaSistema"] = dataAgora()
+            session.pop("horaSistemaComprovante", None)
+            session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
             cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoMovimentacao], [valorSaque], session['idUsuario']))
             mysql.connection.commit()
@@ -327,8 +342,11 @@ def saque():
 
 @app.route("/comprovante", methods=["GET", "POST"])
 def comprovante():
-
     return render_template("tela-comprovante.html", titulo="Comprovante")
+
+@app.route("/comprovante-transferencia", methods=["GET", "POST"])
+def comprovanteTransferencia():
+    return render_template("tela-comprovante-transferencia.html", titulo="Comprovante")
 
 #Rota para logout. Se o usuário clicar em sair nas páginas da Home, sua sessão é limpa, apagando todos os dados do cache do navegador. Ele é redirecionado à tela de Login e uma mensagem aparece informando que o Usuário foi deslogado.
 @app.route("/logout", methods=["GET","POST"])
@@ -699,17 +717,58 @@ def extrato():
 
             return render_template("tela-extrato.html", titulo="Extrato", tabelas=[tabelaMovimentacao.to_html(index=False)], titulos=tabelaMovimentacao.columns.values)
 
+#Teoricamente funcionaria, mas não se pode apagar uma tabela com chave estrangeira!
 @app.route("/meus-dados", methods=["GET", "POST"])
 def meusDados():
+    if request.method == "POST":
+        if "encerrarConta" in request.form:
+            tipoSolicitacao = "Fechamento"
+            solicitacaoEncerramento = "Pendente"
+
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
+
+            cur = mysql.connection.cursor()
+
+            cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
+
+            ultimaTransacao = 1
+
+            cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"]))
+            mysql.connection.commit()
+
+            cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
+            retornoFechamentoId = cur.fetchone()
+            fechamentoId = retornoFechamentoId[0]
+
+            cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
+            dadosUsuario = cur.fetchone()
+            session["nomeUsuario"] = dadosUsuario[0]
+            session["cpfUsuario"] = dadosUsuario[1]
+            session["dataAniversario"] = dadosUsuario[2]
+            session["generoUsuario"] = dadosUsuario[3]
+            session["enderecoUsuario"] = dadosUsuario[4]
+            session["contaBancariaUsuario"] = dadosUsuario[5]
+            session["agenciaBancariaUsuario"] = dadosUsuario[6]
+            session["saldoBancarioUsuario"] = dadosUsuario[7] 
+
+            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["cpfUsuario"], session["dataAniversario"], session["generoUsuario"], session["enderecoUsuario"], session["contaBancariaUsuario"] , session["agenciaBancariaUsuario"], session["idUsuario"], [solicitacaoEncerramento], [fechamentoId]))
+            mysql.connection.commit()
+            cur.close()
+
+            """ flash("Sua conta foi cancelada com sucesso! Agradecemos sua companhia, esperamos você de volta!") """
+            return redirect(url_for("meusDados"))
+        else:
+            return redirect(url_for("meusDados"))
     return render_template("meus_dados.html", titulo="Meus Dados")
 
 @app.route("/alterar-dados", methods=["GET", "POST"])
 def alterarDados():
     return render_template("alterar_dados.html", titulo="Alterar Dados")
 
-@app.route("/encerrar-conta", methods=["GET", "POST"])
+""" @app.route("/encerrar-conta", methods=["GET", "POST"])
 def encerrarConta():
-    return
+    return """
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():
@@ -744,7 +803,7 @@ def indexGerente():
 
             else:
                 cur = mysql.connection.cursor()
-                cur.execute("SELECT num_senha, gerente_id, gerente_nome, num_matricula FROM gerenteGeral WHERE num_matricula = %s", [numMatriculaGerente])
+                cur.execute("SELECT GG_num_senha, GG_id, GG_nome, GG_num_matricula FROM gerenteGeral WHERE GG_num_matricula = %s", [numMatriculaGerente])
 
                 retornoContaGerenteGeral = cur.fetchone()
                 app.logger.info(retornoContaGerenteGeral)
@@ -785,11 +844,27 @@ def homeGerente():
 
 @app.route("/clientes", methods=["GET", "POST"])
 def clientes():
-    if session["gerenteLogado"] == False:
-        return redirect (url_for("indexGerente"))
+    """ if session["gerenteLogado"] == False:
+        return redirect (url_for("indexGerente")) """
         
     if request.method == "POST":
         nomeUsuario = request.form.get("nomeCliente")
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT nome, abertura_id FROM confirmacaoAbertura where nome = %s and statusSolicitacao = 'Confirmada'", ([nomeUsuario]))
+
+        usuarioSolicitacao = []
+        aberturaId = []
+
+        for i in cur:
+            usuarioSolicitacao.append(i[0])
+            aberturaId.append(i[1])
+
+        app.logger.info(aberturaId)
+
+        colunas = ("Cliente", "Visualizar")
+        dados = list(zip(usuarioSolicitacao, aberturaId))
+
+        return render_template("tela-clientes.html", titulo="Clientes", colunas = colunas, dados = dados)
     else:
         cur = mysql.connection.cursor()
         cur.execute("SELECT nome, abertura_id FROM confirmacaoAbertura where statusSolicitacao = 'Confirmada'")
@@ -801,11 +876,12 @@ def clientes():
             usuarioSolicitacao.append(i[0])
             aberturaId.append(i[1])
 
+        app.logger.info(aberturaId)
+
         colunas = ("Cliente", "Visualizar")
         dados = list(zip(usuarioSolicitacao, aberturaId))
 
         return render_template("tela-clientes.html", titulo="Clientes", colunas = colunas, dados = dados)
-    return render_template("tela-clientes.html", titulo="Clientes")
 
 @app.route("/informacoes-cliente", methods=["GET", "POST"])
 def infoCliente():
@@ -821,16 +897,16 @@ def infoCliente():
     session["dataClientela"] = dataClientelaRetorno[0]
 
     cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", ([idUsuario]))
-    dadosUsuarioCadastro = cur.fetchone()
+    dadosUsuarioFechamento = cur.fetchone()
 
-    session["nomeUsuarioCadastro"] = dadosUsuarioCadastro[0]
-    session["cpfUsuarioCadastro"] = dadosUsuarioCadastro[1]
-    session["dataAniversarioCadastro"] = dadosUsuarioCadastro[2]
-    session["generoCadastro"] = dadosUsuarioCadastro[3]
-    session["enderecoCadastro"] = dadosUsuarioCadastro[4]
-    session["contaBancariaCadastro"] = dadosUsuarioCadastro[5]
-    session["agenciaBancariaCadastro"] = dadosUsuarioCadastro[6]
-    session["saldoBancarioCadastro"] = dadosUsuarioCadastro[7]
+    session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[0]
+    session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[1]
+    session["dataAniversarioCadastro"] = dadosUsuarioFechamento[2]
+    session["generoCadastro"] = dadosUsuarioFechamento[3]
+    session["enderecoCadastro"] = dadosUsuarioFechamento[4]
+    session["contaBancariaCadastro"] = dadosUsuarioFechamento[5]
+    session["agenciaBancariaCadastro"] = dadosUsuarioFechamento[6]
+    session["saldoBancarioCadastro"] = dadosUsuarioFechamento[7]
 
     return render_template("tela-info-cliente.html", titulo="Cliente", idCliente = idCliente)
 
@@ -847,17 +923,20 @@ def gerenciar():
         dataSolicitacaoInicial = dataSolicitacaoInicial[-2:] + dataSolicitacaoInicial[4:8] + dataSolicitacaoInicial[0:4]
         dataSolicitacaoInicial = dataSolicitacaoInicial.replace("-","/")
         session["dataSolicitacaoInicialCache"] = dataSolicitacaoInicial
+
         #O type date do HTML retorna o form do usuario no formato YYYY-MM-DD, foi preciso alterar "-" por "/" e "ano" por "dia"
         dataSolicitacaoLimite = request.form.get("data-limite")
         dataSolicitacaoLimite = dataSolicitacaoLimite[-2:] + dataSolicitacaoLimite[4:8] + dataSolicitacaoLimite[0:4]
         dataSolicitacaoLimite = dataSolicitacaoLimite.replace("-","/")
         session["dataSolicitacaoLimiteCache"] = dataSolicitacaoLimite
+
         #Estava retornando deposito, sem acento, acrescentei o acento pois será feito um query no DB através dessa variável
         tipoSolicitacao = request.form.get("tipo-solicitacao")
         if tipoSolicitacao == "deposito":
             tipoSolicitacao = tipoSolicitacao[0:3] + "ó" + tipoSolicitacao[4:]
             session["tipoSolicitacaoCache"] = tipoSolicitacao
         session["tipoSolicitacaoCache"] = tipoSolicitacao
+
         if tipoSolicitacao == "alteracoes de dados":
             tipoSolicitacao = tipoSolicitacao[0:6] + "çõ" + tipoSolicitacao[7:]
             session["tipoSolicitacaoCache"] = tipoSolicitacao
@@ -875,7 +954,7 @@ def gerenciar():
             dataSolicitacao = []
             tipoSolicitacaoBanco = []
             usuarioSolicitacao = []
-            solicitacaoId = []
+            solicitacaoId = []  
 
             for i in cur:
                 dataSolicitacao.append(i[0])
@@ -1018,14 +1097,14 @@ def confirmacaoAbertura():
 
     cur = mysql.connection.cursor()
     cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, statusSolicitacao FROM confirmacaoAbertura WHERE solicitacao_id = %s", ([solicitacaoIdAbertura]))
-    dadosUsuarioCadastro = cur.fetchone()
-    session["nomeUsuarioCadastro"] = dadosUsuarioCadastro[0]
-    session["cpfUsuarioCadastro"] = dadosUsuarioCadastro[1]
-    session["dataAniversarioAbertura"] = dadosUsuarioCadastro[2]
-    session["generoAbertura"] = dadosUsuarioCadastro[3]
-    session["enderecoAbertura"] = dadosUsuarioCadastro[4]
-    session["contaBancariaAbertura"] = dadosUsuarioCadastro[5]
-    session["agenciaBancariaAbertura"] = dadosUsuarioCadastro[6]
+    dadosUsuarioFechamento = cur.fetchone()
+    session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[0]
+    session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[1]
+    session["dataAniversarioAbertura"] = dadosUsuarioFechamento[2]
+    session["generoAbertura"] = dadosUsuarioFechamento[3]
+    session["enderecoAbertura"] = dadosUsuarioFechamento[4]
+    session["contaBancariaAbertura"] = dadosUsuarioFechamento[5]
+    session["agenciaBancariaAbertura"] = dadosUsuarioFechamento[6]
 
     if request.method == "POST":
         if "confirmar" in request.form:
@@ -1048,6 +1127,48 @@ def confirmacaoAbertura():
             flash("Cancelamento de abertura de conta feito com sucesso!")
 
     return render_template("tela-abertura-conta.html", titulo="Solicitações", solicitacaoIdAbertura = solicitacaoIdAbertura)
+
+@app.route("/confirmacao-fechamento", methods = ["GET", "POST"])
+def confirmacaoFechamento():
+    solicitacaoIdFechamento = request.args.get("solicitacaoIdFechamento")
+     
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, statusSolicitacao FROM confirmacaoAbertura WHERE solicitacao_id = %s", ([solicitacaoIdFechamento]))
+    dadosUsuarioFechamento = cur.fetchone()
+    session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[0]
+    session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[1]
+    session["dataAniversarioAbertura"] = dadosUsuarioFechamento[2]
+    session["generoAbertura"] = dadosUsuarioFechamento[3]
+    session["enderecoAbertura"] = dadosUsuarioFechamento[4]
+    session["contaBancariaAbertura"] = dadosUsuarioFechamento[5]
+    session["agenciaBancariaAbertura"] = dadosUsuarioFechamento[6]
+    statusSolicitacao = dadosUsuarioFechamento[7]
+
+    if request.method == "POST":
+        if "confirmar" in request.form:
+            statusSolicitacao = "Fechada"
+
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE confirmacaoAbertura SET statusSolicitacao = %s WHERE contaBancaria= %s", ([statusSolicitacao], session["contaBancariaAbertura"]))
+            mysql.connection.commit()
+            cur.close()
+
+            flash("Fechamento de conta feita com sucesso!")
+        else:
+            statusSolicitacao = "Confirmada"
+
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE confirmacaoAbertura SET statusSolicitacao = %s WHERE contaBancaria= %s", ([statusSolicitacao], session["contaBancariaAbertura"]))
+            mysql.connection.commit()
+            cur.close()
+
+            flash("Fechamento de conta cancelado com sucesso!")
+
+    return render_template("tela-fechamento-conta.html", titulo="Solicitações", solicitacaoIdFechamento = solicitacaoIdFechamento, statusSolicitacao = statusSolicitacao)
+
+@app.route("/confirmacao-alteracao-dados", methods=["GET", "POST"])
+def confirmacaoAlteracaoDados():
+    return render_template("solicitacao_alterar_dados.html", titulo="Solicitações")
 
 @app.route("/editar-gerentes", methods=["GET", "POST"])
 def editarGerentes():
@@ -1126,13 +1247,63 @@ def editarAgencia():
             return redirect(url_for("editarAgencia"))
     return render_template("editar_agencia.html")
 
-@app.route("/gerentes", methods=["GET", "POST"])
-def gerentes():
-    return render_template("gerentes.html", titulo="Gerentes")
+@app.route("/lista-gerentes", methods=["GET", "POST"])
+def listaGerentes():
+    """ if session["gerenteLogado"] == False:
+        return redirect (url_for("indexGerente")) """
+        
+    if request.method == "POST":
+        if "novo" in request.form:
+            return redirect(url_for("novoGerenteAgencia"))
+        else:
+            nomeGerente = request.form.get("nomeGerente")
 
-@app.route("/agencias", methods=["GET", "POST"])
-def agencias():
-    return render_template("agencias.html", titulo="Agências")
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT gerente_nome, gerente_id FROM gerenteAgencia where gerente_nome = %s", ([nomeGerente]))
+
+            retornoNomeGerente = []
+            retornoIdGerente = []
+
+            for i in cur:
+                retornoNomeGerente.append(i[0])
+                retornoIdGerente.append(i[1])
+
+            colunas = ("Gerente", "Visualizar")
+            dados = list(zip(retornoNomeGerente, retornoIdGerente))
+
+            return render_template("gerentes.html", titulo="Gerentes", colunas = colunas, dados = dados)
+    else:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT gerente_nome, gerente_id FROM gerenteAgencia")
+
+        retornoNomeGerente = []
+        retornoIdGerente = []
+
+        for i in cur:
+            retornoNomeGerente.append(i[0])
+            retornoIdGerente.append(i[1])
+
+        colunas = ("Gerente", "Visualizar")
+        dados = list(zip(retornoNomeGerente, retornoIdGerente))
+
+        return render_template("gerentes.html", titulo="Gerentes", colunas = colunas, dados = dados)
+
+@app.route("/lista-agencias", methods=["GET", "POST"])
+def listaAgencias():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numAgencia, id_numAgencia FROM listaAGencias")
+
+    retornoNumAgencia = []
+    retornoIdAgencia = []
+
+    for i in cur:
+        retornoNumAgencia.append(i[0])
+        retornoIdAgencia.append(i[1])
+
+    colunas = ("Agências", "Visualizar")
+    dados = list(zip(retornoNumAgencia, retornoIdAgencia))
+
+    return render_template("tela_agencias.html", titulo="Agência", colunas = colunas, dados = dados)
 
 @app.route("/informacoes-gerente", methods=["GET", "POST"])
 def infoGerente():
@@ -1194,7 +1365,7 @@ def CadastroAgencia():
         cadastro = True
     return render_template("cadastroAgencia.html")
 
-       
+   
 
 
 

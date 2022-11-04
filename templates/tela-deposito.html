@@ -21,7 +21,11 @@
                 {% if messages %}
                 <ul class=flashes>
                     {% for message in messages %}
+                    {% if message == "Depósito realizado. Aguarde a confirmação do depósito pelo Gerente de sua agência! Para ver seu comprovante clique " or message == "Saque realizado com sucesso! Para ver seu comprovante clique " or message == "Transferência realizada com sucesso! Para ver seu comprovante clique " %}
                     <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
+                    {% else %}
+                    <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar"></a></div>
+                    {% endif %}
                     {% endfor %}
                 </ul>
                 {% endif %}

@@ -14,6 +14,7 @@
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
     <link rel="stylesheet" href="../static/styles/formularios.css">
+    <link rel="stylesheet" href="../static/styles/header.css">
     <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/telas-home.css">
@@ -107,6 +108,14 @@
 
         <!-- conteúdo da página -->
         <section class="pageContent">
+            {% block nav %}
+            <header class="nav">
+                <div class="logo">
+                    <img src="../static/img/logo.png" alt="logo">
+                </div>
+            </header>
+            {% endblock %}
+
             {% block header %}
             <!-- título -->
             <header class="fundo">

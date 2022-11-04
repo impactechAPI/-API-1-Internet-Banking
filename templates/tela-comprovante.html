@@ -1,4 +1,4 @@
-     {% extends "base-cliente.html" %}
+{% extends "base-cliente.html" %}
 
 {% block contents %}
 
@@ -7,7 +7,7 @@
     <div class="comprovante">
         <section>
             <h2>SIRIUSBANK</h2>
-            <h3>{{ session["horaSistemaComprovante"] }} - Autoatendimento</h3>
+            <h3>{{ session['dataHoraMovimentacao'] }} - Autoatendimento</h3>
             <div class="linha">
                 <span></span>
             </div>

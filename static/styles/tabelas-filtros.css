@@ -95,17 +95,25 @@ table td{
 
 /* cabeçalho tabela */
 th {
-    background-color: #1A20BD;
+    background-color: #D3D3D3;
     border: none;
-    color: aliceblue;
+    color: black;
 }
 
 /* linha tabela de cor alternada  */
 tr:nth-child(even) {
-    background: lightgray;
+    background: #FFFFFF;
 }
 
 /* linha tabela ao passar o mouse */
 tr:hover{ 
     background-color: #22D6C3;
+}
+
+.icone_visualizar {
+    height: 20px;
+    width: 33.34071731567383px;
+    left: 3.34832763671875px;
+    top: 10px;
+    border-radius: 0px;    
 }

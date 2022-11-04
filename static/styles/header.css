@@ -4,6 +4,11 @@
     height: 12rem;
 }
 
+.fundo_gerente {
+    background-image: linear-gradient(to right, #A800A2, #0CC5FF);
+    height: 12rem;
+}
+
 .titulo {
     width: 78%;
     margin: 0 auto;
@@ -16,6 +21,14 @@
     font-weight: normal;
     padding-top: 2rem;
 }
+
+.fundo_gerente h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: normal;
+    padding-top: 2rem;
+}
+
 
 hr {
     color: white;

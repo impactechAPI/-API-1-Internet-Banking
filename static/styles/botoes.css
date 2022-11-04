@@ -36,7 +36,7 @@
 .btn_imprimir,
 .btn_imprimir_comprovante,
 .button {
-    background-color: #08C746;
+    background-color: #8722D6;
     padding: 0;
     border: none;
     color: aliceblue;
@@ -91,6 +91,42 @@
 /* botão cadastrar */
 .cadastrar {
     margin: 3rem auto 0 auto;
+}
+
+/* botão nova agência */
+.nova_agencia {
+    height: 2.5rem;
+    width: 90px;
+    font-size: 1rem;
+    background-color: #8722D6;
+    padding: 0;
+    border: none;
+    color: aliceblue;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    float: right
+}
+
+/* botão novo gerente */
+.novo_gerente {
+    height: 2.5rem;
+    width: 90px;
+    font-size: 1rem;
+    background-color: #8722D6;
+    padding: 0;
+    border: none;
+    color: aliceblue;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    float: right
 }
 
 /* botão editar */

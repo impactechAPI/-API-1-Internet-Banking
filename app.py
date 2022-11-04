@@ -662,7 +662,7 @@ def indexGerente():
 
             else:
                 cur = mysql.connection.cursor()
-                cur.execute("SELECT num_senha, gerente_id, gerente_nome, num_matricula FROM gerenteGeral WHERE num_matricula = %s", [numMatriculaGerente])
+                cur.execute("SELECT GG_num_senha, GG_id, GG_nome, GG_num_matricula FROM gerenteGeral WHERE GG_num_matricula = %s", [numMatriculaGerente])
 
                 retornoContaGerenteGeral = cur.fetchone()
                 app.logger.info(retornoContaGerenteGeral)
@@ -1110,7 +1110,9 @@ def CadastroAgencia():
 
        
 
-
+@app.route("/listaAgencia", methods=["GET", "POST"])
+def listaAgencia():
+    return render_template("agencias.html")
 
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!

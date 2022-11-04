@@ -1,19 +1,12 @@
-{% extends "base-gerente-geral.html" %}
+{% extends "base_gg.html" %}
 
 {% block contents %}
 <main>
 
-    <!-- filtros -->
+    <!-- botão nova agência-->
     <section class="container">
-        <div class="filtros">
-            <input type="text" placeholder="Nome" nome="nomeGerente" class="nome">
-            <div>
-                <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
-            </div>
-        </div>
-
-        <div class="novo_gerente">
-            <input type="button" class="novo_gerente" value="+ Novo" name="">
+        <div class="nova_agencia">
+        <input type="button" class="nova_agencia" value="+ Nova" name="">
         </div>
 
         <!-- tabela -->
@@ -33,7 +26,7 @@
                                 <td>{{ x }}</td>
                             {% endif %}
                             {% if loop.index0 == 1 %}
-                                <td><a href={{url_for("infoGerente",idGerente=x)}}><img class="icone_visualizar" src="visualizar.png" alt="Ver"></a></td>
+                                <td><a href={{url_for("infoAgencias",idAgencia=x)}}><img class="icone_visualizar" src="visualizar.png" alt="Ver"></a></td>
                             {% endif %}
                         {% endfor %}
                     </tr>
@@ -44,4 +37,3 @@
 
 </main>
 {% endblock %}
-

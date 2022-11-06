@@ -50,8 +50,11 @@
             </section>
 
             <section class="botoes">
-                <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
-                <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+                {% if statusSolicitacao == "Pendente" %}
+                    <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
+                    <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+                {% elif statusSolicitacao != "Pendente" %}
+                {% endif %}
             </section>
             {% with messages = get_flashed_messages() %}
             {% if messages %}

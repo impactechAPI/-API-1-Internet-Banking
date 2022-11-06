@@ -15,12 +15,12 @@
         <div class="campo-triplo">
             <div class="info-conta">
                 <label>CPF (Apenas números)</label>
-                <input type="text" maxlength="11" name="cpf" value="{{ session[''] }}">
+                <input type="text" maxlength="11" name="cpf" value="{{ session['cpfUsuario'] }}">
             </div>
 
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <input type="date" name="dataAniversario" value="{{ session[''] }}">
+                <input type="date" name="dataAniversario" value="{{ session['dataAniversario'] }}">
             </div>
 
             <div class="info-conta">
@@ -37,18 +37,18 @@
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Endereço</label>
-                <input type="text" name="endereco" value="{{ session[''] }}">
+                <input type="text" name="endereco" value="{{ session['enderecoUsuario'] }}">
             </div>
         </div>
 
         <div class="campo-duplo">
             <div class="info-conta">
                 <label>Senha</label>
-                <input type="text" name="senhaUsuario">
+                <input type="text" name="senhaUsuario" placeholder="Digite a nova senha">
             </div>
             <div class="info-conta">
                 <label>Confirmar senha</label>
-                <input type="text" name="confirmacaoSenha" placeholder="Confirme sua senha">
+                <input type="text" name="retornoSenha" placeholder="Confirme a nova senha">
             </div>
             <!-- /info-conta -->
         </div>
@@ -57,7 +57,15 @@
             <input type="submit" name="confirmar" class="confirmar" value="Salvar">
             <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
         </aside>
-
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
     </form>
 
 </div>

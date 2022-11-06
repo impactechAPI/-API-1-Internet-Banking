@@ -1,0 +1,41 @@
+{% extends "base-gerente.html" %}
+
+{% block contents %}
+<main>
+
+    <!-- filtros -->
+    <form method="post" action="">
+        <section class="container">
+            <div class="filtros">
+            </div>
+
+            <input type="submit" class="pesquisar" value="+ Novo" name="novo">
+
+            <!-- tabela -->
+            <table>
+                <thead>
+                <tr>
+                    {% for coluna in colunas %}
+                        <th>{{ coluna }}</th>
+                    {% endfor %}
+                    </tr> 
+                </thead>
+                <tbody>
+                    {% for linhas in dados %}
+                        <tr>
+                            {% for x in linhas %}
+                                {% if loop.index0 != 1 %}
+                                    <td>{{ x }}</td>
+                                {% endif %}
+                                {% if loop.index0 == 1 %}
+                                    <td><a href={{url_for("infoAgencia",idGerente=x)}}>Ver</a></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </form>
+</main>
+{% endblock %}

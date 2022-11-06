@@ -5,43 +5,37 @@
 
     <div class="container">
         <a href="{{ url_for('listaGerentes') }}" class="voltar">&lt voltar</a><br><br>
-        <form method="post" action="{{ url_for('infoGerente') }}" class="solicitacao">
+        <form method="post" action="{{ url_for('editarGerentes') }}" class="solicitacao">
             <div class="campo-unico">
-                <label>Nome</label><br>
-                <input type="text" value="{{ session['nomeGeAgencia'] }}" name="nomeGeAgencia" disabled="disabled">
+                <div class="info-conta">
+                    <label>Nome</label>
+                    <span>{{ session['nomeGerenteCadastro'] }}</span>
+                </div>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>CPF</label>
-                    <input type="number" maxlength="11" value="{{ session['cpfGeAgencia'] }}" name="cpfGeAgencia"
-                        disabled="disabled">
+                    <span>{{ session['cpfGerenteCadastro'] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Data de nascimento</label>
-                    <input type="date" value="{{ session['dataNascGeAgencia'] }}" name="dataNascGeAgencia"
-                        disabled="disabled">
+                    <span>{{ session['nascGerenteCadastro'] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Gênero</label>
-                    <select name="generoGeAgencia" class="genero" id="generoGeAgencia"
-                        aria-selected="{{ session['generoGeAgencia'] }}" disabled="disabled">
-                        <option value="Selecionar" disabled></option>
-                        <option value="Feminino"></option>
-                        <option value="Masculino"></option>
-                        <option value="Outro"></option>
-                    </select>
+                    <span>{{ session['generoGerenteCadastro'] }}</span>
                 </div>
             </div>
             <div class="campo-unico">
-                <label>Endereço</label>
-                <input type="text" value="{{ session['enderecoGeAgencia'] }}" name="enderecoGeAgencia"
-                    disabled="disabled">
+                <div class="info-conta">
+                    <label>Endereço</label>
+                    <span>{{ session['endGerenteCadastro'] }}</span>
+                </div>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>Número de matrícula</label>
-                    <input type="number" value="{{ session['matriculaGeAgencia'] }}" name="matriculaGeAgencia"
-                        disabled="disabled">
+                    <span>{{ session['matriculaGerenteCadastro'] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Função</label>
@@ -49,15 +43,14 @@
                 </div>
                 <div class="info-conta">
                     <label>Agência</label>
-                    <input type="number" value="{{ session['agenciaGeAgencia'] }}" name="agenciaGeAgencia"
-                        disabled="disabled">
+                    <span>{{ session['numAgenciaCadastro'] }}</span>
                 </div>
             </div>
 
             <aside class="data-botao">
                 <p class="data_inicio">Gerente desde: {{ session["dataInicioGeAgencia"] }}</p>
-                <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar"> Editar</button>
-                <!-- <input type="submit" name="confirmar" class="editar" value="Editar"> -->
+                <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar"
+                class="img_editar"> Editar</button>
             </aside>
         </form>
     </div>

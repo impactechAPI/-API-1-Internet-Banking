@@ -1316,7 +1316,7 @@ def editarGerentes():
         else:
             flash("Dados não atualizados.")
             return redirect(url_for("editarGerentes"))
-    return render_template("editar_gerente.html")
+    return render_template("editar_gerente.html", titulo="Editar Gerente")
 
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():
@@ -1353,7 +1353,7 @@ def editarAgencia():
         else:
             flash("Dados não atualizados.")
             return redirect(url_for("editarAgencia"))
-    return render_template("editar_agencia.html")
+    return render_template("editar_agencia.html", titulo="Editar Agência")
 
 @app.route("/lista-gerentes", methods=["GET", "POST"])
 def listaGerentes():
@@ -1408,10 +1408,10 @@ def listaAgencias():
         retornoNumAgencia.append(i[0])
         retornoIdAgencia.append(i[1])
 
-    colunas = ("Agências", "Visualizar")
+    colunas = ("Agência", "Visualizar")
     dados = list(zip(retornoNumAgencia, retornoIdAgencia))
 
-    return render_template("tela_agencias.html", titulo="Agência", colunas = colunas, dados = dados)
+    return render_template("tela_agencias.html", titulo="Agências", colunas = colunas, dados = dados)
 
 @app.route("/info-gerente", methods=["GET", "POST"])
 def infoGerente():

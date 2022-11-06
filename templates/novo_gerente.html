@@ -1,23 +1,21 @@
 {% extends "base_gg.html" %}
 
 {% block contents %}
+<main class="container">
 
 <form method="post">
-    <div class="container">
-        <a href="{{ url_for('listaGerentes') }}" class="voltar">&lt voltar</a>
-        <section class="solicitacao">
-            <h2>Novo Gerente</h2>
+        <a href="{{ url_for('listaGerentes') }}" class="voltar">&lt voltar</a><br><br>
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Nome</label>
-                    <input type="text" name="nome" placeholder="Informe seu nome">
+                    <input type="text" name="nome" placeholder="Informe o nome">
                 </div>
             </div>
 
             <div class="campo-triplo">
                 <div class="info-conta">
-                    <label>CPF (Apenas números)</label>
-                    <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+                    <label>CPF</label>
+                    <input type="text" maxlength="11" name="cpf" placeholder="Informe o CPF">
                 </div>
 
                 <div class="info-conta">
@@ -27,7 +25,7 @@
 
                 <div class="info-conta">
                     <label>Gênero</label>
-                    <select name="genero" id="genero" class="genero">
+                    <select name="genero" id="genero" class="select">
                         <option value="selecione" disabled>Selecione</option>
                         <option value="feminino">Feminino</option>
                         <option value="masculino">Masculino</option>
@@ -39,19 +37,19 @@
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Endereço</label>
-                    <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
+                    <input type="text" placeholder="Informe o endereço" name="endereco">
                 </div>
             </div>
 
             <div class="campo-duplo">
                 <div class="info-conta">
                     <label>Função</label>
-                    <input type="text" name="funcaoGerente" disabled>
+                    <input type="text" name="funcao" value="Gerente de Agência" disabled>
                 </div>
 
                 <div class="info-conta">
                     <label>Agência</label>
-                    <input type="number" name="numeroAgencia">
+                    <input type="number" name="numeroAgencia" placeholder="Informe a agência">
                 </div>
             </div>
 
@@ -59,4 +57,5 @@
     </div>
 </form>
 
+</main>
 {% endblock %}

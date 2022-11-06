@@ -117,7 +117,7 @@ footer {
     }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 600px) {
     /* container tela de cadastro */
     .container_cadastro {
         width: 90%;

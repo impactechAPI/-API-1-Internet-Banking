@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
     <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/header.css">
+    <link rel="stylesheet" href="../static/styles/formularios.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/tabelas-filtros.css">
     {% endblock %}
@@ -70,7 +71,7 @@
 
                 <li>
                     <a href="{{ url_for('gerenciar') }}">
-                        <img src="../static/icones/solicitacao_branco.png" alt="solicitacoes">
+                        <img src="../static/icones/solicitacoes.png" alt="solicitacoes">
                         <span class="links-name">Solicitações</span>
                         <span class="tooltip">Solicitações</span>
                     </a>
@@ -82,7 +83,7 @@
                 <div class="profile">
                     <div class="profileDetail">
                         <img src="../static/icones/perfil.jpg" alt="usuário">
-                        <span class="name">{{ session['nomeGerenteGeral'] }}</span>
+                        <span class="name">{{ session['nomeGerente'] }}</span>
                     </div>
                     <!-- /profileDetail -->
                     <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair" id="logout"></a>

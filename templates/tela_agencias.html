@@ -1,41 +1,36 @@
-{% extends "base-gerente.html" %}
+{% extends "base_gg.html" %}
 
 {% block contents %}
-<main>
+<main class="container">
 
     <!-- filtros -->
-    <form method="post" action="">
-        <section class="container">
-            <div class="filtros">
-            </div>
+    <form method="post" action="{{ url_for('CadastroAgencia') }}" class="btn_novo-tabela">
+        <button type="submit" class="btn_novo" name="novo">+ Nova</button>
 
-            <input type="submit" class="pesquisar" value="+ Novo" name="novo">
-
-            <!-- tabela -->
-            <table>
-                <thead>
+        <!-- tabela -->
+        <table>
+            <thead>
                 <tr>
                     {% for coluna in colunas %}
-                        <th>{{ coluna }}</th>
+                    <th>{{ coluna }}</th>
                     {% endfor %}
-                    </tr> 
-                </thead>
-                <tbody>
-                    {% for linhas in dados %}
-                        <tr>
-                            {% for x in linhas %}
-                                {% if loop.index0 != 1 %}
-                                    <td>{{ x }}</td>
-                                {% endif %}
-                                {% if loop.index0 == 1 %}
-                                    <td><a href={{url_for("infoAgencia",idGerente=x)}}>Ver</a></td>
-                                {% endif %}
-                            {% endfor %}
-                        </tr>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linhas in dados %}
+                <tr>
+                    {% for x in linhas %}
+                    {% if loop.index0 != 1 %}
+                    <td>{{ x }}</td>
+                    {% endif %}
+                    {% if loop.index0 == 1 %}
+                    <td><a href={{url_for("infoAgencia",idGerente=x)}}><img src="../static/icones/ver.png" alt="ver" class="visualizar"></a></td>
+                    {% endif %}
                     {% endfor %}
-                </tbody>
-            </table>
-        </section>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </form>
 </main>
 {% endblock %}

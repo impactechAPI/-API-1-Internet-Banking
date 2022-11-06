@@ -22,6 +22,7 @@
     border-radius: 3px;
     border: 1px solid #343434;
     accent-color: #08c746;
+    outline-color: #08C746;
 }
 
 /* filtros tela gerenciar e extrato */
@@ -62,50 +63,40 @@
 
 /* TABELA */
 
-
-table.dataframe, .dataframe th, .dataframe td  {
-    table-layout: fixed;
-    border: none;
-    border-bottom: 1px solid #C8C8C8;
-    border-collapse: collapse;
-    text-align: center;
-    padding: 10px;
-    font-size: .9rem;
+.btn_novo-tabela {
+    width: 100%;
     margin: auto;
-    width: 90%;
 }
 
 table {
     table-layout: fixed;
     border: none;
-    border-bottom: 1px solid #C8C8C8;
+    border: 1px solid #C8C8C8;
     border-collapse: collapse;
     text-align: center;
     padding: 10px;
     font-size: .9rem;
-    margin: auto;
     margin-top: 2rem;
-    width: 90%;
+    width: 100%;
 }
 
 table th, 
-table td{
-    padding: 0.8rem;
+table td {
+    padding: 0.6rem;
 }
 
 /* cabeçalho tabela */
 th {
-    background-color: #1A20BD;
-    border: none;
-    color: aliceblue;
+    background-color: #D3D3D3;
+    color: #000;
 }
 
 /* linha tabela de cor alternada  */
 tr:nth-child(even) {
-    background: lightgray;
+    background: #EFEFEF;
 }
 
 /* linha tabela ao passar o mouse */
 tr:hover{ 
-    background-color: #22D6C3;
+    background-color: #c2c2c2;
 }

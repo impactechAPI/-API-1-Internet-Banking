@@ -56,6 +56,7 @@ input,
     border-radius: 3px;
     margin-top: 7px;
     accent-color: #08c746;
+    outline-color: #08C746;
     border: 1px solid #343434;
     font-size: .9rem;
     color: #343434;
@@ -63,6 +64,10 @@ input,
 
 .container .data_inicio {
     margin-top: 2rem;
+}
+
+.container_cadastro .checkbox a {
+    color: #1a20bd;
 }
 
 /* retira as setas padrão de input type number */
@@ -141,7 +146,7 @@ input[type="number"] {
 
     /* termos de uso tela cadastro */
     .container_cadastro .checkbox {
-        font-size: .8rem;
+        font-size: 1rem;
         display: flex;
     }
 

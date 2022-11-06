@@ -65,6 +65,26 @@
                 {% endif %}
                 {% endfor %}
                 {% endif %}
+                {% if linhas[2] == 'Alteração de Dados' %}
+                {% for z in linhas %}
+                {% if loop.index0 != 3 %}
+                <td>{{ z }}</td>
+                {% endif %}
+                {% if loop.index0 == 3 %}
+                <td><a href={{url_for("confirmacaoAlteracao",solicitacaoIdAlteracao=z)}}>Ver</a></td>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% if linhas[2] == 'Fechamento' %}
+                {% for w in linhas %}
+                {% if loop.index0 != 3 %}
+                <td>{{ w }}</td>
+                {% endif %}
+                {% if loop.index0 == 3 %}
+                <td><a href={{url_for("confirmacaoFechamento",solicitacaoIdFechamento=w)}}>Ver</a></td>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

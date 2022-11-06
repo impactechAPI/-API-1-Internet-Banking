@@ -10,47 +10,33 @@
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Nome </label>
-                <span>{{ session["nomeUsuario"] }}</span>
+                <span>{{ session["novoNomeUsuario"] }}</span>
             </div>
         </div>
 
         <div class="campo-triplo">
             <div class="info-conta">
                 <label>CPF</label>
-                <span>{{ session['cpfUsuarioCadastro'] }}</span>
+                <span>{{ session["novoCpfUsuario"] }}</span>
             </div>
 
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <span>{{ session['dataAniversarioCadastro'] }}</span>
+                <span>{{ session["novoAniversario"] }}</span>
             </div>
 
             <div class="info-conta">
                 <label>Gênero</label>
-                <span>{{ session['generoCadastro'] }}</span>
+                <span>{{ session["novoGenero"] }}</span>
             </div>
         </div>
 
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Endereço</label>
-                <span>{{ session['enderecoCadastro'] }}</span>
+                <span>{{ session["novoEndereco"] }}</span>
             </div>
         </div>
-
-        <div class="campo-duplo">
-            <div class="info-conta">
-                <label>Número da conta</label>
-                <span>{{ session["contaUsuario"] }}</span>
-            </div>
-
-            <div class="info-conta">
-                <label>Agência</label>
-                <span>{{ session["agenciaBancariaUsuario"] }}</span>
-            </div>
-        </div>
-
-        <h2>Alterações</h2>
         
         <div class="botoes">
             <input type="submit" name="confirmar" class="confirmar" value="Confirmar">

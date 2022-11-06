@@ -5,20 +5,20 @@
 
     <div class="container">
         <a href="{{ url_for('listaAgencias') }}" class="voltar">&lt voltar</a><br><br>
-        <form method="post" action="{{ url_for('infoGerente') }}" class="solicitacao">
+        <form method="post" action="{{ url_for('editarAgencia') }}" class="solicitacao">
             <div class="campo-duplo">
                 <div class="info-conta">
                     <label>Número</label>
-                    <input type="number" value="{{ session['numAgencia'] }}" name="numAgencia" disabled>
+                    <input type="number" value="{{ session['numeroAgencia'] }}" name="numAgencia" disabled>
                 </div>
                 <div class="info-conta">
                     <label>Número de clientes</label>
-                    <input type="number" value="{{ session['numClientes']}}" name="numClientes" disabled>
+                    <input type="number" value="{{ session['numeroClientes']}}" name="numClientes" disabled>
                 </div>
             </div>
             <div class="campo-unico">
                 <label>Gerente</label>
-                <input type="text" value="{{ session['gerenteAgencia'] }}" name="gerenteAgencia"
+                <input type="text" value="{{ session['nomeGerente'] }}" name="gerenteAgencia"
                     disabled="disabled">
             </div>
             <div class="campo-unico">

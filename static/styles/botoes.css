@@ -35,7 +35,8 @@
 .editar,
 .btn_imprimir,
 .btn_imprimir_comprovante,
-.button {
+.button,
+.btn_novo {
     background-color: #08C746;
     padding: 0;
     border: none;
@@ -45,7 +46,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
+}
+
+/* botão "Novo" Gerente/Agência */
+.btn_novo {
+    padding: .5rem;
+    margin: 2rem 0 0 auto;
 }
 
 /* botão pesquisar (lupa) */
@@ -166,6 +173,12 @@
 /* link voltar ao passar o mouse */
 .voltar:hover {
     color: #08C746;
+}
+
+/* ícone 'ver' das tabelas */
+.visualizar {
+    width: 25px;
+    margin: auto 0;
 }
 
 

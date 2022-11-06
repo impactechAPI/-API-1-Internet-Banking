@@ -1,43 +1,46 @@
+{% if session['funcaoAdministrativa'] == 'Gerente Geral' %}
+{% extends "base_gg.html" %}
+{% endif %}
+{% if session['funcaoAdministrativa'] == 'Gerente de Agência' %}
 {% extends "base-gerente.html" %}
+{% endif %}
 
 {% block contents %}
-<main>
+<main class="container">
 
     <!-- filtros -->
-    <section class="container">
-        <div class="filtros">
-            <input type="text" placeholder="Nome" nome="nomeCliente" class="nome">
-            <div class="pesquisar_nome">
-                <img src="../static/icones/lupa.png" alt="lupa" class="lupa">
-                <input type="submit" class="btn_pesquisar" value="" name="pesquisar">
-            </div>
+    <section class="filtros">
+        <input type="text" placeholder="Nome" nome="nomeCliente" class="nome">
+        <div class="pesquisar_nome">
+            <img src="../static/icones/lupa.png" alt="lupa" class="lupa">
+            <input type="submit" class="btn_pesquisar" value="" name="pesquisar">
         </div>
-
-        <!-- tabela -->
-        <table>
-            <thead>
-               <tr>
-                {% for coluna in colunas %}
-                    <th>{{ coluna }}</th>
-                {% endfor %}
-                </tr> 
-            </thead>
-            <tbody>
-                {% for linhas in dados %}
-                    <tr>
-                        {% for x in linhas %}
-                            {% if loop.index0 != 1 %}
-                                <td>{{ x }}</td>
-                            {% endif %}
-                            {% if loop.index0 == 1 %}
-                                <td><a href={{url_for("infoCliente",idCliente=x)}}>Ver</a></td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </section>
+
+    <!-- tabela -->
+    <table>
+        <thead>
+            <tr>
+                {% for coluna in colunas %}
+                <th>{{ coluna }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for linhas in dados %}
+            <tr>
+                {% for x in linhas %}
+                {% if loop.index0 != 1 %}
+                <td>{{ x }}</td>
+                {% endif %}
+                {% if loop.index0 == 1 %}
+                <td><a href={{url_for("infoCliente",idCliente=x)}}></a></td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </main>
 {% endblock %}

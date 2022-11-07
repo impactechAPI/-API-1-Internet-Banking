@@ -365,10 +365,10 @@ def comprovanteTransferencia():
         config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
         html = render_template(
             "comprovanteTransferenciaPDF.html")
-        pdf = pdfkit.from_string(html, False, configuration = config)
+        pdf = pdfkit.from_string(html, False, configuration = config, options={"enable-local-file-access": ""})
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
-        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output2.pdf"
         return response
     return render_template("tela-comprovante-transferencia.html", titulo="Comprovante")
 
@@ -1596,7 +1596,14 @@ def poupanca():
         cur.execute("INSERT INTO poupanca (valorInicial, dataInicial, valorTaxa, valorAtualizado, dataProximoMes, user_id) VALUES (%s, %s, %s, %s, %s, %s)", ([valorInicial], session["dataInicial"], [taxa], [valorParcial], [dataProximoMes], session["idUsuario"]))
         mysql.connection.commit()
         cur.close()
-        
+        """ if "simular" in request.form:
+            userDetails = request.form
+            valorSimulado = userDetails["valorSimulado"]
+            anosSimulado = userDetails["anosSimulado"]
+            mesesSimulado = anosSimulado * 12
+            valorFinal = float(valorSimulado) * (1 + taxa) ** int(mesesSimulado)
+            flash(f"A quantidade de valor total ao longo de { anosSimulado } foi de R$: {valorFinal}")
+            return redirect(url_for("poupanca")) """
     return render_template("poupanca.html", titulo = "Poupança")
 
 

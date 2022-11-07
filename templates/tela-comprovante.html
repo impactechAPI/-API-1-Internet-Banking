@@ -3,6 +3,7 @@
 {% block contents %}
 
 <main class="container">
+    <form method="post" action="">
     <a href={{url_for("home")}} class="voltar">&lt voltar</a>
     <div class="comprovante">
         <section>
@@ -32,9 +33,10 @@
             <img src="../static/icones/print.png" alt="print" class="print">
             <input type="submit" class="btn_imprimir_comprovante" value="Imprimir">
         </section>
-        </section>
+    </section>
         <!-- <input type="submit" class="button" value="Imprimir" name="imprimir"> -->
     </div>
+    </form>
 </main>
 
 {% endblock %}

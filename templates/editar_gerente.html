@@ -7,7 +7,7 @@
     <form method="post" action="" class="solicitacao">
         <div class="campo-unico">
             <label>Nome</label>
-            <input type="text" value="{{ session['nomeGerenteCadastro'] }}" name="nomeGerenteCadastro">
+            <input type="text" value="{{ session['nomeGerenteAgencia'] }}" name="nomeGerenteCadastro">
         </div>
         <div class="campo-triplo">
             <div class="info-conta">
@@ -16,12 +16,12 @@
             </div>
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <input type="date" value="{{ session['nascGerenteCadastro'] }}" name="nascGerenteCadastro">
+                <input type="date" value="{{ session['nascGerenteAgencia'] }}" name="nascGerenteCadastro">
             </div>
             <div class="info-conta">
                 <label>Gênero</label>
-                <select name="generoGeAgencia" class="select" id="generoGerenteCadastro"
-                    aria-selected="{{ session['generoGerenteCadastro'] }}">
+                <select name="generoGerenteCadastro" class="select" id="generoGerenteCadastro"
+                    aria-selected="{{ session['generoGerenteAgencia'] }}">
                     <option value="Selecionar" disabled>Selecionar</option>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
@@ -31,7 +31,7 @@
         </div>
         <div class="campo-unico">
             <label>Endereço</label>
-            <input type="text" value="{{ session['endGerenteCadastro'] }}" name="endGerenteCadastro">
+            <input type="text" value="{{ session['endGerenteAgencia'] }}" name="endGerenteCadastro">
         </div>
         <div class="campo-triplo">
             <div class="info-conta">
@@ -44,12 +44,12 @@
             </div>
             <div class="info-conta">
                 <label>Agência</label>
-                <input type="text" value="{{ session['numAgenciaCadastro'] }}" name="numAgenciaCadastro">
+                <input type="text" value="{{ session['numAgenciaGerenteAgencia'] }}" name="numAgenciaCadastro">
             </div>
         </div>
 
         <aside>
-            <p class="data_inicio">Gerente desde: {{ session["dataInicioGeAgencia"] }}</p>
+            <p class="data_inicio">Gerente desde: {{ session["dataCriacaoGerenteAgencia"] }}</p>
             <section class="botoes">
                 <input type="submit" name="confirmar" class="confirmar" value="Salvar">
                 <input type="submit" name="cancelar" class="cancelar" value="Cancelar">

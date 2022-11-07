@@ -1,0 +1,36 @@
+{% extends "base-cliente.html" %}
+
+{% block contents %}
+
+<main class="container">
+    <div class="comprovante">
+        <section>
+            <h2>SIRIUSBANK</h2>
+            <h3>{{ session["horaSistemaComprovante"] }} - Autoatendimento</h3>
+            <div class="linha">
+                <span></span>
+            </div>
+            <h3>Comprovante de Transferencia</h3>
+        </section>
+        <section>
+            <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
+            <h4>AGENCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
+            <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
+            <h4>VALOR DA TRANSFERENCIA: {{ session["valorTransferencia"] }}</h4>
+            <h4>CONTA DESTINO: <span>{{ session["numeroContaTransferencia"] }}</span></h4>
+            <h4>AGENCIA DESTINO: <span>{{ session["numeroAgenciaTransferencia"] }}</span></h4>
+            <h4>SALDO DISPONIVEL: {{ session["saldoUsuarioAntesEnvio"] }}</h4>
+            <h4>SALDO FINAL: {{ session["saldoFinalEnvio"] }}</h4>
+            <div class="linha">
+                <span></span>
+            </div>
+        </section>
+        <section>
+            <h3>GUARDE ESTE COMPROVANTE ATE A OPERAÇÃO SER PROCESSADA.</h3>
+        </section>
+        </section>
+        <!-- <input type="submit" class="button" value="Imprimir" name="imprimir"> -->
+    </div>
+</main>
+
+{% endblock %}

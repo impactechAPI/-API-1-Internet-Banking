@@ -9,6 +9,7 @@ CREATE TABLE users (
   dataAniversario TEXT(6),
   genero VARCHAR(30),
   endereco VARCHAR(150),
+  tipoConta varchar(30) not null,
   senha VARCHAR(180),
   confirmacaoSenha VARCHAR(180),
   contaBancaria VARCHAR(9),
@@ -53,9 +54,24 @@ cpf VARCHAR(11) NOT NULL,
 dataAniversario TEXT(6) NOT NULL,
 genero VARCHAR(30) NOT NULL,
 endereco VARCHAR(150) NOT NULL,
-contaBancaria VARCHAR(9) NULL,
-agenciaBancaria VARCHAR(4) NULL,
-statusSolicitacao text(20) not null,
+contaBancaria VARCHAR(9) NOT NULL,
+agenciaBancaria VARCHAR(4) NOT NULL,
+statusSolicitacao VARCHAR(40) not null,
+user_id int,
+foreign key(user_id) references users (user_id),
+solicitacao_id int,
+foreign key(solicitacao_id) references gerenciamentoUsuarios (solicitacao_id));
+
+create table confirmacaoAlteracao
+(alteracao_id int primary key auto_increment,
+nome VARCHAR(40) NOT NULL,
+cpf VARCHAR(11) NOT NULL,
+dataAniversario TEXT(6) NOT NULL,
+genero VARCHAR(30) NOT NULL,
+endereco VARCHAR(150) NOT NULL,
+senha VARCHAR(180) NOT NULL,
+confirmacaoSenha VARCHAR(180) NOT NULL,
+statusSolicitacao VARCHAR(40) not null,
 user_id int,
 foreign key(user_id) references users (user_id),
 solicitacao_id int,
@@ -70,21 +86,11 @@ CREATE TABLE gerenteAgencia (
   gerente_end VARCHAR(150) NOT NULL,
   num_matricula VARCHAR(5) NOT NULL,
   num_agencia text(10) NOT NULL,
+  data_criacao text(6) NOT NULL,
   num_senha VARCHAR(180) NOT NULL,
   PRIMARY KEY (gerente_id),
   UNIQUE INDEX num_matricula_UNIQUE (num_matricula ASC));
   
-INSERT INTO gerenteAgencia (
-gerente_id,
-gerente_nome,
-gerente_cpf,
-gerente_nasc,
-gerente_genero,
-gerente_end,
-num_matricula,
-num_agencia,
-num_senha)
-VALUES (1, 'Marcia', 12345678910, 1996-02-19, 'masculino', 'rua teste', 55555, 0001, 123);
 
 CREATE TABLE agencias (
   agencia_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -92,14 +98,6 @@ CREATE TABLE agencias (
   numero_clientes VARCHAR(3),
   nome_gerente VARCHAR (50),
   end_agencia VARCHAR (150));
-
-INSERT INTO agencias (
-agencia_id,
-numero_agencia,
-numero_clientes,
-nome_gerente,
-end_agencia)
-VALUES (0, 1111, 99, "Joao", "rua da agencia, 777");
 
 CREATE TABLE gerenteGeral (
   GG_id INT NOT NULL primary key AUTO_INCREMENT,
@@ -113,14 +111,28 @@ GG_num_matricula,
 GG_num_senha)
 VALUES ('Gerente Geral', 00001, 123);
 
+create table poupanca(
+poupanca_id int primary key auto_increment,
+valorInicial decimal(19,2) not null,
+dataInicial text(15),
+dataProximoMes text(15),
+valorTaxa decimal(3,2),
+valorAtualizado decimal(19,2) not null,
+user_id int,
+foreign key(user_id) references users (user_id));
+
+
+
 select * from users;
 select * from movimentacaoConta;
 select * from gerenciamentoUsuarios;
 select * from confirmacaoDeposito;
+select * from confirmacaoAlteracao;
 select * from confirmacaoAbertura;
 select * from gerenteAgencia;
 select * from gerenteGeral;
 select * from agencias;
+select * from poupanca;
 
 drop table agencias;
 drop table gerenteGeral;
@@ -129,4 +141,9 @@ drop table confirmacaoAbertura;
 drop table confirmacaoDeposito;
 drop table gerenciamentoUsuarios;
 drop table movimentacaoConta;
+drop table confirmacaoAlteracao;
 drop table users;
+drop table confirmacaoAlteracao;
+drop table gerenteGeral;
+
+drop database flaskapp;

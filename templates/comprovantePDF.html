@@ -1,0 +1,29 @@
+<main class="container">
+    <div class="comprovante">
+        <section>
+            <h2>SIRIUSBANK</h2>
+            <h3><span>{{ session["horaSistemaComprovante"] }}</span> - Autoatendimento</h3>
+            <div class="linha">
+                <span></span>
+            </div>
+            <h3>Comprovante de <span>{{ session["tipoSolicitacao"] }}</span></h3>
+        </section>
+        <section>
+            <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
+            <h4>AGENCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
+            <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
+            <h4>VALOR <span>{{ session["tipoSolicitacao"] }}</span>: {{ session["valorDeposito"] }}</h4>
+            <h4>SALDO DISPONIVEL: {{ session['saldoUsuarioAntes'] }}</h4>
+            <h4>SALDO FINAL: {{ session["saldoFinalConfirmacao"] }}</h4>
+            <h5>* Valor sujeito a conferencia.</h5>
+            <div class="linha">
+                <span></span>
+            </div>
+        </section>
+        <section>
+            <h3>GUARDE ESTE COMPROVANTE ATE A OPERACAO SER PROCESSADA.</h3>
+        </section>
+        </section>
+        <!-- <input type="submit" class="button" value="Imprimir" name="imprimir"> -->
+    </div>
+</main>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 from flask_mysqldb import MySQL
 from numpy import require
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,6 +6,8 @@ import yaml
 import random
 import pandas as pd
 from datetime import datetime
+import pdfkit
+from dateutil.relativedelta import *
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".
 app = Flask(__name__)
@@ -58,7 +60,7 @@ def indexHome():
             #Inicilizando o MySQL, através da variável cur. Se não iniciar ele retorna cursor fechado!
             cur = mysql.connection.cursor()
             #Pedindo ao SQL que execute a linha de código a seguir. Selecionar uma das colunas da tabela users onde o cpf seja um valor igual a "%s", e por "%s" ele entende que seja o que estiver na variável cpfLogin.
-            cur.execute("SELECT senha, user_id, contaBancaria, nome, agenciaBancaria, saldoBancario FROM users WHERE contaBancaria = %s", [numContaUsuario])
+            cur.execute("SELECT senha, user_id, contaBancaria, nome, agenciaBancaria, saldoBancario, tipoConta FROM users WHERE contaBancaria = %s", [numContaUsuario])
             #O resultado da query acima será "capturado" através de fetchone() dentro da variável senhaCriptografada. Parece que ao ser capturado o resultado vira uma lista.
             retornoContaUsuario = cur.fetchone()
             senhaCriptografada = retornoContaUsuario[0]
@@ -67,6 +69,7 @@ def indexHome():
             session['nomeUsuario'] = retornoContaUsuario[3]
             session['agenciaUsuario'] = retornoContaUsuario[4]
             session['saldoUsuario'] = retornoContaUsuario[5]
+            session['tipoContaUsuario'] = retornoContaUsuario[6]
 
             cur.execute("SELECT statusSolicitacao from confirmacaoAbertura where contaBancaria = %s", ([numContaUsuario]))
             retornoStatusSolicitacao = cur.fetchone()
@@ -83,7 +86,7 @@ def indexHome():
             session["usuarioLogado"] = True
             #Teste de status da solicitação de cadastro.
             if statusSolicitacao == "Pendente":
-                flash("A sua abertura de conta está sendo avaliada por um de nossos gerentes, por favor aguarde!")
+                flash("A sua abertura de conta ainda está para ser avaliada por um de nossos gerentes, por favor aguarde!")
                 return redirect (url_for('indexHome'))
             elif statusSolicitacao == "Confirmada":
                 return redirect (url_for('home'))
@@ -118,7 +121,8 @@ def indexCadastro():
         cpf = userDetails["cpf"]
         dataAniversario = userDetails["dataAniversario"]
         genero = userDetails["genero"]
-        endereco = userDetails["endereco"]        
+        endereco = userDetails["endereco"]
+        tipoConta = userDetails["tipoConta"]        
         senha = userDetails["senha"]
         confirmacaoSenha = userDetails["confirmacaoSenha"]  
         senhaCriptografada = generate_password_hash(senha) 
@@ -175,7 +179,7 @@ def indexCadastro():
         #Salvando dados no BD e finalizando operação
         mysql.connection.commit()
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2))
+        cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta))
         
         mysql.connection.commit()
 
@@ -330,7 +334,7 @@ def saque():
                 flash('Apenas saques acima de R$ 0,00 são permitidos!')
                 return redirect(url_for('saque'))
             if not valorSaque:
-                flash('Preencha o campo Valor, para realizar o saque!')
+                flash('Preencha o campo VALOR para realizar o saque!')
                 return redirect(url_for('saque'))
 
         session.pop('saldoUsuario', None)
@@ -342,10 +346,30 @@ def saque():
 
 @app.route("/comprovante", methods=["GET", "POST"])
 def comprovante():
+    if request.method == 'POST':
+        path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+        html = render_template(
+            "jonascomprovante.html")
+        pdf = pdfkit.from_string(html, False, configuration = config)
+        response = make_response(pdf)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        return response  
     return render_template("tela-comprovante.html", titulo="Comprovante")
 
 @app.route("/comprovante-transferencia", methods=["GET", "POST"])
 def comprovanteTransferencia():
+    if request.method == 'POST':
+        path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+        html = render_template(
+            "comprovanteTransferenciaPDF.html")
+        pdf = pdfkit.from_string(html, False, configuration = config)
+        response = make_response(pdf)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        return response
     return render_template("tela-comprovante-transferencia.html", titulo="Comprovante")
 
 #Rota para logout. Se o usuário clicar em sair nas páginas da Home, sua sessão é limpa, apagando todos os dados do cache do navegador. Ele é redirecionado à tela de Login e uma mensagem aparece informando que o Usuário foi deslogado.
@@ -853,13 +877,13 @@ def indexGerente():
         try:
             if len(numMatriculaGerente) == 5:
                 cur = mysql.connection.cursor()
-                cur.execute("SELECT nome, matriculaGerenteAgencia, agencia FROM cadastroGerente WHERE matriculaGerenteAgencia = %s", [numMatriculaGerente])
+                cur.execute("SELECT gerente_nome, num_matricula, num_agencia FROM gerenteAgencia WHERE num_matricula = %s", [numMatriculaGerente])
                 retornoContaGerente = cur.fetchone()
                 #senhaGravada = retornoContaGerente[0]
                 #session['idGerente'] = retornoContaGerente[1]
-                session['nome'] = retornoContaGerente[0]
-                session['matriculaGerente'] = retornoContaGerente[1]
-                session['agenciaGerente'] = retornoContaGerente[2]
+                session['gerente_nome'] = retornoContaGerente[0]
+                session['num_matricula'] = retornoContaGerente[1]
+                session['num_agencia'] = retornoContaGerente[2]
                 session['funcaoAdministrativa'] = "Gerente de Agência"
 
             else:
@@ -1276,48 +1300,6 @@ def confirmacaoAlteracao():
             flash("Cancelamento de alterações cadastrais feito com sucesso!")
     return render_template("solicitacao_alterar_dados.html", titulo="Solicitações")
 
-@app.route("/editar-gerentes", methods=["GET", "POST"])
-def editarGerentes():
-    #idGerente = request.args.get("idGerente")
-    idGerenteLista = 1
-    cur = mysql.connection.cursor()
-    
-    cur.execute("SELECT gerente_id from gerenteAgencia where gerente_id = %s", ([idGerenteLista]))
-    idGerenteRetorno = cur.fetchone()
-    idGerenteAgencia = idGerenteRetorno[0]
-
-    cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia FROM gerenteAgencia WHERE gerente_id = %s", ([idGerenteAgencia]))
-    dadosGerenteCadastro = cur.fetchone()
-
-    session["nomeGerenteCadastro"] = dadosGerenteCadastro[0]
-    session["cpfGerenteCadastro"] = dadosGerenteCadastro[1]
-    session["nascGerenteCadastro"] = dadosGerenteCadastro[2]
-    session["generoGerenteCadastro"] = dadosGerenteCadastro[3]
-    session["endGerenteCadastro"] = dadosGerenteCadastro[4]
-    session["matriculaGerenteCadastro"] = dadosGerenteCadastro[5]
-    session["numAgenciaCadastro"] = dadosGerenteCadastro[6]
-
-    if request.method == 'POST':
-        if "confirmar" in request.form:
-
-            novoNomeGerente = request.form['nomeGerenteCadastro']
-            novoCpfGerente = request.form['cpfGerenteCadastro']
-            novoNascGerente = request.form['nascGerenteCadastro']
-            novoGeneroGerente = request.form['generoGerenteCadastro']
-            novoEndGerente = request.form['endGerenteCadastro']
-            novoNumMatriculaGerente = request.form['matriculaGerenteCadastro']
-            novoNumAgenciaGerente = request.form['numAgenciaCadastro']
-
-            cur.execute("UPDATE gerenteAgencia SET gerente_nome = %s, gerente_cpf = %s, gerente_nasc = %s, gerente_genero = %s, gerente_end = %s, num_matricula = %s, num_agencia = %s WHERE gerente_id = %s", ([novoNomeGerente], [novoCpfGerente], [novoNascGerente], [novoGeneroGerente], [novoEndGerente], [novoNumMatriculaGerente], [novoNumAgenciaGerente], [idGerenteAgencia]))
-            mysql.connection.commit()
-            cur.close()
-            flash("Dados atualizados com sucesso!")
-            return redirect(url_for("editarGerentes"))
-        else:
-            flash("Dados não atualizados.")
-            return redirect(url_for("editarGerentes"))
-    return render_template("editar_gerente.html", titulo="Editar Gerente")
-
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():
 
@@ -1419,6 +1401,7 @@ def infoGerente():
 
 @app.route("/info-agencia", methods=["GET", "POST"])
 def infoAgencia():
+
     return render_template("info_agencia.html", Título="Agência")
 
 @app.route("/home-gerente-geral", methods=["GET", "POST"])
@@ -1428,58 +1411,195 @@ def homeGerenteGeral():
     return render_template("home_gg.html")
 
 @app.route("/cadastroGerente", methods=["GET", "POST"])
-def CadastroGerente():
-    '''senhaGerenteAgencia=123
+def cadastroGerente():
 
-    if  request.method == "POST":
-        userDetails = request.form
-        name = userDetails["nome"]
-        cpf = userDetails["cpf"]
-        dataAniversario = userDetails["dataAniversario"]
-        genero = userDetails["genero"]
-        endereco = userDetails["endereco"]
-        cargo = userDetails ["funcao"]
-        agencia = userDetails ["agencia"]
+    senhaGerenteAgencia=123
+   
+    numero = []
+    for i in range(1, 6):
+        numero.append(random.randint(0, 9))
+    matriculaGerenteAgencia="".join(map(str,numero))
+    
 
-        if not name or not cpf or not dataAniversario or not genero or not endereco or not cargo or not agencia:
-            flash("Preencha todos os campos do formulário!")
-            return redirect (url_for("CadastroGerente"))
+    if request.method == "POST":
+        if "confirmar" in request.form:
+            name = request.form["nome"]
+            cpf = request.form["cpf"]
+            dataAniversario = request.form["dataAniversario"]
+            genero = request.form["genero"]
+            endereco = request.form["endereco"]
+            agencia = request.form["agencia"]
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
 
-        numero = []
-        for i in range(1, 6):
-            numero.append(random.randint(0, 9))
-        matriculaGerenteAgencia="".join(map(str,numero))
-        session.pop("horaSistema", None)
-        session["horaSistema"] = dataAgora()
+            if not name or not cpf or not dataAniversario or not genero or not endereco or not agencia:
+                flash("Preencha todos os campos do formulário!")
+                return redirect (url_for("cadastroGerente"))
         
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO cadastroGerente (nome, cpf, dataAniversario, genero, endereco, cargo, agencia,matriculaGerenteAgencia,senhaGerenteAgencia) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, cpf, dataAniversario, genero, endereco,cargo, agencia,matriculaGerenteAgencia,senhaGerenteAgencia))
-        mysql.connection.commit()
-        cur.close()
-        cadastro = True
-        
-    #return render_template("cadastroGA.html")'''
+
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO gerenteAgencia (gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_agencia, num_matricula, num_senha, data_criacao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, cpf, dataAniversario, genero, endereco, agencia, matriculaGerenteAgencia, senhaGerenteAgencia, session["horaSistema"]))
+            mysql.connection.commit()
+            cur.close()
+            flash("Cadastro realizado com sucesso!")
+            
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia, data_criacao, gerente_id FROM gerenteAgencia WHERE num_matricula = %s", ([matriculaGerenteAgencia]))
+            retornoDadosGerente = cur.fetchone()
+
+            session["nomeGerenteAgencia"] = retornoDadosGerente[0]
+            session["cpfGerenteAgencia"] = retornoDadosGerente[1]
+            session["nascGerenteAgencia"] = retornoDadosGerente[2]
+            session["generoGerenteAgencia"] = retornoDadosGerente[3]
+            session["endGerenteAgencia"] = retornoDadosGerente[4]
+            session["matriculaGerenteAgencia"] = retornoDadosGerente[5]
+            session["numAgenciaGerenteAgencia"] = retornoDadosGerente[6]
+            session["dataCriacaoGerenteAgencia"] = retornoDadosGerente[7]
+            session["gerenteAgenciaId"] = retornoDadosGerente[8]
+
+            return redirect(url_for("cadastroGerente"))
+    #return render_template("cadastroGA.html")
     return render_template("novo_gerente.html", titulo="Novo Gerente")
 
+@app.route("/editar-gerentes", methods=["GET", "POST"])
+def editarGerentes():
+    
+    if request.method == 'POST':
+        if "confirmar" in request.form:
+
+            novoNomeGerente = request.form['nomeGerenteCadastro']
+            novoCpfGerente = request.form['cpfGerenteCadastro']
+            novoNascGerente = request.form['nascGerenteCadastro']
+            novoGeneroGerente = request.form['generoGerenteCadastro']
+            novoEndGerente = request.form['endGerenteCadastro']
+            novoNumMatriculaGerente = request.form['matriculaGerenteCadastro']
+            novoNumAgenciaGerente = request.form['numAgenciaCadastro']
+
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT gerente_id from gerenteAgencia where num_matricula = %s", ([session["matriculaGerenteAgencia"]]))
+            idGerenteRetorno = cur.fetchone()
+            idGerenteAgencia = idGerenteRetorno[0]
+
+            cur.execute("UPDATE gerenteAgencia SET gerente_nome = %s, gerente_cpf = %s, gerente_nasc = %s, gerente_genero = %s, gerente_end = %s, num_matricula = %s, num_agencia = %s WHERE gerente_id = %s", ([novoNomeGerente], [novoCpfGerente], [novoNascGerente], [novoGeneroGerente], [novoEndGerente], [novoNumMatriculaGerente], [novoNumAgenciaGerente], [idGerenteAgencia]))
+            mysql.connection.commit()
+            cur.close()
+
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia, data_criacao, gerente_id FROM gerenteAgencia WHERE num_matricula = %s", ([novoNumMatriculaGerente]))
+            retornoDadosGerente = cur.fetchone()
+
+            session["nomeGerenteAgencia"] = retornoDadosGerente[0]
+            session["cpfGerenteAgencia"] = retornoDadosGerente[1]
+            session["nascGerenteAgencia"] = retornoDadosGerente[2]
+            session["generoGerenteAgencia"] = retornoDadosGerente[3]
+            session["endGerenteAgencia"] = retornoDadosGerente[4]
+            session["matriculaGerenteAgencia"] = retornoDadosGerente[5]
+            session["numAgenciaGerenteAgencia"] = retornoDadosGerente[6]
+            session["dataCriacaoGerenteAgencia"] = retornoDadosGerente[7]
+            session["gerenteAgenciaId"] = retornoDadosGerente[8]
+
+            flash("Dados atualizados com sucesso!")
+            return redirect(url_for("editarGerentes"))
+        else:
+            return redirect(url_for("editarGerentes"))
+    return render_template("editar_gerente.html", titulo="Editar Gerente")
+
 @app.route("/cadastroAgencia", methods=["GET", "POST"])
-def CadastroAgencia():
+def cadastroAgencia():
 
-    '''if request.method == "POST":
+    if request.method == "POST":
+        if "cadastrar" in request.form:
+            nome = request.form["nomeGerente"]
+            endereco = request.form["enderecoAgencia"] 
+            numAgencia = request.form["numeroAgencia"]
+
+            if not nome or not endereco or not numAgencia:
+                flash("Preencha todos os campos do formulário!")
+                return redirect (url_for("cadastroAgencia"))
+
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO agencias (nome_gerente, end_agencia, numero_agencia) VALUES(%s, %s, %s)",(nome, endereco, numAgencia))
+            mysql.connection.commit()
+            cur.close()
+
+            flash("Agência cadastrada com sucesso!")
+
+            return redirect(url_for("cadastroAgencia"))
+    return render_template("nova_agencia.html", titulo="Nova Agência")
+
+@app.route("/poupanca", methods=["GET", "POST"])
+def poupanca():
+
+    taxa = (1/100)
+    dataProximoMes = ''
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT valorInicial, valorAtualizado, dataInicial, valorTaxa, dataProximoMes FROM poupanca WHERE user_id = %s", ([session["idUsuario"]]))
+        retornoDadosPoupanca = cur.fetchone()
+        retornoValorInicial = retornoDadosPoupanca[0]
+        session["valorInicialUsuarioPoupanca"] = retornoValorInicial
+
+        retornoValorAtualizado = retornoDadosPoupanca[1]
+        session["valorAtualizadoUsuarioPoupanca"] = retornoValorAtualizado
+
+        dataInicialUsuarioPoupanca = retornoDadosPoupanca[2]
+        session["dataInicialUsuarioPoupanca"] = dataInicialUsuarioPoupanca
+        session["valorTaxaUsuarioPoupanca"] = retornoDadosPoupanca[3]
+        dataProximoMesUsuario = retornoDadosPoupanca[4]
+        session["dataProximoMes"] = dataProximoMesUsuario
+
+        dataAtualPoupanca = datetime.now()
+        dataAtualPoupancaStr = str(dataAtualPoupanca)
+        dataAtualPoupancaStr = dataAtualPoupancaStr[0:10]
+        dataAtualPoupancaEditado = dataAtualPoupancaStr[-2:] + dataAtualPoupancaStr[4:8] + dataAtualPoupancaStr[0:4]
+        dataAtualPoupancaEditado = dataAtualPoupancaEditado.replace("-","/")
+
+        dataInicialUsuarioPoupanca = dataInicialUsuarioPoupanca[0:10]
+        dataInicialUsuarioPoupancaEditado = dataInicialUsuarioPoupanca[-2:] + dataInicialUsuarioPoupanca[4:8] + dataInicialUsuarioPoupanca[0:4]
+        dataInicialUsuarioPoupancaEditado = dataInicialUsuarioPoupancaEditado.replace("-","/")
+
+        dataProximoMesUsuario = dataProximoMesUsuario[0:10]
+        dataProximoMesUsuarioEditado = dataProximoMesUsuario[-2:] + dataProximoMesUsuario[4:8] + dataProximoMesUsuario[0:4]
+        dataProximoMesUsuarioEditado = dataProximoMesUsuarioEditado.replace("-","/")
+
+        if dataAtualPoupancaEditado == dataProximoMesUsuarioEditado:
+            valorParcial = float(retornoValorAtualizado) * (1 + taxa)
+            session.pop("valorAtualizadoUsuarioPoupanca", None)
+            session["valorAtualizadoUsuarioPoupanca"] = valorParcial
+
+            dataProximoMesUsuario = dataAtualPoupanca + relativedelta(months=+1)
+
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE poupanca SET valorAtualizado = %s, dataProximoMes = %s WHERE user_id= %s", ([valorParcial], [dataProximoMesUsuario], session['idUsuario']))
+            mysql.connection.commit()
+            cur.close()
+            return redirect(url_for("poupanca"))
+
+    except Exception as ex:
+        pass
+        
+        
+    if request.method == 'POST':
         userDetails = request.form
-        nomeGerente = userDetails["nome"]
-        endereco = userDetails["endereco"] 
-        numAgencia = userDetails["agencia"]
+        valorInicial = userDetails["valorPoupar"]
 
-        if not nomeGerente or not endereco or not numAgencia:
-            flash("Preencha todos os campos do formulário!")
-            return redirect (url_for("CadastroAgencia"))
+        session.pop("dataInicial", None)
+        dataInicial = datetime.now()
+        app.logger.info(dataInicial)
+        session["dataInicial"] = dataInicial
+        
+        dataProximoMes = dataInicial + relativedelta(months=+1)
+
+        valorParcial = valorInicial
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO cadastroAgencia (nome, endereco, agencia) VALUES(%s, %s, %s)",(nomeGerente, endereco,numAgencia))
+        cur.execute("INSERT INTO poupanca (valorInicial, dataInicial, valorTaxa, valorAtualizado, dataProximoMes, user_id) VALUES (%s, %s, %s, %s, %s, %s)", ([valorInicial], session["dataInicial"], [taxa], [valorParcial], [dataProximoMes], session["idUsuario"]))
         mysql.connection.commit()
         cur.close()
-        cadastro = True'''
-    #return render_template("cadastroAgencia.html")
-    return render_template("nova_agencia.html", titulo="Nova Agência")
+        
+    return render_template("poupanca.html", titulo = "Poupança")
+
+
+
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

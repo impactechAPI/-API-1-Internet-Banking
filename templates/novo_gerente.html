@@ -3,7 +3,7 @@
 {% block contents %}
 <main class="container">
 
-<form method="post">
+<form method="POST" action="">
         <a href="{{ url_for('listaGerentes') }}" class="voltar">&lt voltar</a><br><br>
             <div class="campo-unico">
                 <div class="info-conta">
@@ -49,12 +49,21 @@
 
                 <div class="info-conta">
                     <label>Agência</label>
-                    <input type="number" name="numeroAgencia" placeholder="Informe a agência">
+                    <input type="number" name="agencia" placeholder="Informe a agência">
                 </div>
             </div>
 
-            <input type="submit" class="cadastrar" value="Cadastrar">
+            <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar">
     </div>
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <div class="error">{{ message }}</div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
 </form>
 
 </main>

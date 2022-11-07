@@ -21,7 +21,9 @@
                 {% if messages %}
                 <ul class=flashes>
                     {% for message in messages %}
+                        {% if message == "Saque realizado com sucesso! Para ver seu comprovante clique " %}
                     <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
+                        {% endif %}
                 </ul>
                 {% endfor %}
                 {% endif %}

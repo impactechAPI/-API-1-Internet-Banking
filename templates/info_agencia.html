@@ -1,0 +1,38 @@
+{% extends 'base_gg.html' %}
+
+{% block contents %}
+<main>
+
+    <div class="container">
+        <a href="{{ url_for('listaAgencias') }}" class="voltar">&lt voltar</a><br><br>
+        <form method="post" action="{{ url_for('editarAgencia') }}" class="solicitacao">
+            <div class="campo-duplo">
+                <div class="info-conta">
+                    <label>Número</label>
+                    <input type="number" value="{{ session['numeroAgencia'] }}" name="numAgencia" disabled>
+                </div>
+                <div class="info-conta">
+                    <label>Número de clientes</label>
+                    <input type="number" value="{{ session['numeroClientes']}}" name="numClientes" disabled>
+                </div>
+            </div>
+            <div class="campo-unico">
+                <label>Gerente</label>
+                <input type="text" value="{{ session['nomeGerente'] }}" name="gerenteAgencia"
+                    disabled="disabled">
+            </div>
+            <div class="campo-unico">
+                <label>Endereço</label>
+                <input type="text" value="{{ session['enderecoAgencia'] }}" name="enderecoAgencia"
+                    disabled="disabled">
+            </div>
+            <aside class="data-botao">
+                <p class="data_inicio">Criada em: {{ session["dataInicioAgencia"] }}</p>
+                <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar"> Editar</button>
+                <!-- <input type="submit" name="confirmar" class="editar" value="Editar"> -->
+            </aside>
+        </form>
+    </div>
+
+</main>
+{% endblock %}

@@ -2,61 +2,56 @@
 
 {% block contents %}
 
-<main>
-
-    <!-- título -->
-    <aside class="fundo">
-        <div class="titulo">
-            <h1>Extrato</h1>
-            <hr>
-        </div>
-    </aside>
-
-    <!-- filtros -->
-    <section class="container">
-        <form method="post" action="">
-            <div class="barra-pesquisa">
-                <div class="filtros">
-                    <div class="periodo">
-                        <span>Data inicial</span>
-                        <input type="date" name="data-inicial">
-                    </div>
-                    <div class="periodo">
-                        <span>Data final</span>
-                        <input type="date" name="data-limite">
-                    </div>
-
-                    <div class="tipo-transacao">
-                        <span>Tipo de transação</span>
-                        <select name="tipo-transacao" id="tipo-transacao">
-                            <option value="todos">Todos</option>
-                            <option value="deposito">Depósito</option>
-                            <option value="saque">Saque</option>
-                        </select>
-                    </div>
+<!-- filtros -->
+<main class="container">
+    <form method="post">
+        <div class="barra-pesquisa">
+            <div class="filtros">
+                <div class="periodo">
+                    <span>Data inicial</span>
+                    <input type="date" name="data-inicial">
                 </div>
-                <input type="submit" class="pesquisar" value="Pesquisar" name="pesquisar">
+                <div class="periodo">
+                    <span>Data final</span>
+                    <input type="date" name="data-limite">
+                </div>
+
+                <div class="tipo-transacao">
+                    <span>Tipo de transação</span>
+                    <select name="tipo-transacao" id="tipo-transacao">
+                        <option value="todos">Todos</option>
+                        <option value="deposito">Depósito</option>
+                        <option value="saque">Saque</option>
+                    </select>
+                </div>
             </div>
-        
+            <div class="pesquisar">
+                <img src="../static/icones/lupa.png" alt="lupa" class="lupa">
+                <input type="submit" class="btn_pesquisar" value="" name="pesquisar">
+            </div>
+        </div>
+
         <!-- tabela -->
         {% for tabela in tabelas %}
         {{ titulos[loop.index] }}
         {{ tabela|safe }}
         {% endfor %}
-        <input type="submit" class="button" value="Imprimir" name="imprimir">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                    <div class="error">{{ message }}</div>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-        <!-- <button name="imprimir"><img src="{{ url_for ('static', filename='icones/print.png') }}" alt="">Imprimir</button> -->
-        </form>
-    </section>
 
+        <div class="imprimir">
+            <img src="../static/icones/print.png" alt="print" class="print">
+            <input type="submit" class="btn_imprimir" value="Imprimir" >
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </form>
 </main>
 
 {% endblock %}

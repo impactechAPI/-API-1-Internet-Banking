@@ -1,0 +1,43 @@
+{% extends "base-cliente.html" %}
+
+{% block contents %}
+
+<main class="container">
+    <form method="post" action="">
+    <a href={{url_for("home")}} class="voltar">&lt voltar</a>
+    <div class="comprovante">
+        <section>
+            <h2>SIRIUSBANK</h2>
+            <h3>{{ session["horaSistemaComprovante"] }} - Autoatendimento</h3>
+            <div class="linha">
+                <span></span>
+            </div>
+            <h3>COMPROVANTE DE TRANSFERÊNCIA</h3>
+        </section>
+        <section>
+            <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
+            <h4>AGÊNCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
+            <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
+            <h4>VALOR DA TRANSFERÊNCIA: {{ session["valorTransferencia"] }}</h4>
+            <h4>CONTA DESTINO: <span>{{ session["numeroContaTransferencia"] }}</span></h4>
+            <h4>AGENCIA DESTINO: <span>{{ session["numeroAgenciaTransferencia"] }}</span></h4>
+            <h4>SALDO DISPONÍVEL: {{ session["saldoUsuarioAntesEnvio"] }}</h4>
+            <h4>SALDO FINAL: {{ session["saldoFinalEnvio"] }}</h4>
+            <div class="linha">
+                <span></span>
+            </div>
+        </section>
+        <section>
+            <h3>GUARDE ESTE COMPROVANTE ATÉ A OPERAÇÃO SER PROCESSADA.</h3>
+        </section>
+        <section class="imprimir">
+            <img src="../static/icones/print.png" alt="print" class="print">
+            <input type="submit" class="btn_imprimir_comprovante" value="Imprimir">
+        </section>
+        </section>
+        <!-- <input type="submit" class="button" value="Imprimir" name="imprimir"> -->
+    </div>
+    </form>
+</main>
+
+{% endblock %}

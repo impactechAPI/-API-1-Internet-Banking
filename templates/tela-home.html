@@ -1,5 +1,7 @@
 {% extends "base-cliente.html" %}
 
+{% block header %}{% endblock %}
+
 {% block contents %}
 <main>
 
@@ -8,15 +10,16 @@
         <div class="info-usuario">
             <div class="info">
                 <h1>Olá, {{ session['nomeUsuario'] }}</h1>
-                <label>Agência: {{ session['agenciaUsuario'] }}</label>
-                <label>Conta: {{ session['contaUsuario'] }}</label>
+                <span>Agência: {{ session['agenciaUsuario'] }}</span>
+                <span>Conta: {{ session['contaUsuario'] }}</span>
+                <span>Tipo de conta: {{ session['tipoContaUsuario'] }}</span>
             </div>
             <div class="info">
-                <h2>Saldo disponível</h2>
-                <span>R$ {{ session['saldoUsuario'] }}</span>
+                <span class="saldo_disponivel">Saldo disponível</span>
+                <span class="saldo">R$ {{ session['saldoUsuario'] }}</span>
             </div>
         </div>
-        <hr class="hr">
+        <hr>
     </section>
 
     <!-- home -->

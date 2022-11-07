@@ -4,24 +4,16 @@
 
 <main>
 
-    <!-- título -->
-    <div class="fundo">
-        <div class="titulo">
-            <h1>Depósito</h1>
-            <hr>
-        </div>
-    </div>
-
     <!-- deposito -->
     <div class="container">
         <h2>Quanto você quer depositar?</h2>
-        <form method="post" action="">
-            <div class="transacao">
-                <div class="saldo">
+        <form method="post" class="transacao">
+            <div class="campo-duplo">
+                <div class="info-conta">
                     <label>Saldo disponível</label>
                     <span>R$ {{ session['saldoUsuario'] }}</span>
                 </div>
-                <label class="valor">Valor<br>
+                <label class="info-conta">Valor<br>
                     <input type="text" name="valorDeposito" placeholder="R$ 0,00" step="0.01">
                 </label>
             </div>
@@ -29,7 +21,9 @@
                 {% if messages %}
                 <ul class=flashes>
                     {% for message in messages %}
-                    <div class="error">{{ message }} <a href={{url_for("comprovante")}} class="voltar">aqui</a></div>
+                        {% if message == "Depósito realizado. Aguarde a confirmação do depósito pelo Gerente de sua agência! Para ver seu comprovante clique " %}
+                            <div class="error">{{ message }} <a href={{url_for('comprovante')}} class="voltar">aqui</a></div>
+                        {% endif %}
                     {% endfor %}
                 </ul>
                 {% endif %}

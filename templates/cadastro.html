@@ -1,0 +1,100 @@
+{% extends "base_index.html" %}
+
+<!-- cabeçalho -->
+{% block header %}
+<header class="header">
+    <a href="{{ url_for('indexHome') }}"><img src="../static/img/logo.png" alt="logo" class="logo"></a>
+</header>
+{% endblock %}
+
+<!-- Formulário-->
+{% block contents %}
+
+<main class="container container_cadastro">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <div class="error">{{ message }}</div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% if error %}
+        <p class=error><strong>Erro:</strong> {{ error }}
+    {% endif %}
+
+
+    <h1>Abra sua conta</h1>
+    <hr>
+    <form method="post" action="">
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
+                <input type="text" name="nome" placeholder="Informe seu nome">
+            </div>
+        </div>
+
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>Data de nascimento</label>
+                <input type="date" class="data" name="dataAniversario">
+            </div>
+
+            <div class="info-conta">
+                <label>Gênero</label>
+                <select name="genero" id="genero" class="select">
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>CPF</label>
+                <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+            </div>
+
+            <div class="info-conta">
+                <label>Tipo de conta</label>
+                <select name="tipoConta" id="tipoConta" class="select">
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="poupanca">Poupança</option>
+                    <option value="conta _corrente">Conta Corrente</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
+                <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
+            </div>
+        </div>
+
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>Senha</label>
+                <input type="password" placeholder="Informe sua senha" name="senha">
+            </div>
+            <div class="info-conta">
+                <label>Confirmação de senha</label>
+                <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
+            </div>
+        </div>
+
+        <label class="checkbox">
+            <input type="checkbox" name="consentimentoUsuario"> 
+            <span>Li e estou de acordo com os <a href="">Termos de Uso</a>
+            e <a href="">Política de Privacidade</a>.</span>
+        </label>
+       
+        <input type="submit" class="cadastrar" value="Cadastrar">
+    </form>
+
+</main>
+{% endblock %}

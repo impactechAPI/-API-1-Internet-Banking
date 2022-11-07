@@ -1,0 +1,70 @@
+{% extends "base_gg.html" %}
+
+{% block contents %}
+<main class="container">
+
+<form method="POST" action="">
+        <a href="{{ url_for('listaGerentes') }}" class="voltar">&lt voltar</a><br><br>
+            <div class="campo-unico">
+                <div class="info-conta">
+                    <label>Nome</label>
+                    <input type="text" name="nome" placeholder="Informe o nome">
+                </div>
+            </div>
+
+            <div class="campo-triplo">
+                <div class="info-conta">
+                    <label>CPF</label>
+                    <input type="text" maxlength="11" name="cpf" placeholder="Informe o CPF">
+                </div>
+
+                <div class="info-conta">
+                    <label>Data de nascimento</label>
+                    <input type="date" class="data" name="dataAniversario">
+                </div>
+
+                <div class="info-conta">
+                    <label>Gênero</label>
+                    <select name="genero" id="genero" class="select">
+                        <option value="selecione" disabled>Selecione</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="campo-unico">
+                <div class="info-conta">
+                    <label>Endereço</label>
+                    <input type="text" placeholder="Informe o endereço" name="endereco">
+                </div>
+            </div>
+
+            <div class="campo-duplo">
+                <div class="info-conta">
+                    <label>Função</label>
+                    <input type="text" name="funcao" value="Gerente de Agência" disabled>
+                </div>
+
+                <div class="info-conta">
+                    <label>Agência</label>
+                    <input type="number" name="agencia" placeholder="Informe a agência">
+                </div>
+            </div>
+
+            <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar">
+    </div>
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <div class="error">{{ message }}</div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+</form>
+
+</main>
+{% endblock %}

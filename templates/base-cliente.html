@@ -9,10 +9,13 @@
 
     <!-- aba navegador -->
     <title>SiriusBank</title>
-    <link rel="icon" href="../static/icones/logo-parcial.png">
+    <link rel="icon" href="../static/img/logo-parcial.png">
 
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
+    <link rel="stylesheet" href="../static/styles/formularios.css">
+    <link rel="stylesheet" href="../static/styles/header.css">
+    <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/telas-home.css">
     <link rel="stylesheet" href="../static/styles/telas-transacoes.css">
@@ -30,7 +33,7 @@
         <div class="sidebar">
             <section class="logoContent">
                 <div class="logo">
-                    <img src="../static/icones/logo.png" alt="logo">
+                    <img src="../static/img/logo.png" alt="logo">
                 </div>
                 <!-- /logo -->
                 <img src="../static/icones/menu.png" alt="menu" id="btn">
@@ -41,6 +44,7 @@
                     <a href="{{ url_for('home') }}">
                         <img src="../static/icones/home.png" alt="home">
                         <span class="links-name">Home</span>
+                        <span class="tooltip">Home</span>
                     </a>
                 </li>
 
@@ -48,6 +52,7 @@
                     <a href="{{ url_for('deposito') }}">
                         <img src="../static/icones/deposito.png" alt="depósito">
                         <span class="links-name">Depósito</span>
+                        <span class="tooltip">Depósito</span>
                     </a>
                 </li>
 
@@ -55,14 +60,15 @@
                     <a href="{{ url_for('saque') }}">
                         <img src="../static/icones/saque.png" alt="saque">
                         <span class="links-name">Saque</span>
+                        <span class="tooltip">Saque</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
-                        <!-- {{ url_for('transferencia') }} -->
+                    <a href="{{ url_for('transferencia') }}">
                         <img src="../static/icones/transferencia.png" alt="transferência">
                         <span class="links-name">Transferência</span>
+                        <span class="tooltip">Transferência</span>
                     </a>
                 </li>
 
@@ -70,14 +76,23 @@
                     <a href="{{ url_for('extrato') }}">
                         <img src="../static/icones/extrato.png" alt="extrato">
                         <span class="links-name">Extrato</span>
+                        <span class="tooltip">Extrato</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
-                        <!-- {{ url_for('configuracoes') }} -->
-                        <img src="../static/icones/configuracoes.png" alt="configurações">
-                        <span class="links-name">Configurações</span>
+                    <a href="{{ url_for('poupanca') }}">
+                        <img src="../static/icones/poupanca.png" alt="poupança">
+                        <span class="links-name">Poupança</span>
+                        <span class="tooltip">Poupança</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('meusDados') }}">
+                        <img src="../static/icones/meus_dados.png" alt="meus dados">
+                        <span class="links-name">Meus Dados</span>
+                        <span class="tooltip">Meus Dados</span>
                     </a>
                 </li>
             </ul>
@@ -101,6 +116,24 @@
 
         <!-- conteúdo da página -->
         <section class="pageContent">
+            {% block nav %}
+            <header class="nav">
+                <div class="logo">
+                    <img src="../static/img/logo.png" alt="logo">
+                </div>
+            </header>
+            {% endblock %}
+
+            {% block header %}
+            <!-- título -->
+            <header class="fundo">
+                <div class="titulo">
+                    <h1>{{ titulo }}</h1>
+                    <hr>
+                </div>
+            </header>
+            {% endblock %}
+
             {% block contents %}
 
             {% endblock %}

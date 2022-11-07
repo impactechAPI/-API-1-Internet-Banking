@@ -1,0 +1,73 @@
+{% extends 'base-cliente.html' %}
+
+{% block contents %}
+<div class="container">
+
+    <a href="{{ url_for('meusDados') }}" class="voltar">&lt voltar</a><br><br>
+    <form method="post" action="{{ url_for('alterarDados') }}">
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
+                <input type="text" name="nome" value="{{ session['nomeUsuario'] }}">
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF (Apenas números)</label>
+                <input type="text" maxlength="11" name="cpf" value="{{ session['cpfUsuario'] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Data de nascimento</label>
+                <input type="date" name="dataAniversario" value="{{ session['dataAniversario'] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Gênero</label>
+                <select name="genero" id="genero" class="genero" aria-selected="{{ session['generoUsuario'] }}">
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
+                <input type="text" name="endereco" value="{{ session['enderecoUsuario'] }}">
+            </div>
+        </div>
+
+        <div class="campo-duplo">
+            <div class="info-conta">
+                <label>Senha</label>
+                <input type="text" name="senhaUsuario" placeholder="Digite a nova senha">
+            </div>
+            <div class="info-conta">
+                <label>Confirmar senha</label>
+                <input type="text" name="retornoSenha" placeholder="Confirme a nova senha">
+            </div>
+            <!-- /info-conta -->
+        </div>
+
+        <aside class="botoes">
+            <input type="submit" name="confirmar" class="confirmar" value="Salvar">
+            <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+        </aside>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+    </form>
+
+</div>
+
+{% endblock %}

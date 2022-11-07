@@ -1,0 +1,107 @@
+{% extends 'base-cliente.html' %}
+
+{% block contents %}
+<main class="container">
+
+    <form method="post" action="{{ url_for('alterarDados') }}">
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
+                <input type="text" name="nome" value="{{ session['nomeUsuario'] }}" disabled>
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF (Apenas números)</label>
+                <input type="text" maxlength="11" name="cpf" value="{{ session['cpfUsuario'] }}" disabled>
+            </div>
+
+            <div class="info-conta">
+                <label>Data de nascimento</label>
+                <input type="date" name="dataAniversario" value="{{ session['dataAniversario'] }}" disabled>
+            </div>
+
+            <div class="info-conta">
+                <label>Gênero</label>
+                <select name="genero" id="genero" class="select" aria-selected="{{ session['generoUsuario'] }}"
+                    disabled>
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
+                <input type="text" name="endereco" value="{{ session['enderecoUsuario'] }}" disabled>
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>Número da conta</label>
+                <input type="number" name="contaUsuario" value="{{ session['contaBancariaUsuario'] }}" disabled>
+            </div>
+
+            <div class="info-conta">
+                <label>Agência</label>
+                <input type="number" name="agenciaUsuario" value="{{ session['agenciaBancariaUsuario'] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Saldo disponível</label>
+                <input name="saldoUsuario" value="{{ session['saldoBancarioUsuario'] }}" disabled>
+            </div>
+        </div>
+
+        <aside class="data-botao">
+            <p class="data_inicio">Cliente desde: {{ session["dataClientela"] }}</p>
+            <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar">
+                Editar</button>
+        </aside>
+    </form>
+
+    <aside class="div_encerrar_conta">
+        <span id="encerrar_conta"></span>
+        <span id="confirmar_encerrar">
+            <label class="titulo"><span>Tem</span> certeza que deseja encerrar sua conta?</label>
+            <div class="alerta">
+                <img src="../static/icones/alert.png" alt="alert">
+                <label>Uma solicitação de encerramento será enviada ao gerente de sua agência, após confirmada, sua
+                conta será excluída permanentemente.</label>
+            </div>
+            <form method="post" action="">
+                <input type="submit" name="encerrarConta" class="encerrar_conta" value="Encerrar conta">
+            </form>
+        </span>
+        <button onclick="encerrar()" id="btn_encerrar">Encerrar Conta</button>
+    </aside>
+
+</main>
+
+<script>
+    function encerrar() {
+        // pegando itens do html pelo id
+        var encerrarConta = document.getElementById("encerrar_conta");
+        var confirmar_encerrar = document.getElementById("confirmar_encerrar");
+        var btnEncerrar = document.getElementById("btn_encerrar")
+
+        // ao clicar no link 'Encerrar conta' mostra abaixo dele o aviso de exclusão permanente da conta e o 'Encerrar conta' vira 'Cancelar'
+        // ao clicar no link 'Cancelar' esconde o aviso
+        if (encerrarConta.style.display === "none") {
+            encerrarConta.style.display = "inline";
+            confirmar_encerrar.style.display = "none";
+            btnEncerrar.innerHTML = "Encerrar conta";
+        } else {
+            encerrarConta.style.display = "none";
+            confirmar_encerrar.style.display = "inline";
+            btnEncerrar.innerHTML = "Cancelar"
+        }
+    }
+</script>
+
+{% endblock %}

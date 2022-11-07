@@ -1,0 +1,44 @@
+{% extends "base_gg.html" %}
+
+{% block contents %}
+
+<main class="container">
+    <form method="post">
+        <a href="{{ url_for('listaAgencias') }}" class="voltar">&lt voltar</a><br><br>
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Número</label>
+                <input type="number" name="numeroAgencia" placeholder="Número da agência">
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label class="info-conta">Gerente</label>
+                <input type="text" name="nomeGerente" placeholder="Nome do gerente">
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label class="info-conta">Endereço </label>
+                <input type="text" name="enderecoAgencia" placeholder="Endereço da agência">
+            </div>
+        </div>
+
+        <input type="submit" name="cadastrar" class="cadastrar" value="Cadastrar">
+
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </form>
+</main>
+
+{% endblock %}

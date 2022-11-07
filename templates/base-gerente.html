@@ -9,12 +9,14 @@
 
     <!-- aba navegador -->
     <title>SiriusBank</title>
-    <link rel="icon" href="../static/icones/logo-parcial.png">
+    <link rel="icon" href="../static/img/logo-parcial.png">
 
     <!-- links css -->
     <link rel="stylesheet" href="../static/styles/menu-lateral.css">
+    <link rel="stylesheet" href="../static/styles/header.css">
+    <link rel="stylesheet" href="../static/styles/formularios.css">
+    <link rel="stylesheet" href="../static/styles/botoes.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
-    <link rel="stylesheet" href="../static/styles/telas-home.css">
     <link rel="stylesheet" href="../static/styles/tabelas-filtros.css">
     <link rel="stylesheet" href="../static/styles/telas-gerenciar.css">
     {% endblock %}
@@ -29,7 +31,7 @@
         <div class="sidebar">
             <section class="logoContent">
                 <div class="logo">
-                    <img src="../static/icones/logo.png" alt="logo">
+                    <img src="../static/img/logo.png" alt="logo">
                 </div>
                 <!-- /logo -->
                 <img src="../static/icones/menu.png" alt="menu" id="btn">
@@ -40,6 +42,7 @@
                     <a href="{{ url_for('homeGerente') }}">
                         <img src="../static/icones/home.png" alt="home">
                         <span class="links-name">Home</span>
+                        <span class="tooltip">Home</span>
                     </a>
                 </li>
 
@@ -47,33 +50,29 @@
                     <a href="{{ url_for('clientes') }}">
                         <img src="../static/icones/usuario.png" alt="depósito">
                         <span class="links-name">Clientes</span>
+                        <span class="tooltip">Clientes</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ url_for('gerenciar') }}">
-                        <img src="../static/icones/gerenciar.png" alt="saque">
-                        <span class="links-name">Gerenciar Clientes</span>
+                        <img src="../static/icones/solicitacoes.png" alt="saque">
+                        <span class="links-name">Solicitações</span>
+                        <span class="tooltip">Solicitações</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="#">
-                        <!-- {{ url_for('configuracoes') }} -->
-                        <img src="../static/icones/configuracoes.png" alt="configurações">
-                        <span class="links-name">Configurações</span>
-                    </a>
-                </li>
             </ul>
             <!-- /nav-list -->
             <section class="profileContent">
                 <div class="profile">
                     <div class="profileDetail">
                         <img src="../static/icones/perfil.jpg" alt="usuário">
-                        <span class="name">{{ session['nomeGerente'] }}</span>
+                        <span class="name">{{ session['gerente_nome'] }}</span>
                     </div>
                     <!-- /profileDetail -->
-                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair" id="logout"></a>
+                    <a href="{{ url_for('indexGerente') }}"><img src="../static/icones/sair.png" alt="sair"
+                            id="logout"></a>
                 </div>
                 <!-- /profile -->
             </section>
@@ -84,6 +83,17 @@
 
         <section class="pageContent">
             <!-- conteúdo da página -->
+
+            {% block header %}
+            <!-- título -->
+            <header class="fundo">
+                <div class="titulo">
+                    <h1>{{ titulo }}</h1>
+                    <hr>
+                </div>
+            </header>
+            {% endblock %}
+            
             {% block contents %}
 
             {% endblock %}

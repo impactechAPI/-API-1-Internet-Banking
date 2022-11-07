@@ -2,7 +2,6 @@ body {
     position: relative; /* alterar a posição de um elemento tendo como referêcia a posição inicial */
     min-height: 100vh;
     width: 100%;
-    overflow: hidden; /* o conteúdo é cortado, não exibe barra de rolagem */
 }
 
 /* sidebar */
@@ -16,6 +15,7 @@ body {
     padding: 6px 14px 6px 4px;
     transition: all 0.5s ease; /* transição com início e final lentos */
     box-shadow: 5px 5px 50px 1px #00000038;
+    z-index: 1;
 }
 
 .sidebar .logoContent .logo {
@@ -71,9 +71,8 @@ body {
     align-items: center;
     color: #343434;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 10px 0px 0px 10px;
     white-space: nowrap; /* recolhe os espaços em branco, suprime as quebras de linha no texto */
-    transition: all 0.5s ease; /* ease: início lento, depois rápido e depois termina lentamente */
 }
 
 .sidebar ul li a:hover {
@@ -138,8 +137,36 @@ body {
     position: absolute;
     top: 0;
     left: 78px;
-    width: 100%;
+    width: calc(100% - 78px);
     transition: all 0.5s ease;
+}
+
+.tooltip {
+    position: absolute;
+    left: 55px;
+    transform: translate(0, -50%);
+    width: 0px;
+    height: 50px;
+    background-color: #22D6C3;
+    overflow: hidden;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    outline: none;
+    box-shadow: 25px 5px 30px 1px #00000038;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    color: #1d1d31;
+    line-height: 35px;
+    transition: width 0.5s;
+    transition-timing-function: ease;
+    opacity: 0;
+    top: 50%;
+}
+
+.sidebar ul li:hover .tooltip {
+    opacity: 1;
+    width: 130px;
 }
 
 /* sidebar active */
@@ -152,8 +179,14 @@ body {
     left: 300px;
 }
 
+.sidebar.active ul li a {
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
 .sidebar.active .logoContent .logo {
     opacity: 1;
+    overflow: hidden;
 }
 
 .sidebar.active #btn {
@@ -172,4 +205,56 @@ body {
 
 .sidebar.active .profile #logout {
     left: 90%;
+}
+
+.sidebar.active:hover .tooltip {
+    opacity: 0;
+}
+
+
+/* MEDIA QUERIES MENU */
+
+
+@media (max-width: 850px) {
+    .sidebar {
+        width: 0;
+        left: -1.3rem;
+    }
+
+    .sidebar .nav-list img {
+        display: none;
+    }
+
+    .sidebar #btn {
+        margin-left: 2rem;
+        margin-top: -.3rem;
+        display: inline;
+    }
+
+    .pagina .pageContent {
+        width: 100%;
+        left: 0;
+    }
+
+    .sidebar.active {
+        display: inline;
+        width: 200px;
+        left: 0;
+    }
+
+    .sidebar.active .logo {
+        display: none;
+    }
+
+    .sidebar.active .nav-list {
+        margin-top: 2rem;
+    }
+
+    .sidebar.active .nav-list img {
+        display: inline;
+    }
+
+    .sidebar.active #btn {
+        margin-left: 0;
+    }
 }

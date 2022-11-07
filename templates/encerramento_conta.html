@@ -1,0 +1,73 @@
+{% if session['funcaoAdministrativa'] == 'Gerente Geral' %}
+{% extends "base_gg.html" %}
+{% endif %}
+{% if session['funcaoAdministrativa'] == 'Gerente de Agência' %}
+{% extends "base-gerente.html" %}
+{% endif %}
+
+{% block contents %}
+<main class="container">
+
+    <a href="{{ url_for('gerenciar') }}" class="voltar">&lt voltar</a>
+
+    <form method="post" action="{{ url_for('encerramentoConta') }}">
+        <h2>Solicitação de Encerramento de Conta</h2>
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
+                <span>{{ session['nomeUsuarioCadastro'] }}</span>
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF</label>
+                <span>{{ session['cpfUsuarioCadastro'] }}</span>
+            </div>
+
+            <div class="info-conta">
+                <label>Data de nascimento</label>
+                <span>{{ session['dataAniversarioCadastro'] }}</span>
+            </div>
+
+            <div class="info-conta">
+                <label>Gênero</label>
+                <span>{{ session['generoCadastro'] }}</span>
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
+                <span>{{ session['enderecoCadastro'] }}</span>
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>Número da conta</label>
+                <span>{{ session['contaBancariaCadastro'] }}</span>
+            </div>
+
+            <div class="info-conta">
+                <label>Agência</label>
+                <span>{{ session['agenciaBancariaCadastro'] }}</span>
+            </div>
+
+            <div class="info-conta">
+                <label>Saldo disponível</label>
+                <span>{{ session['saldoBancarioCadastro'] }}</span>
+            </div>
+        </div>
+
+        <aside>
+            <p class="data-inicio">Cliente desde: {{ session["dataClientela"] }}</p>
+            <section class="botoes">
+                <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
+                <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+            </section>
+        </aside>
+    </form>
+
+</main>
+{% endblock %}

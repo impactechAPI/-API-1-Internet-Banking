@@ -12,27 +12,12 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body {
+    min-height: 100vh;
+}
+
 .pagina {
     display: flex;
-}
-
-/* fundo com título da página */
-.fundo {
-    background-image: linear-gradient(#1A20BD, #22D6C3);
-    height: 12rem;
-}
-
-.titulo {
-    width: 78%;
-    margin: 0 auto;
-}
-
-/* fundo título da página */
-.fundo h1 {
-    color: white;
-    font-size: 2.5rem;
-    font-weight: normal;
-    padding-top: 2rem;
 }
 
 /* container home */
@@ -48,18 +33,59 @@
     position: relative;
 }
 
+.container_cadastro {
+    margin-top: 2rem;
+    min-height: 80vh;
+    margin: 2rem auto 2rem auto;
+}
+
 /* título da página */
+.container h1, 
 .container h2 {
     font-weight: normal;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+}
+
+/* parágrafo "Fique à vontade..." */
+.container p {
+    font-size: 1rem;
 }
 
 /* mensagens de erro */
 .error {
-    color: rgb(252, 5, 5);
-    border-radius: 10px;
+    background-color: #f7bcb9;
+    color: #C71308;
+    min-width: 20rem;
+    padding: 1rem;
+    border-radius: 3px;
     text-align: center;
     font-size: 0.9em;
+}
+
+
+/* TELA MEUS DADOS ENCERRAR CONTA */
+
+
+.div_encerrar_conta .titulo {
+    font-weight: bold;
+}
+
+.div_encerrar_conta .alerta {
+    display: flex;
+    align-items: center;
+    background-color: #FFFDC5;
+    padding: .5rem;
+    border-radius: 3px;
+    margin: .5rem 0;
+}
+
+/* ícone de alerta */
+.div_encerrar_conta .alerta img {
+    margin-right: 1rem;
+}
+
+.div_encerrar_conta .alerta label {
+    margin: auto 0;
 }
 
 
@@ -73,9 +99,53 @@ footer {
     background-color: #343434;
     color: white;
     width: 100%;
-    height: 8vh;
+    height: 10vh;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1em;
+}
+
+
+/* MEDIA QUERIES */
+
+
+@media (max-width: 900px) {
+    .container_cadastro {
+        width: 80%;
+        height: 100vh;
+    }
+}
+
+@media (max-width: 600px) {
+    /* container tela de cadastro */
+    .container_cadastro {
+        width: 90%;
+        height: 100%;
+        padding: 1.5rem;
+    }
+
+    /* título*/
+    .container_cadastro h1 {
+        font-size: 1.5rem;
+    }
+
+    /* tamanho da linha abaixo do título */
+    .container_cadastro hr {
+        width: 100%;
+    }
+
+    /* container demais telas */
+    .container {
+        width: 100%;
+        min-height: 75vh;
+    }
+
+    .container h2 {
+        font-size: 20px;
+    }
+
+    .container p {
+        font-size: 14px;
+    }
 }

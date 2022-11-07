@@ -1,0 +1,36 @@
+{% extends "base_gg.html" %}
+
+{% block contents %}
+<main class="container">
+
+    <!-- filtros -->
+    <form method="post" action="{{ url_for('cadastroAgencia') }}" class="btn_novo-tabela">
+        <button type="submit" class="btn_novo" name="novo">+ Nova</button>
+
+        <!-- tabela -->
+        <table>
+            <thead>
+                <tr>
+                    {% for coluna in colunas %}
+                    <th>{{ coluna }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for linhas in dados %}
+                <tr>
+                    {% for x in linhas %}
+                    {% if loop.index0 != 1 %}
+                    <td>{{ x }}</td>
+                    {% endif %}
+                    {% if loop.index0 == 1 %}
+                    <td><a href={{url_for("infoAgencia",idGerente=x)}}><img src="../static/icones/ver.png" alt="ver" class="visualizar"></a></td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</main>
+{% endblock %}

@@ -1,0 +1,157 @@
+.container form h2 {
+    font-size: 1.5rem;
+    padding: 1rem 0;
+}
+
+/* margin superior  */
+.container label {
+    margin-top: .1rem;
+}
+
+/* campo nome com borda que ocupa linha inteira */
+.container .campo-unico {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* disposicão dos campos em mesma linha */
+.container .campo-duplo,
+.container .campo-triplo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* tamanho campo duplo */
+.container .campo-duplo .info-conta {
+    width: 47%;
+}
+
+/* tamanho campo triplo  */
+.container .campo-triplo .info-conta {
+    width: 30%;
+}
+
+/* quebra de linha campos label e span */
+.container .info-conta {
+    display: flex;
+    flex-direction: column;
+}
+
+/* select de gênero */
+.container .select {
+    border: 1px solid #000000;
+    border-radius: 3px;
+    margin-top: 7px;
+    outline-color: #08C746;
+    padding: .5rem 0 .5rem 1rem;
+    background-color: white;
+}
+
+input,
+.container .info-conta span {
+    padding: .5rem 0 .5rem 1rem;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    margin-top: 7px;
+    accent-color: #08c746;
+    outline-color: #08C746;
+    border: 1px solid #343434;
+    font-size: .9rem;
+    color: #343434;
+}
+
+.container .data_inicio {
+    margin-top: 2rem;
+}
+
+.container_cadastro .checkbox a {
+    color: #1a20bd;
+}
+
+/* retira as setas padrão de input type number */
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+
+/* TELA INFO GERENTE */
+
+/* div data inicial + botão editar */
+.container .data-botao {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+
+/* TELA SAQUE/DEPÓSITO/TRANSFERÊNCIA */
+.container .transacao {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* TELA MEUS DADOS */
+
+
+.container .div_encerrar_conta label {
+    margin-bottom: 1rem;
+    text-transform: lowercase;
+}
+
+.container .div_encerrar_conta span {
+    text-transform: capitalize;
+}
+
+/* link 'Encerrar conta' */
+.container .div_encerrar_conta #confirmar_encerrar {
+    display: none;
+}
+
+/* link 'Encerrar conta' */
+#btn_encerrar {
+    display: flex;
+    justify-content: left;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    color: #C71308;
+    width: 8rem;
+    font-size: 1rem;
+}
+
+
+/* MEDIA QUERIES FORMULÁRIOS */
+
+
+@media (max-width: 850px) {
+    .container .campo-duplo {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .container .info-conta {
+        min-width: 100%;
+    }
+
+    /* termos de uso tela cadastro */
+    .container_cadastro .checkbox {
+        font-size: 1rem;
+        display: flex;
+    }
+
+    /* input type checkbox */
+    .container_cadastro .checkbox input {
+        margin-right: 1rem;
+    }
+}

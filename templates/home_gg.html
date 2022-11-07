@@ -1,0 +1,23 @@
+{% extends "base_gg.html" %}
+
+{% block header %}{% endblock %}
+
+{% block contents %}
+<main>
+
+    <!-- dados usuário -->
+    <section class="fundo-home">
+        <div class="info-usuario">
+            <div class="info">
+                <h1>Olá, {{ session['nomeGerente'] }}</h1>
+                <label>Número de matrícula: {{ session['matriculaGerente'] }}</label>
+                <label>Função: {{ session['funcaoAdministrativa'] }}</label>
+            </div>
+        </div>
+        <hr class="hr">
+    </section>
+    <section class="container">
+    </section>
+
+</main>
+{% endblock %}

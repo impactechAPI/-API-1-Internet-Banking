@@ -5,22 +5,23 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end; /* alinhar itens ao fim da div */
-    overflow: auto; /* conteúdo não ultrapassa a div, gera barra de rolagem */
+    overflow: hidden; /* conteúdo não ultrapassa a div */
 }
 
 .filtros {
     display: flex;
+    align-items: flex-start;
     width: 100%;
 }
 
-/* filtro tela clientes */
+/* filtro por nome */
 .filtros .nome {
-    margin-right: 1rem;
+    margin: 0 1rem 0 0;
     width: 100%;
-    padding: 1.2rem;
-    height: 1.5rem;
+    padding: .5rem;
     border-radius: 3px;
     border: 1px solid #343434;
+    accent-color: #08c746;
     outline-color: #08C746;
 }
 
@@ -35,7 +36,8 @@
 }
 
 .periodo span,
-.tipo-transacao span {
+.tipo-transacao span,
+.tipo-solicitacao span {
     text-transform: capitalize;
 }
 
@@ -48,87 +50,53 @@
 /* filtros selecionar tipo */
 .tipo-transacao select,
 .tipo-solicitacao select {
-    height: 2.6rem;
+    padding: .5rem;
     margin-top: .5rem;
     width: 100%;
     outline-color: #08C746;
-}
-
-
-/* BOTÃO PESQUISAR */
-
-
-.pesquisar {
-    width: 5rem;
-    color: aliceblue;
-    background-color: #08C746;
-    border: none;
-    height: 2.5rem;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
+    background-color: white;
+    border: 1px solid #343434;
     border-radius: 3px;
-    margin: auto 0 .1rem 0;
-}
-
-/* botão pesquisar ao passar o mouse */
-.pesquisar:hover {
-    background-color: #419E5E;
-    transition: 0.3s all;
+    cursor: pointer;
 }
 
 
 /* TABELA */
 
-
-table.dataframe, .dataframe th, .dataframe td  {
-    table-layout: fixed;
-    border: none;
-    border-bottom: 1px solid #C8C8C8;
-    border-collapse: collapse;
-    text-align: center;
-    padding: 10px;
-    font-size: .9rem;
+.btn_novo-tabela {
+    width: 100%;
     margin: auto;
-    width: 90%;
 }
 
 table {
     table-layout: fixed;
     border: none;
-    border-bottom: 1px solid #C8C8C8;
+    border: 1px solid #C8C8C8;
     border-collapse: collapse;
     text-align: center;
     padding: 10px;
     font-size: .9rem;
-    margin: auto;
     margin-top: 2rem;
-    width: 90%;
+    width: 100%;
 }
 
 table th, 
-table td{
-    padding: 0.8rem;
+table td {
+    padding: 0.6rem;
 }
 
 /* cabeçalho tabela */
 th {
-    background-color: #1A20BD;
-    border: none;
-    color: aliceblue;
+    background-color: #D3D3D3;
+    color: #000;
 }
 
 /* linha tabela de cor alternada  */
 tr:nth-child(even) {
-    background: lightgray;
+    background: #EFEFEF;
 }
 
 /* linha tabela ao passar o mouse */
 tr:hover{ 
-    background-color: #22D6C3;
+    background-color: #c2c2c2;
 }
-
-/* button img {
-    width: 1.5rem;
-    margin-right: .5rem;
-} */

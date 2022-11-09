@@ -31,6 +31,32 @@ def dataAgora():
     data = datetime.now().strftime("%d/%m/%Y")
     return data
 
+@app.route("/configuracao-banco", methods=["GET", "POST"])
+def configBanco():
+    if request.method == 'POST':
+        userDetails = request.form
+        capitalTotal = userDetails["capitalTotal"]
+        taxaJurosPoupanca = userDetails["taxaPoupanca"]
+        taxaJurosPoupanca = float(taxaJurosPoupanca) / 100
+        taxaJurosCheque = userDetails["taxaCheque"]
+        taxaJurosCheque = float(taxaJurosCheque) / 100
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO configBanco (capitalTotal, taxaJurosPoupanca, taxaJurosCheque) VALUES(%s, %s, %s)", (capitalTotal, taxaJurosPoupanca, taxaJurosCheque))
+        cur.connection.commit()
+        cur.close()
+
+        session['primeiravezGerente'] = 0
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE gerenteGeral set GG_primeira_vez = 0")
+        cur.connection.commit()
+        cur.close()
+
+        return redirect(url_for("homeGerenteGeral"))
+
+    return render_template("configuracoes-banco.html")
+
+
 #Rota de página web criada. Ela está localizada em localhost/ . Página principal, página de Login com link para redirecionar à página Cadastro. 
 #Utiliza os métodos GET para pegar informações do banco de dados. POST para mandar informações pro banco de dados.
 @app.route("/", methods=["GET", "POST"])
@@ -263,8 +289,6 @@ def deposito():
             cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"]))
             mysql.connection.commit()
 
-            app.logger.info(session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"])
-
             cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
             retornoSolicitacaoId = cur.fetchone()
             solicitacaoId = retornoSolicitacaoId[0]    
@@ -312,12 +336,22 @@ def saque():
         cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s",[session['contaUsuario']])
         saldoParcial = cur.fetchone()
         saldoParcial = saldoParcial[0]
+        saldoParcial = float(saldoParcial)
         session["saldoUsuarioAntes"] = saldoParcial
 
+        cur.execute("SELECT capitalTotal FROM configBanco")
+        retornoCapitalTotal = cur.fetchone()
+        capitalTotalParcial = retornoCapitalTotal[0]
+        capitalTotalParcial = float(capitalTotalParcial)
+
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
-        if  valorSaque and float(valorSaque) > 0:
+        if valorSaque and float(valorSaque) > 0 and float(valorSaque) <= float(capitalTotalParcial):
+
             saldoFinal = float(saldoParcial) - float(valorSaque)
             session["saldoFinalConfirmacao"] = saldoFinal
+
+            capitalTotalNovo = float(capitalTotalParcial) - float(valorSaque)
+            app.logger.info(float(capitalTotalNovo))
             
             session.pop("horaSistema", None)
             session["horaSistema"] = dataAgora()
@@ -325,6 +359,9 @@ def saque():
             session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
+
+            cur.execute("UPDATE configBanco SET capitalTotal = %s", ([float(capitalTotalNovo)]))
+
             cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoMovimentacao], [valorSaque], session['idUsuario']))
             mysql.connection.commit()
             cur.close()
@@ -335,6 +372,9 @@ def saque():
                 return redirect(url_for('saque'))
             if not valorSaque:
                 flash('Preencha o campo VALOR para realizar o saque!')
+                return redirect(url_for('saque'))
+            if float(valorSaque) > float(capitalTotalParcial):
+                flash("Operação inválida.")
                 return redirect(url_for('saque'))
 
         session.pop('saldoUsuario', None)
@@ -365,10 +405,10 @@ def comprovanteTransferencia():
         config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
         html = render_template(
             "comprovanteTransferenciaPDF.html")
-        pdf = pdfkit.from_string(html, False, configuration = config)
+        pdf = pdfkit.from_string(html, False, configuration = config, options={"enable-local-file-access": ""})
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
-        response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output2.pdf"
         return response
     return render_template("tela-comprovante-transferencia.html", titulo="Comprovante")
 
@@ -888,7 +928,7 @@ def indexGerente():
 
             else:
                 cur = mysql.connection.cursor()
-                cur.execute("SELECT GG_num_senha, GG_id, GG_nome, GG_num_matricula FROM gerenteGeral WHERE GG_num_matricula = %s", [numMatriculaGerente])
+                cur.execute("SELECT GG_num_senha, GG_id, GG_nome, GG_num_matricula, GG_primeira_vez FROM gerenteGeral WHERE GG_num_matricula = %s", [numMatriculaGerente])
 
                 retornoContaGerenteGeral = cur.fetchone()
                 app.logger.info(retornoContaGerenteGeral)
@@ -897,6 +937,7 @@ def indexGerente():
                 session['idGerente'] = retornoContaGerenteGeral[1]
                 session['nomeGerente'] = retornoContaGerenteGeral[2]
                 session['matriculaGerente'] = retornoContaGerenteGeral[3]
+                session['primeiravezGerente'] = retornoContaGerenteGeral[4]
                 session['funcaoAdministrativa'] = "Gerente Geral"
 
         except Exception as ex:
@@ -904,7 +945,7 @@ def indexGerente():
              flash("Conta não existe no sistema! Solicite o cadastro a um Gerente Geral para continuar.")
              return render_template("login_gerente.html", tituloNavegador="Bem-vindo!")
 
-        if session['funcaoAdministrativa'] == "Gerente de Agência": #and senhaGerente == senhaGravada:
+        if session['funcaoAdministrativa'] == "Gerente de Agência" and senhaGerente == senhaGravada:
             session.pop('gerenteLogado', None)
             session["gerenteLogado"] = True
             return redirect (url_for('homeGerente'))
@@ -913,7 +954,10 @@ def indexGerente():
         elif session['funcaoAdministrativa'] == "Gerente Geral" and senhaGerente == senhaGravada:
             session.pop('gerenteLogado', None)
             session["gerenteLogado"] = True
-            return redirect (url_for('homeGerenteGeral'))
+            if session['primeiravezGerente'] == 1:
+                return redirect(url_for("configBanco"))
+            else:
+                return redirect (url_for('homeGerenteGeral'))
         
         else:
             flash("Senha incorreta!")
@@ -1150,13 +1194,22 @@ def confirmacaoDeposito():
     session["contaUsuario"] = dadosUsuarioDeposito[1]
     session["agenciaBancariaUsuario"] = dadosUsuarioDeposito[2]
     session["saldoAtualUsuario"] = dadosUsuarioDeposito[3]
-    session["valorDepositoUsuario"] = dadosUsuarioDeposito[4]
+    valorDepositoUsuario = dadosUsuarioDeposito[4]
+    valorDepositoUsuario = float(valorDepositoUsuario)
+    session["valorDepositoUsuario"] = valorDepositoUsuario
     session["saldoFinalUsuario"] = dadosUsuarioDeposito[5]
     session["userIdUsuario"] = dadosUsuarioDeposito[6]
 
+    #OBS: Quando um valor retorna do banco de dados, ele vem com a caracteristica descrita lá. Aqui transformamos decimal.Decimal para Float.
     cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session["contaUsuario"]])
     saldoAtual = cur.fetchone()
     saldoAtual = saldoAtual[0]
+    saldoAtual = float(saldoAtual)
+    #OBS: Quando um valor retorna do banco de dados, ele vem com a caracteristica descrita lá. Aqui transformamos decimal.Decimal para Float.
+    cur.execute("SELECT capitalTotal FROM configBanco")
+    retornoCapitalTotal = cur.fetchone()
+    capitalTotalParcial = retornoCapitalTotal[0]
+    capitalTotalParcial = float(capitalTotalParcial)
 
     if request.method == "POST":
         if "confirmar" in request.form:
@@ -1164,9 +1217,14 @@ def confirmacaoDeposito():
 
             cur = mysql.connection.cursor()
 
-            saldoNovo = saldoAtual + int(session["valorDepositoUsuario"])
+            saldoNovo = saldoAtual + valorDepositoUsuario
 
-            cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoNovo], session['userIdUsuario']))
+            capitalTotalNovo = capitalTotalParcial + valorDepositoUsuario
+
+            cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([float(saldoNovo)], session['userIdUsuario']))
+
+            cur.execute("UPDATE configBanco SET capitalTotal = %s", ([float(capitalTotalNovo)]))
+
             cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoMovimentacao], session["valorDepositoUsuario"], session['userIdUsuario']))
             mysql.connection.commit()
             cur.close()
@@ -1408,6 +1466,27 @@ def infoAgencia():
 def homeGerenteGeral():
     if session["gerenteLogado"] == False:
         return redirect (url_for("indexGerenteGeral"))
+    
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT capitalTotal, taxaJurosPoupanca, taxaJurosCheque from configBanco")
+    retornoConfigBanco = cur.fetchone()
+    session["capitalTotal"] = retornoConfigBanco[0]
+    session["taxaJurosPoupanca"] = retornoConfigBanco[1]
+    session["taxaJurosCheque"] = retornoConfigBanco[2]
+
+    if request.method == 'POST':
+        userDetails = request.form
+        jurosPoupancaEditado = userDetails["jurosPoupancaEditado"]
+        jurosChequeEditado = userDetails["jurosChequeEditado"]
+
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE configBanco SET taxaJurosPoupanca = %s, taxaJurosCheque = %s", (jurosPoupancaEditado, jurosChequeEditado))
+        cur.connection.commit()
+        cur.close()
+        #OBS: Usar para os outros sessions!!
+        flash("Configuração de taxa atualizada com sucesso!")
+        return redirect(url_for("homeGerenteGeral"))
+
     return render_template("home_gg.html")
 
 @app.route("/cadastroGerente", methods=["GET", "POST"])
@@ -1530,7 +1609,7 @@ def cadastroAgencia():
 @app.route("/poupanca", methods=["GET", "POST"])
 def poupanca():
 
-    taxa = (1/100)
+    taxa = float(session["taxaquevemdobancodedados"])
     dataProximoMes = ''
     try:
         cur = mysql.connection.cursor()
@@ -1596,7 +1675,14 @@ def poupanca():
         cur.execute("INSERT INTO poupanca (valorInicial, dataInicial, valorTaxa, valorAtualizado, dataProximoMes, user_id) VALUES (%s, %s, %s, %s, %s, %s)", ([valorInicial], session["dataInicial"], [taxa], [valorParcial], [dataProximoMes], session["idUsuario"]))
         mysql.connection.commit()
         cur.close()
-        
+        """ if "simular" in request.form:
+            userDetails = request.form
+            valorSimulado = userDetails["valorSimulado"]
+            anosSimulado = userDetails["anosSimulado"]
+            mesesSimulado = anosSimulado * 12
+            valorFinal = float(valorSimulado) * (1 + taxa) ** int(mesesSimulado)
+            flash(f"A quantidade de valor total ao longo de { anosSimulado } foi de R$: {valorFinal}")
+            return redirect(url_for("poupanca")) """
     return render_template("poupanca.html", titulo = "Poupança")
 
 

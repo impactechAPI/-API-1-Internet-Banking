@@ -16,17 +16,25 @@
             </label>
         </div>
 
+        <section class="botoes">
+                <input type="submit" name="poupar" class="button" value="Poupar">
+        </section>
 
-    <h2>Simule aqui:</h2>
+    <!-- <h2>Simule aqui:</h2>
         <div class="campo-duplo">
             <label class="info-conta">Valor:<br>
-                <input type="number" name="numeroConta">
+                <input type="number" name="valorSimulado">
             </label>
 
             <label class="info-conta">Anos:<br>
-                <input type="number" name="numeroAgencia">
+                <input type="number" name="anosSimulado">
             </label>
         </div>
+
+        <section class="botoes">
+            <input type="submit" name="simular" class="button" value="Simular">
+        </section> -->
+
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class=flashes>
@@ -36,7 +44,6 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        <input type="submit" class="button" value="Poupar">
     </form>
 </main>
 

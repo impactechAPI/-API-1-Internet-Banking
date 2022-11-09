@@ -103,13 +103,15 @@ CREATE TABLE gerenteGeral (
   GG_id INT NOT NULL primary key AUTO_INCREMENT,
   GG_nome VARCHAR(45) NOT NULL,
   GG_num_matricula VARCHAR(5) NOT NULL,
-  GG_num_senha VARCHAR(180) NOT NULL);
+  GG_num_senha VARCHAR(180) NOT NULL,
+  GG_primeira_vez tinyint(1) not null);
   
 INSERT INTO gerenteGeral (
 GG_nome,
 GG_num_matricula,
-GG_num_senha)
-VALUES ('Gerente Geral', 00001, 123);
+GG_num_senha,
+GG_primeira_vez)
+VALUES ('Gerente Geral', 00001, 123, 1);
 
 create table poupanca(
 poupanca_id int primary key auto_increment,
@@ -121,7 +123,11 @@ valorAtualizado decimal(19,2) not null,
 user_id int,
 foreign key(user_id) references users (user_id));
 
-
+create table configBanco(
+config_id int primary key auto_increment,
+capitalTotal decimal(19,2) not null,
+taxaJurosPoupanca decimal(4,4) not null,
+taxaJurosCheque decimal(4,4) not null);
 
 select * from users;
 select * from movimentacaoConta;
@@ -133,6 +139,15 @@ select * from gerenteAgencia;
 select * from gerenteGeral;
 select * from agencias;
 select * from poupanca;
+select * from configBanco;
+
+
+
+
+
+
+
+
 
 drop table agencias;
 drop table gerenteGeral;
@@ -145,5 +160,10 @@ drop table confirmacaoAlteracao;
 drop table users;
 drop table confirmacaoAlteracao;
 drop table gerenteGeral;
+drop table configBanco;
+
+
+
+
 
 drop database flaskapp;

@@ -911,19 +911,17 @@ def indexGerente():
             flash("Preencha todos os campos!")
             return redirect (url_for('indexGerente'))
 
-        x = len(numMatriculaGerente)
-        app.logger.info(x)
-
         try:
             if len(numMatriculaGerente) == 5:
                 cur = mysql.connection.cursor()
-                cur.execute("SELECT gerente_nome, num_matricula, num_agencia FROM gerenteAgencia WHERE num_matricula = %s", [numMatriculaGerente])
+                cur.execute("SELECT num_senha, gerente_id, gerente_nome, num_matricula, num_agencia FROM gerenteAgencia WHERE num_matricula = %s", [numMatriculaGerente])
                 retornoContaGerente = cur.fetchone()
-                #senhaGravada = retornoContaGerente[0]
-                #session['idGerente'] = retornoContaGerente[1]
-                session['gerente_nome'] = retornoContaGerente[0]
-                session['num_matricula'] = retornoContaGerente[1]
-                session['num_agencia'] = retornoContaGerente[2]
+                app.logger.info(retornoContaGerente)
+                senhaGravada = retornoContaGerente[0]
+                session['idGerente'] = retornoContaGerente[1]
+                session['gerente_nome'] = retornoContaGerente[2]
+                session['num_matricula'] = retornoContaGerente[3]
+                session['num_agencia'] = retornoContaGerente[4]
                 session['funcaoAdministrativa'] = "Gerente de Agência"
 
             else:
@@ -1361,38 +1359,34 @@ def confirmacaoAlteracao():
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():
 
-     #idAgencia = request.args.get("idAgencia")
-    idAgenciaLista = 1
-    cur = mysql.connection.cursor()
-
-    cur.execute("SELECT agencia_id FROM agencias WHERE agencia_id = %s", ([idAgenciaLista]))
-    idAgenciaRetorno = cur.fetchone()
-    idAgencias = idAgenciaRetorno[0]
-
-    cur.execute("SELECT numero_agencia, numero_clientes, nome_gerente, end_agencia FROM agencias WHERE agencia_id = %s", ([idAgencias]))
-    dadosAgencia = cur.fetchone()
-
-    session["numeroAgencia"] = dadosAgencia[0]
-    session["numeroClientes"] = dadosAgencia[1]
-    session["nomeGerente"] = dadosAgencia[2]
-    session["enderecoAgencia"] = dadosAgencia[3]
-
     if request.method == 'POST':
         if "confirmar" in request.form:
 
             novoNumeroAgencia = request.form['numeroAgencia']
             novoNumeroClientes = request.form['numeroClientes']
-            novoNomeGerente = request.form['nomeGerente']
             novoEndAgencia = request.form['enderecoAgencia']
-
-            cur.execute("UPDATE agencias SET numero_agencia = %s, numero_clientes = %s, nome_gerente = %s, end_agencia = %s WHERE agencia_id = %s", ([novoNumeroAgencia], [novoNumeroClientes], [novoNomeGerente], [novoEndAgencia], [idAgencias]))
+            
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE agencias SET numero_agencia = %s, numero_clientes = %s, end_agencia = %s WHERE agencia_id = %s", ([novoNumeroAgencia], [novoNumeroClientes], [novoEndAgencia], session["retornoAgenciaId"]))
             mysql.connection.commit()
             cur.close()
             flash("Dados atualizados com sucesso!")
             return redirect(url_for("editarAgencia"))
-        else:
+        elif "cancelar" in request.form:
             flash("Dados não atualizados.")
             return redirect(url_for("editarAgencia"))
+        else:
+            pass
+            return redirect(url_for("editarAgencia"))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia, numero_clientes, data_criacao, end_agencia, agencia_id FROM agencias WHERE agencia_id = %s", ([session["retornoAgenciaId"]]))
+    retornoDadosAgencia = cur.fetchone()
+    app.logger.info(retornoDadosAgencia)
+    session["retornoNumeroAgencia"] = retornoDadosAgencia[0]
+    session["retornoNumeroClientes"] = retornoDadosAgencia[1]
+    session["retornoNumeroDataCriacao"] = retornoDadosAgencia[2]
+    session["retornoEnderecoAgencia"] = retornoDadosAgencia[3]
     return render_template("editar_agencia.html", titulo="Editar Agência")
 
 @app.route("/lista-gerentes", methods=["GET", "POST"])
@@ -1455,10 +1449,22 @@ def listaAgencias():
 
 @app.route("/info-gerente", methods=["GET", "POST"])
 def infoGerente():
+    
     return render_template("info_gerente.html", titulo="Gerente") 
 
 @app.route("/info-agencia", methods=["GET", "POST"])
 def infoAgencia():
+    idAgencia = request.args.get("idAgencia")
+    #vamos trazer as info do BD e transformalas em session
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia, numero_clientes, data_criacao, end_agencia, agencia_id FROM agencias WHERE agencia_id = %s", (idAgencia))
+    retornoDadosAgencia = cur.fetchone()
+    app.logger.info(retornoDadosAgencia)
+    session["retornoNumeroAgencia"] = retornoDadosAgencia[0]
+    session["retornoNumeroClientes"] = retornoDadosAgencia[1]
+    session["retornoNumeroDataCriacao"] = retornoDadosAgencia[2]
+    session["retornoEnderecoAgencia"] = retornoDadosAgencia[3]
+    session["retornoAgenciaId"] = retornoDadosAgencia[4]
 
     return render_template("info_agencia.html", Título="Agência")
 
@@ -1481,6 +1487,8 @@ def homeGerenteGeral():
 
         cur = mysql.connection.cursor()
         cur.execute("UPDATE configBanco SET taxaJurosPoupanca = %s, taxaJurosCheque = %s", (jurosPoupancaEditado, jurosChequeEditado))
+        #MySQLdb.ProgrammingError: not all arguments converted during bytes formatting -> colocar []
+        cur.execute("UPDATE poupanca SET valorTaxa = %s", ([jurosPoupancaEditado]))
         cur.connection.commit()
         cur.close()
         #OBS: Usar para os outros sessions!!
@@ -1586,31 +1594,46 @@ def editarGerentes():
 @app.route("/cadastroAgencia", methods=["GET", "POST"])
 def cadastroAgencia():
 
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia from agencias")
+
+    listaAgencias = []
+
+    for i in cur:
+        listaAgencias.append(i[0])
+
+    app.logger.info(listaAgencias)
+
     if request.method == "POST":
         if "cadastrar" in request.form:
-            nome = request.form["nomeGerente"]
             endereco = request.form["enderecoAgencia"] 
-            numAgencia = request.form["numeroAgencia"]
+            numAgencia = request.form["numAgencia"]
+            app.logger.info(numAgencia)
+            numUsuarios = 5
 
-            if not nome or not endereco or not numAgencia:
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
+
+            if not endereco or not numAgencia:
                 flash("Preencha todos os campos do formulário!")
                 return redirect (url_for("cadastroAgencia"))
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO agencias (nome_gerente, end_agencia, numero_agencia) VALUES(%s, %s, %s)",(nome, endereco, numAgencia))
+            cur.execute("INSERT INTO agencias (numero_agencia, numero_clientes, data_criacao, end_agencia) VALUES(%s, %s, %s, %s)",(numAgencia, numUsuarios, session["horaSistema"], endereco))
             mysql.connection.commit()
             cur.close()
 
             flash("Agência cadastrada com sucesso!")
 
             return redirect(url_for("cadastroAgencia"))
-    return render_template("nova_agencia.html", titulo="Nova Agência")
+
+    return render_template("nova_agencia.html", titulo="Nova Agência", listaAgencias = listaAgencias)
 
 @app.route("/poupanca", methods=["GET", "POST"])
 def poupanca():
 
-    taxa = float(session["taxaquevemdobancodedados"])
     dataProximoMes = ''
+
     try:
         cur = mysql.connection.cursor()
         cur.execute("SELECT valorInicial, valorAtualizado, dataInicial, valorTaxa, dataProximoMes FROM poupanca WHERE user_id = %s", ([session["idUsuario"]]))
@@ -1623,7 +1646,10 @@ def poupanca():
 
         dataInicialUsuarioPoupanca = retornoDadosPoupanca[2]
         session["dataInicialUsuarioPoupanca"] = dataInicialUsuarioPoupanca
-        session["valorTaxaUsuarioPoupanca"] = retornoDadosPoupanca[3]
+
+        valorTaxaPoucanca = retornoDadosPoupanca[3]
+        session["valorTaxaUsuarioPoupanca"] = valorTaxaPoucanca
+
         dataProximoMesUsuario = retornoDadosPoupanca[4]
         session["dataProximoMes"] = dataProximoMesUsuario
 
@@ -1642,7 +1668,7 @@ def poupanca():
         dataProximoMesUsuarioEditado = dataProximoMesUsuarioEditado.replace("-","/")
 
         if dataAtualPoupancaEditado == dataProximoMesUsuarioEditado:
-            valorParcial = float(retornoValorAtualizado) * (1 + taxa)
+            valorParcial = float(retornoValorAtualizado) * (1 + float(valorTaxaPoucanca))
             session.pop("valorAtualizadoUsuarioPoupanca", None)
             session["valorAtualizadoUsuarioPoupanca"] = valorParcial
 
@@ -1672,9 +1698,17 @@ def poupanca():
         valorParcial = valorInicial
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO poupanca (valorInicial, dataInicial, valorTaxa, valorAtualizado, dataProximoMes, user_id) VALUES (%s, %s, %s, %s, %s, %s)", ([valorInicial], session["dataInicial"], [taxa], [valorParcial], [dataProximoMes], session["idUsuario"]))
+
+        #trazendo valor da taxa poupança da tabela configBanco
+        cur.execute("SELECT taxaJurosPoupanca FROM configBanco")
+        retornoJurosPoupanca = cur.fetchone()
+        jurosPoupanca = retornoJurosPoupanca[0]
+        jurosPoupanca = float(jurosPoupanca)
+
+        cur.execute("INSERT INTO poupanca (valorInicial, dataInicial, valorTaxa, valorAtualizado, dataProximoMes, user_id, config_id) VALUES (%s, %s, %s, %s, %s, %s, %s)", ([valorInicial], session["dataInicial"], [jurosPoupanca], [valorParcial], [dataProximoMes], session["idUsuario"], 1))
         mysql.connection.commit()
         cur.close()
+
         """ if "simular" in request.form:
             userDetails = request.form
             valorSimulado = userDetails["valorSimulado"]
@@ -1683,6 +1717,7 @@ def poupanca():
             valorFinal = float(valorSimulado) * (1 + taxa) ** int(mesesSimulado)
             flash(f"A quantidade de valor total ao longo de { anosSimulado } foi de R$: {valorFinal}")
             return redirect(url_for("poupanca")) """
+
     return render_template("poupanca.html", titulo = "Poupança")
 
 

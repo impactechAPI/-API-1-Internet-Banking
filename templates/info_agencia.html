@@ -8,26 +8,26 @@
         <form method="post" action="{{ url_for('editarAgencia') }}" class="solicitacao">
             <div class="campo-duplo">
                 <div class="info-conta">
-                    <label>Número</label>
-                    <input type="number" value="{{ session['numeroAgencia'] }}" name="numAgencia" disabled>
+                    <label>Número da Agência</label>
+                    <input type="number" value="{{ session['retornoNumeroAgencia'] }}" name="numAgencia" disabled>
                 </div>
                 <div class="info-conta">
                     <label>Número de clientes</label>
-                    <input type="number" value="{{ session['numeroClientes']}}" name="numClientes" disabled>
+                    <input type="number" value="{{ session['retornoNumeroClientes'] }}" name="numClientes" disabled>
                 </div>
             </div>
-            <div class="campo-unico">
+            <!-- <div class="campo-unico">
                 <label>Gerente</label>
                 <input type="text" value="{{ session['nomeGerente'] }}" name="gerenteAgencia"
                     disabled="disabled">
-            </div>
+            </div> -->
             <div class="campo-unico">
                 <label>Endereço</label>
-                <input type="text" value="{{ session['enderecoAgencia'] }}" name="enderecoAgencia"
+                <input type="text" value="{{ session['retornoEnderecoAgencia'] }}" name="enderecoAgencia"
                     disabled="disabled">
             </div>
             <aside class="data-botao">
-                <p class="data_inicio">Criada em: {{ session["dataInicioAgencia"] }}</p>
+                <p class="data_inicio">Criada em: {{ session['retornoNumeroDataCriacao'] }}</p>
                 <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar"> Editar</button>
                 <!-- <input type="submit" name="confirmar" class="editar" value="Editar"> -->
             </aside>

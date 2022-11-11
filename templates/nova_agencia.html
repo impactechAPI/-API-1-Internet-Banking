@@ -8,16 +8,25 @@
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Número</label>
-                <input type="number" name="numeroAgencia" placeholder="Número da agência">
+                <select name="numAgencia" id="numAgencia" class="select">
+                    <option value="0002">0002</option>
+                    <option value="0003">0003</option>
+                    <option value="0004">0004</option>
+                    <option value="0005">0005</option>
+                    <option value="0006">0006</option>
+                    <option value="0007">0007</option>
+                    <option value="0008">0008</option>
+                    <option value="0009">0009</option>
+                    <option value="0010">0010</option>
             </div>
         </div>
 
-        <div class="campo-unico">
+        <!-- <div class="campo-unico">
             <div class="info-conta">
-                <label class="info-conta">Gerente</label>
+                <label class="info-conta"></label>
                 <input type="text" name="nomeGerente" placeholder="Nome do gerente">
             </div>
-        </div>
+        </div> -->
 
         <div class="campo-unico">
             <div class="info-conta">
@@ -25,20 +34,19 @@
                 <input type="text" name="enderecoAgencia" placeholder="Endereço da agência">
             </div>
         </div>
-
-        <input type="submit" name="cadastrar" class="cadastrar" value="Cadastrar">
-
-        </div>
+        <input type="submit" name="cadastrar" class="cadastrar" value="Cadastrar"><br>
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class=flashes>
-            {% for message in messages %}
-            <div class="error">{{ message }}</div>
-            {% endfor %}
-        </ul>
-        {% endif %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <div class="error">{{ message }}</div>
+                {% endfor %}
+            </ul>
+            {% endif %}
         {% endwith %}
+        </div>
     </form>
+
 </main>
 
 {% endblock %}

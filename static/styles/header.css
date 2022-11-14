@@ -154,19 +154,19 @@ hr {
 
     .fundo-home .info-usuario,
     .fundo-home hr {
-        width: 80%;
+        width: 90%;
     }
 
     .fundo-home .info-usuario .info h1,
     .fundo-home .info-usuario .info span {
-        font-size: 20px;
+        font-size: 23px;
     }
 
     .fundo-home .info-usuario .info label {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .fundo-home .info-usuario .info h2 {
-        font-size: 16px;
+        font-size: 19px;
     }
 }

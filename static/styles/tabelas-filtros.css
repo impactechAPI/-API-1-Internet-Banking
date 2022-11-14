@@ -100,3 +100,48 @@ tr:nth-child(even) {
 tr:hover{ 
     background-color: #c2c2c2;
 }
+
+@media (max-width: 900px) {
+
+    .barra-pesquisa{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end; /* alinhar itens ao fim da div */
+        overflow: hidden; /* conteúdo não ultrapassa a div */ 
+    }
+    
+    .filtros{
+        display: flex;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    table {
+        table-layout: fixed;
+        border: none;
+        border: 1px solid #C8C8C8;
+        border-collapse: collapse;
+        text-align: center;
+        padding: 10px;
+        font-size: .9rem;
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .tipo-transacao select,
+    .tipo-solicitacao select {
+        padding: .5rem;
+        margin-top: .5rem;
+        width: 100%;
+        outline-color: #08C746;
+        background-color: white;
+        border: 1px solid #343434;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .btn_novo-tabela {
+        width: 100%;
+        margin: auto;
+    }
+}

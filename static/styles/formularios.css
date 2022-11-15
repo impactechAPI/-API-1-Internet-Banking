@@ -146,12 +146,12 @@ input[type="number"] {
 
     /* termos de uso tela cadastro */
     .container_cadastro .checkbox {
-        font-size: 1rem;
+        font-size: 6rem;
         display: flex;
     }
 
     /* input type checkbox */
     .container_cadastro .checkbox input {
-        margin-right: 1rem;
+        margin-right: 4rem;
     }
 }

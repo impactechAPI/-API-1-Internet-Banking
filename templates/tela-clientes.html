@@ -34,7 +34,8 @@
                 <td>{{ x }}</td>
                 {% endif %}
                 {% if loop.index0 == 1 %}
-                <td><a href={{url_for("infoCliente",idCliente=x)}}></a></td>
+                <td><a href={{url_for("infoCliente",idCliente=x)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
             </tr>

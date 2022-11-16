@@ -6,6 +6,7 @@
     <div class="container">
         <a href="{{ url_for('clientes') }}" class="voltar">&lt voltar</a><br><br>
         <section>
+            <p class = "info-conta"> Tipo de Conta: {{ session['tipoContaUsuario'] }}</p>
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Nome</label>
@@ -45,9 +46,11 @@
                     <label>Saldo disponível</label>
                     <span>{{ session["saldoBancarioCadastro"] }}</span>
                 </div>
+                
             </div>
 
             <p class="data_inicio">Cliente desde: {{ session["dataClientela"] }}</p>
+            
         </section>
     </div>
 

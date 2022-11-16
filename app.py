@@ -1023,17 +1023,18 @@ def infoCliente():
     dataClientelaRetorno = cur.fetchone()
     session["dataClientela"] = dataClientelaRetorno[0]
 
-    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", ([idUsuario]))
+    cur.execute("SELECT tipoConta, nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", ([idUsuario]))
     dadosUsuarioFechamento = cur.fetchone()
 
-    session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[0]
-    session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[1]
-    session["dataAniversarioCadastro"] = dadosUsuarioFechamento[2]
-    session["generoCadastro"] = dadosUsuarioFechamento[3]
-    session["enderecoCadastro"] = dadosUsuarioFechamento[4]
-    session["contaBancariaCadastro"] = dadosUsuarioFechamento[5]
-    session["agenciaBancariaCadastro"] = dadosUsuarioFechamento[6]
-    session["saldoBancarioCadastro"] = dadosUsuarioFechamento[7]
+    session["tipoContaUsuario"] = dadosUsuarioFechamento[0]
+    session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[1]
+    session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[2]
+    session["dataAniversarioCadastro"] = dadosUsuarioFechamento[3]
+    session["generoCadastro"] = dadosUsuarioFechamento[4]
+    session["enderecoCadastro"] = dadosUsuarioFechamento[5]
+    session["contaBancariaCadastro"] = dadosUsuarioFechamento[6]
+    session["agenciaBancariaCadastro"] = dadosUsuarioFechamento[7]
+    session["saldoBancarioCadastro"] = dadosUsuarioFechamento[8]
 
     return render_template("tela-info-cliente.html", titulo="Cliente", idCliente = idCliente)
 
@@ -1449,6 +1450,21 @@ def listaAgencias():
 
 @app.route("/info-gerente", methods=["GET", "POST"])
 def infoGerente():
+
+    idGerente = request.args.get("idGerente")
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end,num_matricula, num_agencia, data_criacao, gerente_id from gerenteAgencia where gerente_id =%s", (idGerente))
+    retornoGerenteAgencia = cur.fetchone()
+    app.logger.info(retornoGerenteAgencia)
+    session["nomeRetornoGerenteAgencia"] = retornoGerenteAgencia[0]
+    session["cpfRetornoGerenteAgencia"] = retornoGerenteAgencia[1]
+    session["nascRetornoGerenteAgencia"] = retornoGerenteAgencia[2]
+    session["generoRetornoGerenteAgencia"] = retornoGerenteAgencia[3]
+    session["endRetornoGerenteAgencia"] = retornoGerenteAgencia[4]
+    session["matriculaRetornoGerenteAgencia"] = retornoGerenteAgencia[5]
+    session["numAgenciaRetornoGerenteAgencia"] = retornoGerenteAgencia[6]
+    session["dataCriacaoRetornoGerenteAgencia"] = retornoGerenteAgencia[7]
+    session["retornoGerenteId"] = retornoGerenteAgencia[8]
     
     return render_template("info_gerente.html", titulo="Gerente") 
 
@@ -1522,13 +1538,11 @@ def cadastroGerente():
             if not name or not cpf or not dataAniversario or not genero or not endereco or not agencia:
                 flash("Preencha todos os campos do formulário!")
                 return redirect (url_for("cadastroGerente"))
-        
 
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO gerenteAgencia (gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_agencia, num_matricula, num_senha, data_criacao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, cpf, dataAniversario, genero, endereco, agencia, matriculaGerenteAgencia, senhaGerenteAgencia, session["horaSistema"]))
             mysql.connection.commit()
             cur.close()
-            flash("Cadastro realizado com sucesso!")
             
             cur = mysql.connection.cursor()
             cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia, data_criacao, gerente_id FROM gerenteAgencia WHERE num_matricula = %s", ([matriculaGerenteAgencia]))
@@ -1544,8 +1558,8 @@ def cadastroGerente():
             session["dataCriacaoGerenteAgencia"] = retornoDadosGerente[7]
             session["gerenteAgenciaId"] = retornoDadosGerente[8]
 
+            flash("Cadastro realizado com sucesso!")
             return redirect(url_for("cadastroGerente"))
-    #return render_template("cadastroGA.html")
     return render_template("novo_gerente.html", titulo="Novo Gerente")
 
 @app.route("/editar-gerentes", methods=["GET", "POST"])
@@ -1565,6 +1579,7 @@ def editarGerentes():
             cur = mysql.connection.cursor()
             cur.execute("SELECT gerente_id from gerenteAgencia where num_matricula = %s", ([session["matriculaGerenteAgencia"]]))
             idGerenteRetorno = cur.fetchone()
+            app.logger.info(idGerenteRetorno)
             idGerenteAgencia = idGerenteRetorno[0]
 
             cur.execute("UPDATE gerenteAgencia SET gerente_nome = %s, gerente_cpf = %s, gerente_nasc = %s, gerente_genero = %s, gerente_end = %s, num_matricula = %s, num_agencia = %s WHERE gerente_id = %s", ([novoNomeGerente], [novoCpfGerente], [novoNascGerente], [novoGeneroGerente], [novoEndGerente], [novoNumMatriculaGerente], [novoNumAgenciaGerente], [idGerenteAgencia]))
@@ -1589,6 +1604,20 @@ def editarGerentes():
             return redirect(url_for("editarGerentes"))
         else:
             return redirect(url_for("editarGerentes"))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia, data_criacao from gerenteAgencia where gerente_id =%s", ([session["retornoGerenteId"]]))
+    retornoGerenteAgencia = cur.fetchone()
+    app.logger.info(retornoGerenteAgencia)
+    session["nomeRetornoGerenteAgencia"] = retornoGerenteAgencia[0]
+    session["cpfRetornoGerenteAgencia"] = retornoGerenteAgencia[1]
+    session["nascRetornoGerenteAgencia"] = retornoGerenteAgencia[2]
+    session["generoRetornoGerenteAgencia"] = retornoGerenteAgencia[3]
+    session["endRetornoGerenteAgencia"] = retornoGerenteAgencia[4]
+    session["matriculaRetornoGerenteAgencia"] = retornoGerenteAgencia[5]
+    session["numAgenciaRetornoGerenteAgencia"] = retornoGerenteAgencia[6]
+    session["dataCriacaoRetornoGerenteAgencia"] = retornoGerenteAgencia[7] 
+    
     return render_template("editar_gerente.html", titulo="Editar Gerente")
 
 @app.route("/cadastroAgencia", methods=["GET", "POST"])

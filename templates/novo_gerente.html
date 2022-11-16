@@ -53,17 +53,18 @@
                 </div>
             </div>
 
-            <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar">
-    </div>
-    {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                <div class="error">{{ message }}</div>
-                {% endfor %}
-            </ul>
-            {% endif %}
+            <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar"><br>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                        <div class="error">{{ message }}</div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             {% endwith %}
+    </div>
+    
 </form>
 
 </main>

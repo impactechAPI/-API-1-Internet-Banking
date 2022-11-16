@@ -140,6 +140,12 @@ input[type="number"] {
         width: 100%;
     }
 
+    .container .campo-duplo,
+    .container .campo-triplo {
+    display: contents;
+    justify-content: space-between;
+    width: 100%;
+}
     .container .info-conta {
         min-width: 100%;
     }

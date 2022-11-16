@@ -6,7 +6,7 @@ import yaml
 import random
 import pandas as pd
 from datetime import datetime
-import pdfkit
+#import pdfkit
 from dateutil.relativedelta import *
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".

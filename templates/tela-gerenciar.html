@@ -56,7 +56,8 @@
                 <td>{{ x }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoDeposito",solicitacaoIdDeposito=x)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoDeposito",solicitacaoIdDeposito=x)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
                 {% endif %}
@@ -66,7 +67,9 @@
                 <td>{{ y }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoAbertura",solicitacaoIdAbertura=y)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoAbertura",solicitacaoIdAbertura=y)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
+                    
                 {% endif %}
                 {% endfor %}
                 {% endif %}
@@ -76,7 +79,8 @@
                 <td>{{ z }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoAlteracao",solicitacaoIdAlteracao=z)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoAlteracao",solicitacaoIdAlteracao=z)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
                 {% endif %}
@@ -86,7 +90,8 @@
                 <td>{{ w }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoFechamento",solicitacaoIdFechamento=w)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoFechamento",solicitacaoIdFechamento=w)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
                 {% endif %}

@@ -7,21 +7,21 @@
     <form method="post" action="" class="solicitacao">
         <div class="campo-unico">
             <label>Nome</label>
-            <input type="text" value="{{ session['nomeGerenteAgencia'] }}" name="nomeGerenteCadastro">
+            <input type="text" value="{{ session['nomeRetornoGerenteAgencia'] }}" name="nomeGerenteCadastro">
         </div>
         <div class="campo-triplo">
             <div class="info-conta">
                 <label>CPF</label>
-                <input type="text" maxlength="11" value="{{ session['cpfGerenteCadastro'] }}" name="cpfGerenteCadastro">
+                <input type="text" maxlength="11" value="{{session['cpfRetornoGerenteAgencia'] }}" name="cpfGerenteCadastro">
             </div>
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <input type="date" value="{{ session['nascGerenteAgencia'] }}" name="nascGerenteCadastro">
+                <input type="date" value="{{ session['nascRetornoGerenteAgencia'] }}" name="nascGerenteCadastro">
             </div>
             <div class="info-conta">
                 <label>Gênero</label>
                 <select name="generoGerenteCadastro" class="select" id="generoGerenteCadastro"
-                    aria-selected="{{ session['generoGerenteAgencia'] }}">
+                    aria-selected="{{ session['generoRetornoGerenteAgencia'] }}">
                     <option value="Selecionar" disabled>Selecionar</option>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
@@ -31,12 +31,12 @@
         </div>
         <div class="campo-unico">
             <label>Endereço</label>
-            <input type="text" value="{{ session['endGerenteAgencia'] }}" name="endGerenteCadastro">
+            <input type="text" value="{{ session['endRetornoGerenteAgencia'] }}" name="endGerenteCadastro">
         </div>
         <div class="campo-triplo">
             <div class="info-conta">
                 <label>Número de matrícula</label>
-                <input type="text" value="{{ session['matriculaGerenteCadastro'] }}" name="matriculaGerenteCadastro">
+                <input type="text" value="{{ session['matriculaRetornoGerenteAgencia'] }}" name="matriculaGerenteCadastro">
             </div>
             <div class="info-conta">
                 <label>Função</label>
@@ -44,12 +44,12 @@
             </div>
             <div class="info-conta">
                 <label>Agência</label>
-                <input type="text" value="{{ session['numAgenciaGerenteAgencia'] }}" name="numAgenciaCadastro">
+                <input type="text" value="{{ session['numAgenciaRetornoGerenteAgencia'] }}" name="numAgenciaCadastro">
             </div>
         </div>
 
         <aside>
-            <p class="data_inicio">Gerente desde: {{ session["dataCriacaoGerenteAgencia"] }}</p>
+            <p class="data_inicio">Gerente desde: {{ session["dataCriacaoRetornoGerenteAgencia"]  }}</p>
             <section class="botoes">
                 <input type="submit" name="confirmar" class="confirmar" value="Salvar">
                 <input type="submit" name="cancelar" class="cancelar" value="Cancelar">

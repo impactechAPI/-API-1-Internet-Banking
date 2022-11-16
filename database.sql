@@ -94,9 +94,9 @@ CREATE TABLE gerenteAgencia (
 
 CREATE TABLE agencias (
   agencia_id INT PRIMARY KEY AUTO_INCREMENT,
-  numero_agencia VARCHAR(5),
+  numero_agencia VARCHAR(20),
   numero_clientes VARCHAR(3),
-  nome_gerente VARCHAR (50),
+  data_criacao text(6) not null,
   end_agencia VARCHAR (150));
 
 CREATE TABLE gerenteGeral (
@@ -118,10 +118,12 @@ poupanca_id int primary key auto_increment,
 valorInicial decimal(19,2) not null,
 dataInicial text(15),
 dataProximoMes text(15),
-valorTaxa decimal(3,2),
+valorTaxa decimal(4,4),
 valorAtualizado decimal(19,2) not null,
 user_id int,
-foreign key(user_id) references users (user_id));
+foreign key(user_id) references users (user_id),
+config_id int,
+foreign key(config_id) references configBanco (config_id));
 
 create table configBanco(
 config_id int primary key auto_increment,
@@ -161,6 +163,8 @@ drop table users;
 drop table confirmacaoAlteracao;
 drop table gerenteGeral;
 drop table configBanco;
+drop table poupanca;
+drop table agencias;
 
 
 

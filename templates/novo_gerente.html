@@ -48,12 +48,23 @@
                 </div>
 
                 <div class="info-conta">
-                    <label>Agência</label>
-                    <input type="number" name="agencia" placeholder="Informe a agência">
+                    <label>Número de agência</label>
+                    <select name="numAgencia" id="numAgencia" class="select">
+                        <option value="0001">0001</option>
+                        <option value="0002">0002</option>
+                        <option value="0003">0003</option>
+                        <option value="0004">0004</option>
+                        <option value="0005">0005</option>
+                        <option value="0006">0006</option>
+                        <option value="0007">0007</option>
+                        <option value="0008">0008</option>
+                        <option value="0009">0009</option>
+                        <option value="0010">0010</option>
                 </div>
             </div>
 
             <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar"><br>
+
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <ul class=flashes>
@@ -63,7 +74,6 @@
                 </ul>
                 {% endif %}
             {% endwith %}
-    </div>
     
 </form>
 

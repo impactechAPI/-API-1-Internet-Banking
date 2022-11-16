@@ -1,4 +1,10 @@
-{% extends "base-gerente.html" %}
+{% if session['funcaoAdministrativa'] == 'Gerente Geral' %}
+    {% extends "base_gg.html" %}
+{% endif %}
+
+{% if session['funcaoAdministrativa'] == 'Gerente de Agência' %}
+    {% extends "base-gerente.html" %}
+{% endif %}
 
 {% block contents %}
 <main>

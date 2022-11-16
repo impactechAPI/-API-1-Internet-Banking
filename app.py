@@ -56,7 +56,6 @@ def configBanco():
 
     return render_template("configuracoes-banco.html")
 
-
 #Rota de página web criada. Ela está localizada em localhost/ . Página principal, página de Login com link para redirecionar à página Cadastro. 
 #Utiliza os métodos GET para pegar informações do banco de dados. POST para mandar informações pro banco de dados.
 @app.route("/", methods=["GET", "POST"])
@@ -132,12 +131,25 @@ def indexHome():
 @app.route("/cadastro", methods=["GET", "POST"])
 def indexCadastro():
     #Inicializando algumas variaveis importantes pro resto da função indexCadastro. A variável agenciaBancaria recebe por enquanto uma string "0001". O saldoBancario sempre começa com 0 Reais.
-    agenciaBancaria = "0001"
+
     # !! Talvez dê para mudar o ponto por vírgula usando replace() !!
     saldoBancario = "0.00"
     cadastro = False
     voltarLogin = False
     statusSolicitacao = "Pendente"
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT MIN(numero_clientes) AS minimum FROM agencias")
+    retornoNumeroAgencia = cur.fetchone()
+    menorAgencia = retornoNumeroAgencia[0]
+    app.logger.info(menorAgencia)
+
+    cur.execute("SELECT gerente_id, numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
+    retornoAgenciaEscolhida = cur.fetchone()
+    gerenteEscolhido = retornoAgenciaEscolhida[0]
+    agenciaEscolhida = retornoAgenciaEscolhida[1]
+    agenciaEscolhida = str(agenciaEscolhida)
+    app.logger.info(agenciaEscolhida)
     
     #Configurando a aquisicão das variaveis do formulario em HTML pelo request em Python (metódo POST)
     if request.method == "POST":
@@ -205,7 +217,9 @@ def indexCadastro():
         #Salvando dados no BD e finalizando operação
         mysql.connection.commit()
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaBancaria, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta))
+
+        #Aqui
+        cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta, gerente_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaEscolhida, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta, gerenteEscolhido))
         
         mysql.connection.commit()
 
@@ -214,6 +228,22 @@ def indexCadastro():
 
         #Lógica para retornar usuário ao Login pós Cadastro e mostrar o numero da sua conta bancaria para Logar.
         if cadastro == True:
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT MIN(numero_clientes) AS minimum FROM agencias")
+            retornoNumeroAgencia = cur.fetchone()
+            menorAgencia = retornoNumeroAgencia[0]
+            app.logger.info(menorAgencia)
+
+            cur.execute("SELECT numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
+            retornoAgenciaEscolhida = cur.fetchone()
+            agenciaEscolhida = retornoAgenciaEscolhida[0]
+            agenciaEscolhida = str(agenciaEscolhida)
+            app.logger.info(agenciaEscolhida)
+
+            menorAgencia = int(menorAgencia) + 1
+
+            cur.execute("UPDATE agencias SET numero_clientes = %s WHERE numero_agencia = %s", ([menorAgencia], [agenciaEscolhida]))
+
             cur = mysql.connection.cursor()
             cur.execute("SELECT contaBancaria FROM users WHERE nome = %s and cpf = %s", ([name], [cpf]))
             contaUsuario = cur.fetchone()
@@ -234,7 +264,8 @@ def indexCadastro():
             retornoSolicitacaoId = cur.fetchone()
             solicitacaoId = retornoSolicitacaoId[0] 
 
-            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ([name], [cpf], [dataAniversario], [genero], [endereco], [contaBancaria], [agenciaBancaria], [solicitacaoidUsuarioCadastrado], [statusSolicitacao], [solicitacaoId]))
+            #Aqui
+            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ([name], [cpf], [dataAniversario], [genero], [endereco], [contaBancaria], [agenciaEscolhida], [solicitacaoidUsuarioCadastrado], [statusSolicitacao], [solicitacaoId]))
             mysql.connection.commit()
             cur.close()
 
@@ -1162,7 +1193,10 @@ def gerenciar():
     #Se não for aberto uma pesquisa pelo usuário, abre todas as movimentações do usuario que estão no DB.
     else:
             cur = mysql.connection.cursor()
-            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios")
+            if session['funcaoAdministrativa'] == "Gerente de Agência":
+                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = %s and u.user_id = g.user_id", ([session['idGerente']]))
+            else:
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios")
 
             dataSolicitacao = []
             tipoSolicitacao = []
@@ -1531,7 +1565,7 @@ def cadastroGerente():
             dataAniversario = request.form["dataAniversario"]
             genero = request.form["genero"]
             endereco = request.form["endereco"]
-            agencia = request.form["agencia"]
+            agencia = request.form["numAgencia"]
             session.pop("horaSistema", None)
             session["horaSistema"] = dataAgora()
 
@@ -1543,6 +1577,7 @@ def cadastroGerente():
             cur.execute("INSERT INTO gerenteAgencia (gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_agencia, num_matricula, num_senha, data_criacao) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(name, cpf, dataAniversario, genero, endereco, agencia, matriculaGerenteAgencia, senhaGerenteAgencia, session["horaSistema"]))
             mysql.connection.commit()
             cur.close()
+
             
             cur = mysql.connection.cursor()
             cur.execute("SELECT gerente_nome, gerente_cpf, gerente_nasc, gerente_genero, gerente_end, num_matricula, num_agencia, data_criacao, gerente_id FROM gerenteAgencia WHERE num_matricula = %s", ([matriculaGerenteAgencia]))
@@ -1554,9 +1589,18 @@ def cadastroGerente():
             session["generoGerenteAgencia"] = retornoDadosGerente[3]
             session["endGerenteAgencia"] = retornoDadosGerente[4]
             session["matriculaGerenteAgencia"] = retornoDadosGerente[5]
-            session["numAgenciaGerenteAgencia"] = retornoDadosGerente[6]
+            numAgenciaNova = retornoDadosGerente[6]
+            session["numAgenciaGerenteAgencia"] = numAgenciaNova
             session["dataCriacaoGerenteAgencia"] = retornoDadosGerente[7]
-            session["gerenteAgenciaId"] = retornoDadosGerente[8]
+            idNovoGerente = retornoDadosGerente[8]
+            session["gerenteAgenciaId"] = idNovoGerente
+
+            app.logger.info(idNovoGerente,numAgenciaNova)
+
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE agencias SET gerente_id = %s WHERE numero_agencia = %s", ([idNovoGerente], [numAgenciaNova]))
+            mysql.connection.commit()
+            cur.close()
 
             flash("Cadastro realizado com sucesso!")
             return redirect(url_for("cadastroGerente"))

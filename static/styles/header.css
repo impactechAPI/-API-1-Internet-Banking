@@ -169,4 +169,40 @@ hr {
     .fundo-home .info-usuario .info h2 {
         font-size: 19px;
     }
+
+    .info-usuario {
+        display: inline;
+        justify-content: space-between;
+        width: 50%;
+        margin: 0 auto;
+        padding-top: 2rem;
+        color: aliceblue;
+    }
+    
+    .info {
+        display: inline;
+    }
+    
+    /* título "Olá, Cliente" */
+    .info h1 {
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    
+    /* info agência e conta */
+    .info span {
+        display: flex;
+    }
+    
+    /* título "Saldo disponível" */
+    .info .saldo_disponivel {
+        font-size: 0.5rem;
+    }
+    
+    /* valor do saldo em R$ */
+    .info .saldo {
+        display: flex;
+        justify-content: right;
+        font-size: 1rem;
+    }
 }

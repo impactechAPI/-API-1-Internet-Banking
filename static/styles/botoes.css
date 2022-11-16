@@ -192,4 +192,32 @@
         height: 3rem;
         font-size: 1rem;
     }
+
+    .button {
+        width: 50%;
+        height: 3rem;
+        margin: 2rem auto 0 auto;
+    }
+
+    .pesquisar {
+    margin: 1rem 0 .8rem 0;
+    width: 18%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .pesquisar_nome {
+        margin: 0 0 .8rem 0;
+        width: 18%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn_pesquisar {
+        width: 5rem;
+        height: 2.5rem;
+        margin: auto 0 .1rem 0;
+    }
 }

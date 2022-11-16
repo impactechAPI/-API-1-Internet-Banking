@@ -9,6 +9,7 @@
             <div class="info-conta">
                 <label>Número</label>
                 <select name="numAgencia" id="numAgencia" class="select">
+                    <option value="0001">0001</option>
                     <option value="0002">0002</option>
                     <option value="0003">0003</option>
                     <option value="0004">0004</option>
@@ -34,7 +35,9 @@
                 <input type="text" name="enderecoAgencia" placeholder="Endereço da agência">
             </div>
         </div>
+
         <input type="submit" name="cadastrar" class="cadastrar" value="Cadastrar"><br>
+
         {% with messages = get_flashed_messages() %}
             {% if messages %}
             <ul class=flashes>
@@ -44,7 +47,7 @@
             </ul>
             {% endif %}
         {% endwith %}
-        </div>
+
     </form>
 
 </main>

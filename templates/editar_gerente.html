@@ -44,7 +44,11 @@
             </div>
             <div class="info-conta">
                 <label>Agência</label>
-                <input type="text" value="{{ session['numAgenciaRetornoGerenteAgencia'] }}" name="numAgenciaCadastro">
+                <select name="numAgenciaCadastro" id="numAgencia" class="select">
+                {% for agencia in listaAgenciasDisponiveis %}
+                <option value="{{ agencia }}">{{ agencia }}</option>
+                {% endfor %}
+                </select>
             </div>
         </div>
 

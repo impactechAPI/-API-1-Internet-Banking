@@ -292,6 +292,11 @@ def deposito():
 
     if request.method == "POST":
 
+        session.pop("horaSistema", None)
+        session["horaSistema"] = dataAgora()
+        session.pop("horaSistemaComprovante", None)
+        session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
         userDetails = request.form
         valorDeposito = userDetails["valorDeposito"]
         session["valorDeposito"] = valorDeposito
@@ -306,11 +311,6 @@ def deposito():
         if valorDeposito and float(valorDeposito) > 0:
             saldoFinalConfirmacao = float(saldoAtual) + float(valorDeposito)
             session["saldoFinalConfirmacao"] = saldoFinalConfirmacao
-
-            session.pop("horaSistema", None)
-            session["horaSistema"] = dataAgora()
-            session.pop("horaSistemaComprovante", None)
-            session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
             cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
 
@@ -438,7 +438,7 @@ def comprovanteTransferencia():
         pdf = pdfkit.from_string(html, False, configuration = config, options={"enable-local-file-access": ""})
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
-        response.headers["Content-Disposition"] = "inline; filename=output2.pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output2.pdf"  
         return response
     return render_template("tela-comprovante-transferencia.html", titulo="Comprovante")
 

@@ -6,7 +6,7 @@ import yaml
 import random
 import pandas as pd
 from datetime import datetime
-#import pdfkit
+import pdfkit
 from dateutil.relativedelta import *
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".
@@ -46,7 +46,6 @@ def configBanco():
         cur.connection.commit()
         cur.close()
 
-        session['primeiravezGerente'] = 0
         cur = mysql.connection.cursor()
         cur.execute("UPDATE gerenteGeral set GG_primeira_vez = 0")
         cur.connection.commit()
@@ -265,7 +264,7 @@ def indexCadastro():
             solicitacaoId = retornoSolicitacaoId[0] 
 
             #Aqui
-            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ([name], [cpf], [dataAniversario], [genero], [endereco], [contaBancaria], [agenciaEscolhida], [solicitacaoidUsuarioCadastrado], [statusSolicitacao], [solicitacaoId]))
+            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, tipoConta, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ([name], [cpf], [dataAniversario], [genero], [endereco], [contaBancaria], [agenciaEscolhida], [tipoConta], [solicitacaoidUsuarioCadastrado], [statusSolicitacao], [solicitacaoId]))
             mysql.connection.commit()
             cur.close()
 
@@ -421,7 +420,7 @@ def comprovante():
         path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
         config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
         html = render_template(
-            "jonascomprovante.html")
+            "comprovantePDF.html")
         pdf = pdfkit.from_string(html, False, configuration = config)
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -822,6 +821,19 @@ def extrato():
 #Teoricamente funcionaria, mas não se pode apagar uma tabela com chave estrangeira!
 @app.route("/meus-dados", methods=["GET", "POST"])
 def meusDados():
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
+    dadosUsuario = cur.fetchone()
+    session["nomeUsuario"] = dadosUsuario[0]
+    session["cpfUsuario"] = dadosUsuario[1]
+    session["dataAniversario"] = dadosUsuario[2]
+    session["generoUsuario"] = dadosUsuario[3]
+    session["enderecoUsuario"] = dadosUsuario[4]
+    session["contaBancariaUsuario"] = dadosUsuario[5]
+    session["agenciaBancariaUsuario"] = dadosUsuario[6]
+    session["saldoBancarioUsuario"] = dadosUsuario[7]
+
     if request.method == "POST":
         if "encerrarConta" in request.form:
             tipoSolicitacao = "Fechamento"
@@ -843,7 +855,7 @@ def meusDados():
             retornoFechamentoId = cur.fetchone()
             fechamentoId = retornoFechamentoId[0]
 
-            cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
+            cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
             dadosUsuario = cur.fetchone()
             app.logger.info(dadosUsuario)
             session["nomeUsuario"] = dadosUsuario[0]
@@ -851,20 +863,21 @@ def meusDados():
             session["dataAniversario"] = dadosUsuario[2]
             session["generoUsuario"] = dadosUsuario[3]
             session["enderecoUsuario"] = dadosUsuario[4]
-            session["contaBancariaUsuario"] = dadosUsuario[5]
-            session["agenciaBancariaUsuario"] = dadosUsuario[6]
-            session["saldoBancarioUsuario"] = dadosUsuario[7] 
+            session["tipoContaUsuario"] = dadosUsuario[5]
+            session["contaBancariaUsuario"] = dadosUsuario[6]
+            session["agenciaBancariaUsuario"] = dadosUsuario[7]
+            session["saldoBancarioUsuario"] = dadosUsuario[8] 
 
-            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["cpfUsuario"], session["dataAniversario"], session["generoUsuario"], session["enderecoUsuario"], session["contaBancariaUsuario"] , session["agenciaBancariaUsuario"], session["idUsuario"], [solicitacaoEncerramento], [fechamentoId]))
+            cur.execute("INSERT INTO confirmacaoFechamento (nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["cpfUsuario"], session["dataAniversario"], session["generoUsuario"], session["enderecoUsuario"], session["tipoContaUsuario"], session["contaBancariaUsuario"], session["agenciaBancariaUsuario"], session["idUsuario"], [solicitacaoEncerramento], [fechamentoId]))
             mysql.connection.commit()
             cur.close()
 
             return redirect(url_for("meusDados"))
         else:
+
             cur = mysql.connection.cursor()
             cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
             dadosUsuario = cur.fetchone()
-            app.logger.info(dadosUsuario)
             session["nomeUsuario"] = dadosUsuario[0]
             session["cpfUsuario"] = dadosUsuario[1]
             session["dataAniversario"] = dadosUsuario[2]
@@ -873,6 +886,7 @@ def meusDados():
             session["contaBancariaUsuario"] = dadosUsuario[5]
             session["agenciaBancariaUsuario"] = dadosUsuario[6]
             session["saldoBancarioUsuario"] = dadosUsuario[7]
+            app.logger.info(dadosUsuario)
             return redirect(url_for("meusDados"))
     return render_template("meus_dados.html", titulo="Meus Dados")
 
@@ -1091,15 +1105,15 @@ def gerenciar():
 
         #Estava retornando deposito, sem acento, acrescentei o acento pois será feito um query no DB através dessa variável
         tipoSolicitacao = request.form.get("tipo-solicitacao")
-        if tipoSolicitacao == "deposito":
+        """ if tipoSolicitacao == "deposito":
             tipoSolicitacao = tipoSolicitacao[0:3] + "ó" + tipoSolicitacao[4:]
             session["tipoSolicitacaoCache"] = tipoSolicitacao
-        session["tipoSolicitacaoCache"] = tipoSolicitacao
+        session["tipoSolicitacaoCache"] = tipoSolicitacao """
 
-        if tipoSolicitacao == "alteracoes de dados":
-            tipoSolicitacao = tipoSolicitacao[0:6] + "çõ" + tipoSolicitacao[7:]
+        """ if tipoSolicitacao == "alteracao de dados":
+            tipoSolicitacao = tipoSolicitacao[0:6] + "çã" + tipoSolicitacao[8:]
             session["tipoSolicitacaoCache"] = tipoSolicitacao
-        session["tipoSolicitacaoCache"] = tipoSolicitacao
+        session["tipoSolicitacaoCache"] = tipoSolicitacao """
         
         app.logger.info(str(session["dataSolicitacaoInicialCache"]), str(session["dataSolicitacaoLimiteCache"]), str(session["tipoSolicitacaoCache"]))
 
@@ -1108,7 +1122,10 @@ def gerenciar():
         #Se houver dados em dataMovimentacao e não houver em tipoTransacao, mostrar a dataMovimentacao selecionada para todos os tipos de Transacao
         if dataSolicitacaoInicial and dataSolicitacaoLimite and tipoSolicitacao == "todos":
             cur = mysql.connection.cursor()
-            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios WHERE dataHoraSolicitacao >= %s AND dataHoraSolicitacao <= %s", ([dataSolicitacaoInicial], [dataSolicitacaoLimite]))
+            if session['funcaoAdministrativa'] == "Gerente de Agência":
+                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE g.dataHoraSolicitacao >= %s AND g.dataHoraSolicitacao <= %s and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC", ([dataSolicitacaoInicial], [dataSolicitacaoLimite]))
+            else:
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios ORDER BY solicitacao_id DESC")
 
             dataSolicitacao = []
             tipoSolicitacaoBanco = []
@@ -1131,7 +1148,10 @@ def gerenciar():
         #Se a dataMovimentacao e o tipoTransacao forem especificados, mostrar a dataMovimentacao e o tipo de Transacao especificado
         elif dataSolicitacaoInicial and dataSolicitacaoLimite and tipoSolicitacao != "todos":
             cur = mysql.connection.cursor()
-            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios WHERE dataHoraSolicitacao >= %s AND dataHoraSolicitacao <= %s AND tipoSolicitacao = %s", ([dataSolicitacaoInicial], [dataSolicitacaoLimite], [tipoSolicitacao]))
+            if session['funcaoAdministrativa'] == "Gerente de Agência":
+                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE g.dataHoraSolicitacao >= %s AND g.dataHoraSolicitacao <= %s AND tipoSolicitacao = %s and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC", ([dataSolicitacaoInicial], [dataSolicitacaoLimite], [tipoSolicitacao]))
+            else:
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios WHERE dataHoraSolicitacao >= %s AND dataHoraSolicitacao <= %s AND tipoSolicitacao = %s ORDER BY solicitacao_id DESC")
 
             dataSolicitacao = []
             tipoSolicitacaoBanco = []
@@ -1152,7 +1172,10 @@ def gerenciar():
         #Se não for especificado nenhum dado para dataMovimentacao, mas ser para o tipoTransacao, mostrar todos os dados do tipoTransacao em todas as datas
         elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao != "todos":
             cur = mysql.connection.cursor()
-            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios WHERE tipoSolicitacao = %s", ([tipoSolicitacao]))
+            if session['funcaoAdministrativa'] == "Gerente de Agência":
+                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE tipoSolicitacao = %s and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC", ([tipoSolicitacao]))
+            else:
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios WHERE tipoSolicitacao = %s ORDER BY solicitacao_id DESC", ([tipoSolicitacao]))
 
             dataSolicitacao = []
             tipoSolicitacao = []
@@ -1172,7 +1195,10 @@ def gerenciar():
 
         elif not dataSolicitacaoInicial and not dataSolicitacaoLimite and tipoSolicitacao == "todos":
             cur = mysql.connection.cursor()
-            cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios")
+            if session['funcaoAdministrativa'] == "Gerente de Agência":
+                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = %s and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC", ([session['idGerente']]))
+            else:
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios ORDER BY solicitacao_id DESC")
 
             dataSolicitacao = []
             tipoSolicitacao = []
@@ -1194,9 +1220,9 @@ def gerenciar():
     else:
             cur = mysql.connection.cursor()
             if session['funcaoAdministrativa'] == "Gerente de Agência":
-                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = %s and u.user_id = g.user_id", ([session['idGerente']]))
+                cur.execute("SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = %s and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC", ([session['idGerente']]))
             else:
-                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios")
+                cur.execute("SELECT dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, solicitacao_id FROM gerenciamentoUsuarios ORDER BY solicitacao_id DESC")
 
             dataSolicitacao = []
             tipoSolicitacao = []
@@ -1272,16 +1298,17 @@ def confirmacaoAbertura():
     solicitacaoIdAbertura = request.args.get("solicitacaoIdAbertura")
     
     cur = mysql.connection.cursor()
-    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, statusSolicitacao FROM confirmacaoAbertura WHERE solicitacao_id = %s", ([solicitacaoIdAbertura]))
+    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, statusSolicitacao FROM confirmacaoAbertura WHERE solicitacao_id = %s", ([solicitacaoIdAbertura]))
     dadosUsuarioFechamento = cur.fetchone()
     session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[0]
     session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[1]
     session["dataAniversarioAbertura"] = dadosUsuarioFechamento[2]
     session["generoAbertura"] = dadosUsuarioFechamento[3]
     session["enderecoAbertura"] = dadosUsuarioFechamento[4]
-    session["contaBancariaAbertura"] = dadosUsuarioFechamento[5]
-    session["agenciaBancariaAbertura"] = dadosUsuarioFechamento[6]
-    session["statusSolicitacaoAbertura"] = dadosUsuarioFechamento[7]
+    session["tipoContaAbertura"] = dadosUsuarioFechamento[5]
+    session["contaBancariaAbertura"] = dadosUsuarioFechamento[6]
+    session["agenciaBancariaAbertura"] = dadosUsuarioFechamento[7]
+    session["statusSolicitacaoAbertura"] = dadosUsuarioFechamento[8]
     statusSolicitacao = session["statusSolicitacaoAbertura"]
 
     if request.method == "POST":
@@ -1311,7 +1338,7 @@ def confirmacaoFechamento():
     solicitacaoIdFechamento = request.args.get("solicitacaoIdFechamento")
      
     cur = mysql.connection.cursor()
-    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, statusSolicitacao FROM confirmacaoAbertura WHERE solicitacao_id = %s", ([solicitacaoIdFechamento]))
+    cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, statusSolicitacao FROM confirmacaoFechamento WHERE solicitacao_id = %s", ([solicitacaoIdFechamento]))
     dadosUsuarioFechamento = cur.fetchone()
     session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[0]
     session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[1]
@@ -1328,6 +1355,7 @@ def confirmacaoFechamento():
 
             cur = mysql.connection.cursor()
             cur.execute("UPDATE confirmacaoAbertura SET statusSolicitacao = %s WHERE contaBancaria= %s", ([statusSolicitacao], session["contaBancariaAbertura"]))
+            cur.execute("UPDATE confirmacaoFechamento SET statusSolicitacao = %s WHERE contaBancaria= %s", ([statusSolicitacao], session["contaBancariaAbertura"]))
             mysql.connection.commit()
             cur.close()
 
@@ -1336,7 +1364,7 @@ def confirmacaoFechamento():
             statusSolicitacao = "Confirmada"
 
             cur = mysql.connection.cursor()
-            cur.execute("UPDATE confirmacaoAbertura SET statusSolicitacao = %s WHERE contaBancaria= %s", ([statusSolicitacao], session["contaBancariaAbertura"]))
+            cur.execute("UPDATE confirmacaoFechada SET statusSolicitacao = %s WHERE contaBancaria= %s", ([statusSolicitacao], session["contaBancariaAbertura"]))
             mysql.connection.commit()
             cur.close()
 
@@ -1556,6 +1584,14 @@ def cadastroGerente():
     for i in range(1, 6):
         numero.append(random.randint(0, 9))
     matriculaGerenteAgencia="".join(map(str,numero))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia from agencias")
+
+    listaAgenciasDisponiveis = []
+
+    for i in cur:
+        listaAgenciasDisponiveis.append(i[0])
     
 
     if request.method == "POST":
@@ -1604,11 +1640,19 @@ def cadastroGerente():
 
             flash("Cadastro realizado com sucesso!")
             return redirect(url_for("cadastroGerente"))
-    return render_template("novo_gerente.html", titulo="Novo Gerente")
+    return render_template("novo_gerente.html", titulo="Novo Gerente", listaAgenciasDisponiveis = listaAgenciasDisponiveis)
 
 @app.route("/editar-gerentes", methods=["GET", "POST"])
 def editarGerentes():
     
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia from agencias")
+
+    listaAgenciasDisponiveis = []
+
+    for i in cur:
+        listaAgenciasDisponiveis.append(i[0])
+
     if request.method == 'POST':
         if "confirmar" in request.form:
 
@@ -1621,7 +1665,7 @@ def editarGerentes():
             novoNumAgenciaGerente = request.form['numAgenciaCadastro']
 
             cur = mysql.connection.cursor()
-            cur.execute("SELECT gerente_id from gerenteAgencia where num_matricula = %s", ([session["matriculaGerenteAgencia"]]))
+            cur.execute("SELECT gerente_id from gerenteAgencia where num_matricula = %s", ([session["matriculaRetornoGerenteAgencia"]]))
             idGerenteRetorno = cur.fetchone()
             app.logger.info(idGerenteRetorno)
             idGerenteAgencia = idGerenteRetorno[0]
@@ -1662,18 +1706,20 @@ def editarGerentes():
     session["numAgenciaRetornoGerenteAgencia"] = retornoGerenteAgencia[6]
     session["dataCriacaoRetornoGerenteAgencia"] = retornoGerenteAgencia[7] 
     
-    return render_template("editar_gerente.html", titulo="Editar Gerente")
+    return render_template("editar_gerente.html", titulo="Editar Gerente", listaAgenciasDisponiveis = listaAgenciasDisponiveis)
 
 @app.route("/cadastroAgencia", methods=["GET", "POST"])
 def cadastroAgencia():
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT numero_agencia from agencias")
-
     listaAgencias = []
 
-    for i in cur:
-        listaAgencias.append(i[0])
+    for x in range(1,51):
+        if x <= 9:
+            novaAgencia = "000" + str(x)
+            listaAgencias.append(novaAgencia)
+        else:
+            novaAgencia = "00" + str(x)
+            listaAgencias.append(novaAgencia)
 
     app.logger.info(listaAgencias)
 

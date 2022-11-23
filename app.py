@@ -43,9 +43,14 @@ def configBanco():
         taxaJurosPoupanca = float(taxaJurosPoupanca) / 100
         taxaJurosCheque = userDetails["taxaCheque"]
         taxaJurosCheque = float(taxaJurosCheque) / 100
+        dataInicializacao = dataAgora()
+        
+        with open ("config.json") as arquivo:
+            dataJson = json.load(arquivo)
+        #dataCorrente = pegar do json seria interessante, salvar no banco de dados. 
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO configBanco (capitalTotal, taxaJurosPoupanca, taxaJurosCheque) VALUES(%s, %s, %s)", (capitalTotal, taxaJurosPoupanca, taxaJurosCheque))
+        cur.execute("INSERT INTO configBanco (dataInicializacao, dataCorrente, capitalTotal, taxaJurosPoupanca, taxaJurosCheque) VALUES(%s, %s, %s, %s, %s)", (dataInicializacao, dataJson, capitalTotal, taxaJurosPoupanca, taxaJurosCheque))
         cur.connection.commit()
         cur.close()
 

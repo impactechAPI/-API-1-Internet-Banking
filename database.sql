@@ -82,6 +82,7 @@ agenciaBancaria varchar (4) not null,
 saldoAtual decimal(19,2) not null,
 valorDeposito decimal(19,2) not null,
 saldoFinal decimal(19,2) not null,
+statusSolicitacao VARCHAR(40) not null,
 user_id int,
 foreign key(user_id) references users (user_id),
 solicitacao_id int,
@@ -152,6 +153,7 @@ foreign key(user_id) references users (user_id),
 config_id int,
 foreign key(config_id) references configBanco (config_id));
 
+USE flaskapp;
 select * from users;
 select * from movimentacaoConta;
 select * from gerenciamentoUsuarios;

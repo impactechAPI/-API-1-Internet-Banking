@@ -30,7 +30,9 @@
         <ul class=flashes>
             {% for message in messages %}
                 {%if message == "Transferência realizada com sucesso! Para ver seu comprovante clique "%}
-            <div class="error">{{ message }} <a href={{url_for("comprovanteTransferencia")}} class="voltar">aqui</a></div>
+                    <div class="error">{{ message }} <a href={{url_for("comprovanteTransferencia")}} class="voltar">aqui</a></div>
+                {% else %}
+                    <div class="error">{{ message }}</div>
                 {% endif %}
         </ul>
         {% endfor %}

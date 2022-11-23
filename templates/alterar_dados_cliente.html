@@ -1,0 +1,86 @@
+{% extends 'base_gg.html' %}
+
+{% block contents %}
+<div class="container">
+
+    <a href="" class="voltar">&lt voltar</a><br><br>
+    <form method="post" action="{{ url_for('alterarDadosCliente') }}">
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Nome</label>
+                <input type="text" name="nome" value="{{ session['nomeUsuarioCadastro'] }}">
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>CPF (Apenas números)</label>
+                <input type="text" maxlength="11" name="cpf" value="{{ session['cpfUsuarioCadastro'] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Data de nascimento</label>
+                <input type="date" name="dataAniversario" value="{{ session['dataAniversarioCadastro'] }}">
+            </div>
+
+            <div class="info-conta">
+                <label>Gênero</label>
+                <select name="genero" id="genero" class="genero" aria-selected="{{ session['generoCadastro'] }}">
+                    <option value="selecione" disabled>Selecione</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo-unico">
+            <div class="info-conta">
+                <label>Endereço</label>
+                <input type="text" name="endereco" value="{{ session['enderecoCadastro'] }}">
+            </div>
+        </div>
+
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>Numero da Conta</label>
+                <input type="text" name="numeroContaUsuario" maxlength="9" value="{{ session['contaBancariaCadastro'] }}">
+            </div>
+            <div class="info-conta">
+                <label>Agência</label>
+                <select name="numeroAgencia" id="numAgencia" class="select" aria-selected="{{ session['agenciaBancariaCadastro'] }}">
+                    {% for agencia in listaAgenciasDisponiveis %}
+                        <option value="{{ agencia }}">{{ agencia }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="info-conta">
+                <label>Tipo de conta</label>
+                <select name="tipoContaUsuario" id="numAgencia" class="select" aria-selected="{{ session['tipoContaUsuario'] }}">
+                    
+                        <option value="Poupança">Poupança</option>
+                        <option value="Conta Corrente">Conta Corrente</option>
+                    
+                </select>
+            </div>
+            <!-- /info-conta -->
+        </div>
+
+        <aside class="botoes">
+            <input type="submit" name="confirmar" class="confirmar" value="Salvar">
+            <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+        </aside>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+    </form>
+
+</div>
+
+{% endblock %}

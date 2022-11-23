@@ -10,14 +10,14 @@
         <div class="info-usuario">
             <div class="info">
                 <h1>Olá, {{ session['gerente_nome'] }}</h1>
-                <label>Número de matrícula: {{ session['matriculaGerente'] }}</label>
+                <label>Número de matrícula: {{ session['num_matricula'] }}</label>
                 <label>Função: {{ session['funcaoAdministrativa'] }}</label>
             </div>
         </div>
         <hr class="hr">
     </section>
     <section class="container">
-        <h2>Agência: {{ session['agenciaGerente'] }}</h2>
+        <h2>Agência: {{ session['num_agencia'] }}</h2>
     </section>
 
 </main>

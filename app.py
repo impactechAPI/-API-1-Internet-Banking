@@ -8,6 +8,7 @@ import pandas as pd
 from datetime import datetime
 import pdfkit
 from dateutil.relativedelta import *
+import json
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".
 app = Flask(__name__)
@@ -29,6 +30,8 @@ mysql = MySQL(app)
 #Configuração de Hora do Sistema - OBS: Tem que ser realocado para um arquivo JSON
 def dataAgora():
     data = datetime.now().strftime("%d/%m/%Y")
+    with open("config.json", "w") as outfile:
+        json.dump(data, outfile) 
     return data
 
 @app.route("/configuracao-banco", methods=["GET", "POST"])
@@ -129,153 +132,157 @@ def indexHome():
 #Rota da página cadastro
 @app.route("/cadastro", methods=["GET", "POST"])
 def indexCadastro():
-    #Inicializando algumas variaveis importantes pro resto da função indexCadastro. A variável agenciaBancaria recebe por enquanto uma string "0001". O saldoBancario sempre começa com 0 Reais.
+    try:
+        #Inicializando algumas variaveis importantes pro resto da função indexCadastro. A variável agenciaBancaria recebe por enquanto uma string "0001". O saldoBancario sempre começa com 0 Reais.
 
-    # !! Talvez dê para mudar o ponto por vírgula usando replace() !!
-    saldoBancario = "0.00"
-    cadastro = False
-    voltarLogin = False
-    statusSolicitacao = "Pendente"
+        # !! Talvez dê para mudar o ponto por vírgula usando replace() !!
+        saldoBancario = "0.00"
+        cadastro = False
+        voltarLogin = False
+        statusSolicitacao = "Pendente"
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT MIN(numero_clientes) AS minimum FROM agencias")
-    retornoNumeroAgencia = cur.fetchone()
-    menorAgencia = retornoNumeroAgencia[0]
-    app.logger.info(menorAgencia)
-
-    cur.execute("SELECT gerente_id, numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
-    retornoAgenciaEscolhida = cur.fetchone()
-    gerenteEscolhido = retornoAgenciaEscolhida[0]
-    agenciaEscolhida = retornoAgenciaEscolhida[1]
-    agenciaEscolhida = str(agenciaEscolhida)
-    app.logger.info(agenciaEscolhida)
-    
-    #Configurando a aquisicão das variaveis do formulario em HTML pelo request em Python (metódo POST)
-    if request.method == "POST":
-
-        userDetails = request.form
-        name = userDetails["nome"]
-        cpf = userDetails["cpf"]
-        dataAniversario = userDetails["dataAniversario"]
-        genero = userDetails["genero"]
-        endereco = userDetails["endereco"]
-        tipoConta = userDetails["tipoConta"]        
-        senha = userDetails["senha"]
-        confirmacaoSenha = userDetails["confirmacaoSenha"]  
-        senhaCriptografada = generate_password_hash(senha) 
-        senhaCriptografada2 = None
-        tipoSolicitacao = "Abertura"
-        ultimaTransacao = 0
-
-        #Pega o bool que retorna do checkbox do consentimento do usuário
-        checkboxConsentimentoUsuario = request.form.get("consentimentoUsuario")
-
-        #app.logger.info printa a variável que está dentro do parêntesis.
-        app.logger.info(checkboxConsentimentoUsuario)
-
-        #Critério preenchimento campos do cadastro, incluindo as duas senhas, que precisam ser iguais para que ela seja transformada em Hash criptografado e seja mandado pro banco de dados protegida.
-        if not name or not cpf or not dataAniversario or not genero or not endereco or not senha or not confirmacaoSenha:
-            flash("Preencha todos os campos do formulário!")
-            return redirect (url_for("indexCadastro"))
-
-        #ATENÇÃO! trecho retirado não descomentar por enquanto
-        """ try:
-            #Verificando se cpf já consta nos registros durante o cadastro !! Não deve ser feito mais !!
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT cpf FROM users WHERE cpf = %s", [cpf])
-            cpfUsuario = cur.fetchone()
-            retornoCpfUsuario = cpfUsuario[0]
-        except Exception as ex:
-            retornoCpfUsuario = None
-         
-            if retornoCpfUsuario and retornoCpfUsuario != None:
-            flash("CPF já cadastrado")
-            return redirect (url_for("indexCadastro")) 
-        """
-
-        if senha == confirmacaoSenha:
-            if check_password_hash(senhaCriptografada, senha):
-                senhaCriptografada2 = senhaCriptografada
-        else:
-            flash("As senhas precisam ser iguais")
-            return redirect (url_for("indexCadastro"))
-
-        if checkboxConsentimentoUsuario == None:
-            flash("Aceite os Termos de Uso e Política de Privacidade.")
-            return redirect (url_for("indexCadastro"))
-
-        #Gerador de conta bancaria automatico
-        numero = []
-        for i in range(1, 10):
-            numero.append(random.randint(0, 9))
-        contaBancaria="".join(map(str,numero))
-
-        session.pop("horaSistema", None)
-        session["horaSistema"] = dataAgora()
-        
-        #Salvando dados no BD e finalizando operação
-        mysql.connection.commit()
         cur = mysql.connection.cursor()
+        cur.execute("SELECT MIN(numero_clientes) AS minimum FROM agencias")
+        retornoNumeroAgencia = cur.fetchone()
+        menorAgencia = retornoNumeroAgencia[0]
+        app.logger.info(menorAgencia)
 
-        #Aqui
-        cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta, gerente_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaEscolhida, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta, gerenteEscolhido))
+        cur.execute("SELECT gerente_id, numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
+        retornoAgenciaEscolhida = cur.fetchone()
+        gerenteEscolhido = retornoAgenciaEscolhida[0]
+        agenciaEscolhida = retornoAgenciaEscolhida[1]
+        agenciaEscolhida = str(agenciaEscolhida)
+        app.logger.info(agenciaEscolhida)
         
-        mysql.connection.commit()
+        #Configurando a aquisicão das variaveis do formulario em HTML pelo request em Python (metódo POST)
+        if request.method == "POST":
 
-        cur.close()
-        cadastro = True
+            userDetails = request.form
+            name = userDetails["nome"]
+            cpf = userDetails["cpf"]
+            dataAniversario = userDetails["dataAniversario"]
+            genero = userDetails["genero"]
+            endereco = userDetails["endereco"]
+            tipoConta = userDetails["tipoConta"]        
+            senha = userDetails["senha"]
+            confirmacaoSenha = userDetails["confirmacaoSenha"]  
+            senhaCriptografada = generate_password_hash(senha) 
+            senhaCriptografada2 = None
+            tipoSolicitacao = "Abertura"
+            ultimaTransacao = 0
 
-        #Lógica para retornar usuário ao Login pós Cadastro e mostrar o numero da sua conta bancaria para Logar.
-        if cadastro == True:
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT MIN(numero_clientes) AS minimum FROM agencias")
-            retornoNumeroAgencia = cur.fetchone()
-            menorAgencia = retornoNumeroAgencia[0]
-            app.logger.info(menorAgencia)
+            #Pega o bool que retorna do checkbox do consentimento do usuário
+            checkboxConsentimentoUsuario = request.form.get("consentimentoUsuario")
 
-            cur.execute("SELECT numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
-            retornoAgenciaEscolhida = cur.fetchone()
-            agenciaEscolhida = retornoAgenciaEscolhida[0]
-            agenciaEscolhida = str(agenciaEscolhida)
-            app.logger.info(agenciaEscolhida)
+            #app.logger.info printa a variável que está dentro do parêntesis.
+            app.logger.info(checkboxConsentimentoUsuario)
 
-            menorAgencia = int(menorAgencia) + 1
+            #Critério preenchimento campos do cadastro, incluindo as duas senhas, que precisam ser iguais para que ela seja transformada em Hash criptografado e seja mandado pro banco de dados protegida.
+            if not name or not cpf or not dataAniversario or not genero or not endereco or not senha or not confirmacaoSenha:
+                flash("Preencha todos os campos do formulário!")
+                return redirect (url_for("indexCadastro"))
 
-            cur.execute("UPDATE agencias SET numero_clientes = %s WHERE numero_agencia = %s", ([menorAgencia], [agenciaEscolhida]))
+            #ATENÇÃO! trecho retirado não descomentar por enquanto
+            """ try:
+                #Verificando se cpf já consta nos registros durante o cadastro !! Não deve ser feito mais !!
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT cpf FROM users WHERE cpf = %s", [cpf])
+                cpfUsuario = cur.fetchone()
+                retornoCpfUsuario = cpfUsuario[0]
+            except Exception as ex:
+                retornoCpfUsuario = None
+            
+                if retornoCpfUsuario and retornoCpfUsuario != None:
+                flash("CPF já cadastrado")
+                return redirect (url_for("indexCadastro")) 
+            """
 
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT contaBancaria FROM users WHERE nome = %s and cpf = %s", ([name], [cpf]))
-            contaUsuario = cur.fetchone()
-            session['contaUsuario'] = contaUsuario[0]
+            if senha == confirmacaoSenha:
+                if check_password_hash(senhaCriptografada, senha):
+                    senhaCriptografada2 = senhaCriptografada
+            else:
+                flash("As senhas precisam ser iguais")
+                return redirect (url_for("indexCadastro"))
 
-            cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
+            if checkboxConsentimentoUsuario == None:
+                flash("Aceite os Termos de Uso e Política de Privacidade.")
+                return redirect (url_for("indexCadastro"))
 
-            ultimaTransacao = 1
+            #Gerador de conta bancaria automatico
+            numero = []
+            for i in range(1, 10):
+                numero.append(random.randint(0, 9))
+            contaBancaria="".join(map(str,numero))
 
-            cur.execute("SELECT user_id FROM users WHERE contaBancaria = %s", ([session['contaUsuario']]))
-            retornoidUsuarioCadastro = cur.fetchone()
-            solicitacaoidUsuarioCadastrado = retornoidUsuarioCadastro[0]
-
-            cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], [name], [ultimaTransacao], [solicitacaoidUsuarioCadastrado]))
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
+            
+            #Salvando dados no BD e finalizando operação
             mysql.connection.commit()
-
-            cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
-            retornoSolicitacaoId = cur.fetchone()
-            solicitacaoId = retornoSolicitacaoId[0] 
+            cur = mysql.connection.cursor()
 
             #Aqui
-            cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, tipoConta, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ([name], [cpf], [dataAniversario], [genero], [endereco], [contaBancaria], [agenciaEscolhida], [tipoConta], [solicitacaoidUsuarioCadastrado], [statusSolicitacao], [solicitacaoId]))
+            cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta, gerente_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaEscolhida, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta, gerenteEscolhido))
+            
             mysql.connection.commit()
-            cur.close()
 
-            flash(f"Cadastro criado com sucesso!\nATENÇÃO! Para entrar você precisa do nº de sua Conta, anote-a por segurança:\n {str(session.get('contaUsuario'))}")
-            if request.method == "POST":
-                voltarLogin = True
-                if voltarLogin == True:
-                    return redirect (url_for('indexHome'))
-        else:
-            flash("Algo deu errado com seu cadastro, tente novamente e atente-se aos campos e senha!")
-            return redirect (url_for('indexCadastro'))
+            cur.close()
+            cadastro = True
+
+            #Lógica para retornar usuário ao Login pós Cadastro e mostrar o numero da sua conta bancaria para Logar.
+            if cadastro == True:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT MIN(numero_clientes) AS minimum FROM agencias")
+                retornoNumeroAgencia = cur.fetchone()
+                menorAgencia = retornoNumeroAgencia[0]
+                app.logger.info(menorAgencia)
+
+                cur.execute("SELECT numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
+                retornoAgenciaEscolhida = cur.fetchone()
+                agenciaEscolhida = retornoAgenciaEscolhida[0]
+                agenciaEscolhida = str(agenciaEscolhida)
+                app.logger.info(agenciaEscolhida)
+
+                menorAgencia = int(menorAgencia) + 1
+
+                cur.execute("UPDATE agencias SET numero_clientes = %s WHERE numero_agencia = %s", ([menorAgencia], [agenciaEscolhida]))
+
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT contaBancaria FROM users WHERE nome = %s and cpf = %s", ([name], [cpf]))
+                contaUsuario = cur.fetchone()
+                session['contaUsuario'] = contaUsuario[0]
+
+                cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
+
+                ultimaTransacao = 1
+
+                cur.execute("SELECT user_id FROM users WHERE contaBancaria = %s", ([session['contaUsuario']]))
+                retornoidUsuarioCadastro = cur.fetchone()
+                solicitacaoidUsuarioCadastrado = retornoidUsuarioCadastro[0]
+
+                cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], [name], [ultimaTransacao], [solicitacaoidUsuarioCadastrado]))
+                mysql.connection.commit()
+
+                cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
+                retornoSolicitacaoId = cur.fetchone()
+                solicitacaoId = retornoSolicitacaoId[0] 
+
+                #Aqui
+                cur.execute("INSERT INTO confirmacaoAbertura (nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria, tipoConta, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ([name], [cpf], [dataAniversario], [genero], [endereco], [contaBancaria], [agenciaEscolhida], [tipoConta], [solicitacaoidUsuarioCadastrado], [statusSolicitacao], [solicitacaoId]))
+                mysql.connection.commit()
+                cur.close()
+
+                flash(f"Cadastro criado com sucesso!\nATENÇÃO! Para entrar você precisa do nº de sua Conta, anote-a por segurança:\n {str(session.get('contaUsuario'))}")
+                if request.method == "POST":
+                    voltarLogin = True
+                    if voltarLogin == True:
+                        return redirect (url_for('indexHome'))
+            else:
+                flash("Algo deu errado com seu cadastro, tente novamente e atente-se aos campos e senha!")
+                return redirect (url_for('indexCadastro'))
+    except Exception as ex:
+        flash("Algo deu errado! Talvez não exista gerentes ou agências próximos de sua localidade, por favor aguarde!")
+        return redirect(url_for("indexHome"))
 
     return render_template("cadastro.html", tituloNavegador="Novo Cliente")
 
@@ -292,6 +299,11 @@ def deposito():
 
     if request.method == "POST":
 
+        session.pop("horaSistema", None)
+        session["horaSistema"] = dataAgora()
+        session.pop("horaSistemaComprovante", None)
+        session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
         userDetails = request.form
         valorDeposito = userDetails["valorDeposito"]
         session["valorDeposito"] = valorDeposito
@@ -307,11 +319,6 @@ def deposito():
             saldoFinalConfirmacao = float(saldoAtual) + float(valorDeposito)
             session["saldoFinalConfirmacao"] = saldoFinalConfirmacao
 
-            session.pop("horaSistema", None)
-            session["horaSistema"] = dataAgora()
-            session.pop("horaSistemaComprovante", None)
-            session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-
             cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
 
             ultimaTransacao = 1
@@ -323,8 +330,8 @@ def deposito():
             retornoSolicitacaoId = cur.fetchone()
             solicitacaoId = retornoSolicitacaoId[0]    
 
-            cur.execute("INSERT INTO confirmacaoDeposito (nome, contaBancaria, agenciaBancaria, saldoAtual, valorDeposito, saldoFinal, user_id, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["contaUsuario"], session["agenciaUsuario"], [saldoAtual], [valorDeposito], [saldoFinalConfirmacao], session["idUsuario"], [solicitacaoId]))
-            mysql.connection.commit()
+            statusSolicitacao = "Pendente"
+            cur.execute("INSERT INTO confirmacaoDeposito (nome, contaBancaria, agenciaBancaria, saldoAtual, valorDeposito, saldoFinal, statusSolicitacao, user_id, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["contaUsuario"], session["agenciaUsuario"], [saldoAtual], [valorDeposito], [saldoFinalConfirmacao], [statusSolicitacao], session["idUsuario"], [solicitacaoId]))
 
             cur.close()
 
@@ -438,7 +445,7 @@ def comprovanteTransferencia():
         pdf = pdfkit.from_string(html, False, configuration = config, options={"enable-local-file-access": ""})
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
-        response.headers["Content-Disposition"] = "inline; filename=output2.pdf"
+        response.headers["Content-Disposition"] = "inline; filename=output2.pdf"  
         return response
     return render_template("tela-comprovante-transferencia.html", titulo="Comprovante")
 
@@ -465,6 +472,16 @@ def transferencia():
 
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session['contaUsuario']])
+    novoSaldoAtual = cur.fetchone()
+    saldoAtualEnvio = novoSaldoAtual[0]
+
+    #session.pop remove os dados de 'saldoUsuario'. Em seguida pedi para que o saldo final sofresse uma formatação e ficasse com duas casas após a vírgula. depois renovei o session 'saldoUsuario' para pegar o saldo formatado. Precisei excluir e pegar novamente para atualizar o cache.
+    session.pop('saldoUsuario', None)
+    saldoFormatado = '{0:.2f}'.format(saldoAtualEnvio)
+    session['saldoUsuario'] = saldoFormatado.replace('.',',')
 
     if request.method == "POST":
 
@@ -498,18 +515,45 @@ def transferencia():
             flash("Preencha todos os campos!")
             return redirect (url_for("transferencia"))
 
+        #verificando se a conta e a agencia existem no BD
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT contaBancaria, agenciaBancaria FROM confirmacaoAbertura WHERE contaBancaria = %s and agenciaBancaria = %s", (session['contaUsuario'], session["numeroAgenciaTransferencia"]))
+            retornoContaAgenciaExistem = cur.fetchone()
+            contaExiste = retornoContaAgenciaExistem[0]
+            agenciaExiste = retornoContaAgenciaExistem[1]
+
+            
+            if not contaExiste:
+                flash("Conta bancária com esse número não existe no sistema, por favor verifique e tente novamente!")
+                return redirect(url_for("transferencia"))
+            elif contaExiste:
+                if not agenciaExiste:
+                    flash("Agência bancária não existe no sistema, por favor verifique e tente novamente!")
+                    return redirect(url_for("transferencia"))
+            else:
+                pass
+
+        except Exception as ex:
+            flash("Conta bancária ou agência com esse número não existem no sistema, por favor verifique e tente novamente!")
+            return redirect(url_for("transferencia"))
+
         cur = mysql.connection.cursor()
         cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session['contaUsuario']])
         saldoAtualEnvio = cur.fetchone()
         saldoAtualEnvio = saldoAtualEnvio[0]
         session["saldoUsuarioAntesEnvio"] = saldoAtualEnvio
 
-        cur.execute("SELECT saldoBancario, user_id FROM users WHERE contaBancaria = %s", [session['numeroContaTransferencia']])
-        retornoDadosContaRecebido = cur.fetchone()
-        saldoAtualRecebido = retornoDadosContaRecebido[0]
-        session["saldoUsuarioAntesRecebido"] = saldoAtualRecebido
-        idUsuarioRecebido = retornoDadosContaRecebido[1]
-        session["idUsuarioRecebido"] = idUsuarioRecebido
+        try:
+            cur.execute("SELECT saldoBancario, user_id FROM users WHERE contaBancaria = %s", [session['numeroContaTransferencia']])
+            retornoDadosContaRecebido = cur.fetchone()
+            saldoAtualRecebido = retornoDadosContaRecebido[0]
+            session["saldoUsuarioAntesRecebido"] = saldoAtualRecebido
+            idUsuarioRecebido = retornoDadosContaRecebido[1]
+            session["idUsuarioRecebido"] = idUsuarioRecebido
+        except Exception as ex:
+            flash("Conta bancária com esse número não existe no sistema, por favor verifique e tente novamente!")
+            return redirect(url_for("transferencia"))
 
         try:
             if valorTransferencia and float(valorTransferencia) > 0:
@@ -539,12 +583,18 @@ def transferencia():
                 cur.close()
 
                 flash("Transferência realizada com sucesso! Para ver seu comprovante clique ")
-            else:
+                return redirect (url_for("transferencia"))
+            elif valorTransferencia and float(valorTransferencia) <= 0:
                 flash("Apenas transferências positivas e acima de R$ 0,00 são permitidas!")
                 return redirect (url_for("transferencia"))
         except Exception as ex:
                 flash("Preencha todos os campos!")
                 return redirect (url_for("transferencia"))
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session['contaUsuario']])
+        novoSaldoAtual = cur.fetchone()
+        saldoAtualEnvio = novoSaldoAtual[0]
 
         #session.pop remove os dados de 'saldoUsuario'. Em seguida pedi para que o saldo final sofresse uma formatação e ficasse com duas casas após a vírgula. depois renovei o session 'saldoUsuario' para pegar o saldo formatado. Precisei excluir e pegar novamente para atualizar o cache.
         session.pop('saldoUsuario', None)
@@ -836,43 +886,48 @@ def meusDados():
 
     if request.method == "POST":
         if "encerrarConta" in request.form:
-            tipoSolicitacao = "Fechamento"
-            solicitacaoEncerramento = "Pendente"
+            if session["saldoBancarioUsuario"] > 0 or session["saldoBancarioUsuario"] < 0:
+                flash("Antes de pedir uma solicitação de fechamento de conta, por favor deixe sua conta bancária zerada.\n Se houver saldo faça um saque ou transferência. Se houver saldo negativo faça um depósito.")
+                return redirect(url_for("meusDados"))
+            else:
+                tipoSolicitacao = "Fechamento"
+                solicitacaoEncerramento = "Pendente"
 
-            session.pop("horaSistema", None)
-            session["horaSistema"] = dataAgora()
+                session.pop("horaSistema", None)
+                session["horaSistema"] = dataAgora()
 
-            cur = mysql.connection.cursor()
+                cur = mysql.connection.cursor()
 
-            cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
+                cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
 
-            ultimaTransacao = 1
+                ultimaTransacao = 1
 
-            cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"]))
-            mysql.connection.commit()
+                cur.execute("INSERT INTO gerenciamentoUsuarios (dataHoraSolicitacao, tipoSolicitacao, usuarioDaSolicitacao, ultimaTransacao, user_id) VALUES(%s, %s, %s, %s, %s)", (session['horaSistema'], [tipoSolicitacao], session["nomeUsuario"], [ultimaTransacao], session["idUsuario"]))
+                mysql.connection.commit()
 
-            cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
-            retornoFechamentoId = cur.fetchone()
-            fechamentoId = retornoFechamentoId[0]
+                cur.execute("SELECT solicitacao_id from gerenciamentoUsuarios where ultimaTransacao = %s and tipoSolicitacao = %s", ([ultimaTransacao], [tipoSolicitacao]))
+                retornoFechamentoId = cur.fetchone()
+                fechamentoId = retornoFechamentoId[0]
 
-            cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
-            dadosUsuario = cur.fetchone()
-            app.logger.info(dadosUsuario)
-            session["nomeUsuario"] = dadosUsuario[0]
-            session["cpfUsuario"] = dadosUsuario[1]
-            session["dataAniversario"] = dadosUsuario[2]
-            session["generoUsuario"] = dadosUsuario[3]
-            session["enderecoUsuario"] = dadosUsuario[4]
-            session["tipoContaUsuario"] = dadosUsuario[5]
-            session["contaBancariaUsuario"] = dadosUsuario[6]
-            session["agenciaBancariaUsuario"] = dadosUsuario[7]
-            session["saldoBancarioUsuario"] = dadosUsuario[8] 
+                cur.execute("SELECT nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, saldoBancario FROM users WHERE user_id = %s", str(session["idUsuario"]))
+                dadosUsuario = cur.fetchone()
+                app.logger.info(dadosUsuario)
+                session["nomeUsuario"] = dadosUsuario[0]
+                session["cpfUsuario"] = dadosUsuario[1]
+                session["dataAniversario"] = dadosUsuario[2]
+                session["generoUsuario"] = dadosUsuario[3]
+                session["enderecoUsuario"] = dadosUsuario[4]
+                session["tipoContaUsuario"] = dadosUsuario[5]
+                session["contaBancariaUsuario"] = dadosUsuario[6]
+                session["agenciaBancariaUsuario"] = dadosUsuario[7]
+                session["saldoBancarioUsuario"] = dadosUsuario[8] 
 
-            cur.execute("INSERT INTO confirmacaoFechamento (nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["cpfUsuario"], session["dataAniversario"], session["generoUsuario"], session["enderecoUsuario"], session["tipoContaUsuario"], session["contaBancariaUsuario"], session["agenciaBancariaUsuario"], session["idUsuario"], [solicitacaoEncerramento], [fechamentoId]))
-            mysql.connection.commit()
-            cur.close()
+                cur.execute("INSERT INTO confirmacaoFechamento (nome, cpf, dataAniversario, genero, endereco, tipoConta, contaBancaria, agenciaBancaria, user_id, statusSolicitacao, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["cpfUsuario"], session["dataAniversario"], session["generoUsuario"], session["enderecoUsuario"], session["tipoContaUsuario"], session["contaBancariaUsuario"], session["agenciaBancariaUsuario"], session["idUsuario"], [solicitacaoEncerramento], [fechamentoId]))
+                mysql.connection.commit()
+                cur.close()
 
-            return redirect(url_for("meusDados"))
+                flash("Solicitação de fechamento de conta feita com sucesso. Em breve sua solicitação será avaliada por um de nossos gerentes, por favor aguarde!")
+                return redirect(url_for("meusDados"))
         else:
 
             cur = mysql.connection.cursor()
@@ -910,6 +965,8 @@ def alterarDados():
             statusSolicitacao = "Pendente"
             if novoSenha == novoConfirmacaoSenha:
                 novoSenhaCriptografada2 = novoSenhaCriptografada
+                flash("Uma solicitação de alteração de dados foi enviada ao seu gerente.")
+                return redirect(url_for("alterarDados"))
             else:
                 flash("As senhas precisam ser iguais!")
                 return redirect(url_for ("alterarDados"))
@@ -936,9 +993,73 @@ def alterarDados():
 
         return render_template("alterar_dados.html", titulo = "Alterar Dados")
 
-""" @app.route("/encerrar-conta", methods=["GET", "POST"])
-def encerrarConta():
-    return """
+@app.route("/alterar_dados_cliente", methods = ["GET", "POST"])
+def alterarDadosCliente():
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia from agencias")
+
+    listaAgenciasDisponiveis = []
+
+    for i in cur:
+        listaAgenciasDisponiveis.append(i[0])
+
+    if request.method == "POST":
+        if "confirmar" in request.form:
+            
+            userDetails = request.form
+            retornoCpfUsuario = userDetails["cpf"]
+
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT user_id FROM users WHERE cpf = %s", ([retornoCpfUsuario]))
+            retornoUserID = cur.fetchone()
+
+            cur.execute("SELECT tipoConta, nome, cpf, dataAniversario, genero, endereco, contaBancaria, agenciaBancaria FROM users WHERE user_id = %s", ([retornoUserID]))
+            dadosUsuarioFechamento = cur.fetchone()
+
+            session["tipoContaUsuario"] = dadosUsuarioFechamento[0]
+            session["nomeUsuarioCadastro"] = dadosUsuarioFechamento[1]
+            session["cpfUsuarioCadastro"] = dadosUsuarioFechamento[2]
+            session["dataAniversarioCadastro"] = dadosUsuarioFechamento[3]
+            session["generoCadastro"] = dadosUsuarioFechamento[4]
+            session["enderecoCadastro"] = dadosUsuarioFechamento[5]
+            session["contaBancariaCadastro"] = dadosUsuarioFechamento[6]
+            session["agenciaBancariaCadastro"] = dadosUsuarioFechamento[7]
+
+
+            '''cur = mysql.connection.cursor()
+            cur.execute("SELECT user_id FROM users WHERE")
+            retornoUserID = cur.fetchone()
+            userID = retornoUserID'''
+
+            userDetails = request.form
+            novoNome = userDetails["nome"]
+            novoCpf = userDetails["cpf"]
+            novoDataAniversario = userDetails["dataAniversario"]
+            novoGenero = userDetails["genero"]
+            novoEndereco = userDetails["endereco"]
+            novaAgencia = userDetails["numeroAgencia"]
+            novaConta = userDetails["numeroContaUsuario"]
+            novoTipoConta = userDetails["tipoContaUsuario"]
+
+            cur.execute("SELECT gerente_id FROM agencias WHERE numero_agencia = %s", ([novaAgencia]))
+            retornoGerenteId = cur.fetchone()
+            retornoGerenteId = retornoGerenteId[0]
+
+
+            cur.execute("UPDATE users SET nome = %s, cpf = %s, dataAniversario = %s, genero = %s, endereco = %s, agenciaBancaria = %s, contaBancaria = %s, tipoConta = %s, gerente_id = %s WHERE user_id= %s", (novoNome, novoCpf, novoDataAniversario, novoGenero, novoEndereco, novaAgencia, novaConta, novoTipoConta, retornoGerenteId, retornoUserID))
+            mysql.connection.commit()
+            cur.close()
+
+            flash("Os dados do cliente foram alterados.")
+            return redirect (url_for('alterarDadosCliente'))
+
+        else:
+            flash("Os dados do cliente não foram alterados.")
+
+            return redirect (url_for('alterarDadosCliente'))
+
+    return render_template("alterar_dados_cliente.html", listaAgenciasDisponiveis = listaAgenciasDisponiveis)
 
 @app.route("/gerente", methods=["GET", "POST"])
 def indexGerente():
@@ -1022,7 +1143,11 @@ def clientes():
     if request.method == "POST":
         nomeUsuario = request.form.get("nomeCliente")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT nome, abertura_id FROM confirmacaoAbertura where nome = %s and statusSolicitacao = 'Confirmada'", ([nomeUsuario]))
+        if session['funcaoAdministrativa'] == "Gerente de Agência":
+            cur.execute("SELECT c.nome, c.abertura_id FROM confirmacaoAbertura c, users u where u.user_id = c.user_id and c.nome = %s and c.statusSolicitacao = 'Confirmada' and u.gerente_id = %s", ([nomeUsuario], session["idGerente"]))
+        else:
+            cur.execute("SELECT nome, abertura_id FROM confirmacaoAbertura where statusSolicitacao = 'Confirmada' and nome = %s", ([nomeUsuario]))
+        
 
         usuarioSolicitacao = []
         aberturaId = []
@@ -1031,7 +1156,7 @@ def clientes():
             usuarioSolicitacao.append(i[0])
             aberturaId.append(i[1])
 
-        app.logger.info(aberturaId)
+        app.logger.info(usuarioSolicitacao, aberturaId)
 
         colunas = ("Cliente", "Visualizar")
         dados = list(zip(usuarioSolicitacao, aberturaId))
@@ -1039,7 +1164,10 @@ def clientes():
         return render_template("tela-clientes.html", titulo="Clientes", colunas = colunas, dados = dados)
     else:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT nome, abertura_id FROM confirmacaoAbertura where statusSolicitacao = 'Confirmada'")
+        if session['funcaoAdministrativa'] == "Gerente de Agência":
+            cur.execute("SELECT c.nome, c.abertura_id FROM confirmacaoAbertura c, users u where u.user_id = c.user_id and c.statusSolicitacao = 'Confirmada' and u.gerente_id = %s", ([session["idGerente"]]))
+        else:
+            cur.execute("SELECT nome, abertura_id FROM confirmacaoAbertura where statusSolicitacao = 'Confirmada'")
 
         usuarioSolicitacao = []
         aberturaId = []
@@ -1080,6 +1208,33 @@ def infoCliente():
     session["contaBancariaCadastro"] = dadosUsuarioFechamento[6]
     session["agenciaBancariaCadastro"] = dadosUsuarioFechamento[7]
     session["saldoBancarioCadastro"] = dadosUsuarioFechamento[8]
+
+    if request.method == "POST":
+        
+        '''if "confirmar" in request.form:
+
+            cur.execute("SELECT user_id FROM users")
+            retornoUserID = cur.fetchone()
+            userID = retornoUserID
+
+            userDetails = request.form
+            novoNome = userDetails["nome"]
+            novoCpf = userDetails["cpf"]
+            novoDataAniversario = userDetails["dataAniversario"]
+            novoGenero = userDetails["genero"]
+            novoEndereco = userDetails["endereco"]
+
+            flash("Os dados do cliente foram alterados.")
+        else:
+            flash("Os dados do cliente não foram alterados.")
+
+            cur = mysql.connection.cursor()
+
+            cur.execute("UPDATE users SET nome = %s, cpf = %s, dataAniversario = %s, genero = %s, endereco = %s WHERE user_id= %s", novoNome, novoCpf, novoDataAniversario, novoGenero, novoEndereco, userID)
+            mysql.connection.commit()
+            cur.close()'''
+
+        return redirect (url_for('alterarDadosCliente', idCliente = idCliente))
 
     return render_template("tela-info-cliente.html", titulo="Cliente", idCliente = idCliente)
 
@@ -1246,7 +1401,7 @@ def confirmacaoDeposito():
     tipoMovimentacao = "Depósito"
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT nome, contaBancaria, agenciaBancaria, saldoAtual, valorDeposito, saldoFinal, user_id FROM confirmacaoDeposito WHERE solicitacao_id = %s", ([solicitacaoIdCadastro]))
+    cur.execute("SELECT nome, contaBancaria, agenciaBancaria, saldoAtual, valorDeposito, saldoFinal, statusSolicitacao, user_id, deposito_id FROM confirmacaoDeposito WHERE solicitacao_id = %s", ([solicitacaoIdCadastro]))
 
     dadosUsuarioDeposito = cur.fetchone()
     session["nomeUsuario"] = dadosUsuarioDeposito[0]
@@ -1257,7 +1412,10 @@ def confirmacaoDeposito():
     valorDepositoUsuario = float(valorDepositoUsuario)
     session["valorDepositoUsuario"] = valorDepositoUsuario
     session["saldoFinalUsuario"] = dadosUsuarioDeposito[5]
-    session["userIdUsuario"] = dadosUsuarioDeposito[6]
+    session["statusSolicitacaoDeposito"] = dadosUsuarioDeposito[6]
+    session["userIdUsuario"] = dadosUsuarioDeposito[7]
+    session["depositoId"] = dadosUsuarioDeposito[8]
+    statusSolicitacao = session["statusSolicitacaoDeposito"]
 
     #OBS: Quando um valor retorna do banco de dados, ele vem com a caracteristica descrita lá. Aqui transformamos decimal.Decimal para Float.
     cur.execute("SELECT saldoBancario FROM users WHERE contaBancaria = %s", [session["contaUsuario"]])
@@ -1272,13 +1430,17 @@ def confirmacaoDeposito():
 
     if request.method == "POST":
         if "confirmar" in request.form:
-            #Para fazer UPDATES onde as duas variaveis precisam ser mudadas, basta utilizar o %s. Entretanto, no final como é uma Tupla, preciso informar o que substituir por meio de um parênteses EX:([x],[y]).   
+            #Para fazer UPDATES onde as duas variaveis precisam ser mudadas, basta utilizar o %s. Entretanto, no final como é uma Tupla, preciso informar o que substituir por meio de um parênteses EX:([x],[y]).
+              
+            statusSolicitacao = "Confirmada"
 
             cur = mysql.connection.cursor()
 
             saldoNovo = saldoAtual + valorDepositoUsuario
 
             capitalTotalNovo = capitalTotalParcial + valorDepositoUsuario
+
+            cur.execute("UPDATE confirmacaoDeposito SET statusSolicitacao = %s WHERE deposito_id = %s", ([statusSolicitacao], session["depositoId"]))
 
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([float(saldoNovo)], session['userIdUsuario']))
 
@@ -1288,10 +1450,17 @@ def confirmacaoDeposito():
             mysql.connection.commit()
             cur.close()
             flash("Confirmação de depósito feita com sucesso!")
+            return redirect(url_for("confirmacaoDeposito"))
         else:
+            statusSolicitacao = "Cancelada"
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE confirmacaoDeposito SET statusSolicitacao = %s", ([statusSolicitacao]))
+            mysql.connection.commit()
+            cur.close()
             flash("Cancelamento de depósito feito com sucesso!")
+            return redirect(url_for("confirmacaoDeposito"))
         
-    return render_template("tela-confirmacao-deposito.html", titulo="Solicitações", solicitacaoIdCadastro = solicitacaoIdCadastro)
+    return render_template("tela-confirmacao-deposito.html", titulo="Solicitações", statusSolicitacao = statusSolicitacao)
 
 @app.route("/confirmacao-abertura", methods = ["GET", "POST"])
 def confirmacaoAbertura():
@@ -1378,7 +1547,7 @@ def confirmacaoAlteracao():
     solicitacaoIdAlteracao = request.args.get("solicitacaoIdAlteracao")
     
     cur = mysql.connection.cursor()
-    cur.execute("SELECT user_id, nome, cpf, dataAniversario, genero, endereco FROM confirmacaoAlteracao WHERE solicitacao_id = %s", ([solicitacaoIdAlteracao]))
+    cur.execute("SELECT user_id, nome, cpf, dataAniversario, genero, endereco, statusSolicitacao FROM confirmacaoAlteracao WHERE solicitacao_id = %s", ([solicitacaoIdAlteracao]))
     dadosUsuarioAlteracao = cur.fetchone()
     app.logger.info(dadosUsuarioAlteracao)
     session["userIdAlteracao"] = dadosUsuarioAlteracao[0]
@@ -1387,7 +1556,7 @@ def confirmacaoAlteracao():
     session["novoAniversario"] = dadosUsuarioAlteracao[3]
     session["novoGenero"] = dadosUsuarioAlteracao[4]
     session["novoEndereco"] = dadosUsuarioAlteracao[5]
-
+    statusSolicitacao = dadosUsuarioAlteracao[6]
     
 
     if request.method == "POST":
@@ -1398,11 +1567,9 @@ def confirmacaoAlteracao():
             app.logger.info([statusSolicitacao])
             cur = mysql.connection.cursor()
 
-            cur.execute("UPDATE confirmacaoAlteracao SET statusSolicitacao = %s WHERE alteracao_id= %s", ([statusSolicitacao], [solicitacaoIdAlteracao]))
-            mysql.connection.commit()
+            cur.execute("UPDATE confirmacaoAlteracao SET statusSolicitacao = %s WHERE solicitacao_id= %s", ([statusSolicitacao], [solicitacaoIdAlteracao]))
 
-            cur.execute("UPDATE confirmacaoAbertura SET nome = %s, cpf = %s, dataAniversario = %s, genero = %s, endereco = %s, statusSolicitacao = %s WHERE user_id= %s", (session["novoNomeUsuario"], session["novoCpfUsuario"], session["novoAniversario"], session["novoGenero"], session["novoEndereco"], session["statusSolicitacao"], session["userIdAlteracao"]))
-            mysql.connection.commit()
+            cur.execute("UPDATE confirmacaoAbertura SET nome = %s, cpf = %s, dataAniversario = %s, genero = %s, endereco = %s, statusSolicitacao = %s WHERE user_id= %s", (session["novoNomeUsuario"], session["novoCpfUsuario"], session["novoAniversario"], session["novoGenero"], session["novoEndereco"], [statusSolicitacao], session["userIdAlteracao"]))
 
             cur.execute("UPDATE users SET nome = %s, cpf = %s, dataAniversario = %s, genero = %s, endereco = %s WHERE user_id= %s", (session["novoNomeUsuario"], session["novoCpfUsuario"], session["novoAniversario"], session["novoGenero"], session["novoEndereco"], session["userIdAlteracao"]))
             mysql.connection.commit()
@@ -1413,11 +1580,12 @@ def confirmacaoAlteracao():
         else:
             statusSolicitacao = "Cancelada"
             cur = mysql.connection.cursor()
-            cur.execute("UPDATE confirmacaoAlteracao SET statusSolicitacao = %s WHERE abertura_id= %s", ([statusSolicitacao], [solicitacaoIdAlteracao]))
+            cur.execute("UPDATE confirmacaoAlteracao SET statusSolicitacao = %s WHERE alteracao_id= %s", ([statusSolicitacao], [solicitacaoIdAlteracao]))
             mysql.connection.commit()
             cur.close()
             flash("Cancelamento de alterações cadastrais feito com sucesso!")
-    return render_template("solicitacao_alterar_dados.html", titulo="Solicitações")
+
+    return render_template("solicitacao_alterar_dados.html", titulo="Solicitações", statusSolicitacao = statusSolicitacao)
 
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():

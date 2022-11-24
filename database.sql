@@ -53,6 +53,7 @@ CREATE TABLE users (
   contaBancaria VARCHAR(9),
   agenciaBancaria VARCHAR(4),
   saldoBancario DECIMAL(19,2),
+  chequeEspecial tinyint(0),
   gerente_id int,
   foreign key(gerente_id) references gerenteAgencia (gerente_id),
   UNIQUE INDEX contaBancaria_UNIQUE (contaBancaria ASC));
@@ -137,6 +138,8 @@ foreign key(solicitacao_id) references gerenciamentoUsuarios (solicitacao_id));
 
 create table configBanco(
 config_id int primary key auto_increment,
+dataInicializacao text(15),
+dataCorrente text(15),
 capitalTotal decimal(19,2) not null,
 taxaJurosPoupanca decimal(4,4) not null,
 taxaJurosCheque decimal(4,4) not null);
@@ -153,6 +156,16 @@ foreign key(user_id) references users (user_id),
 config_id int,
 foreign key(config_id) references configBanco (config_id));
 
+create table chequeEspecial(
+valorNegativo decimal(19,2) not null,
+dataInicial text(15),
+dataFinal text(15),
+valorTaxa decimal(4,4),
+valorAtualizado decimal(19,2),
+user_id int,
+foreign key(user_id) references users (user_id));
+
+
 USE flaskapp;
 select * from users;
 select * from movimentacaoConta;
@@ -167,6 +180,7 @@ select * from gerenteGeral;
 select * from agencias;
 select * from poupanca;
 select * from configBanco;
+select * from chequeEspecial;
 
 SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = "1" and u.user_id = g.user_id;
 
@@ -191,6 +205,7 @@ drop table gerenteGeral;
 drop table configBanco;
 drop table poupanca;
 drop table agencias;
+drop table chequeEspecial;
 
 
 

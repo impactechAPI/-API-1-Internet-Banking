@@ -158,6 +158,7 @@ def indexCadastro():
 
         cur.execute("SELECT gerente_id, numero_agencia FROM agencias where numero_clientes = %s", [menorAgencia])
         retornoAgenciaEscolhida = cur.fetchone()
+        app.logger.info(retornoAgenciaEscolhida)
         gerenteEscolhido = retornoAgenciaEscolhida[0]
         agenciaEscolhida = retornoAgenciaEscolhida[1]
         agenciaEscolhida = str(agenciaEscolhida)
@@ -191,21 +192,6 @@ def indexCadastro():
                 flash("Preencha todos os campos do formulário!")
                 return redirect (url_for("indexCadastro"))
 
-            #ATENÇÃO! trecho retirado não descomentar por enquanto
-            """ try:
-                #Verificando se cpf já consta nos registros durante o cadastro !! Não deve ser feito mais !!
-                cur = mysql.connection.cursor()
-                cur.execute("SELECT cpf FROM users WHERE cpf = %s", [cpf])
-                cpfUsuario = cur.fetchone()
-                retornoCpfUsuario = cpfUsuario[0]
-            except Exception as ex:
-                retornoCpfUsuario = None
-            
-                if retornoCpfUsuario and retornoCpfUsuario != None:
-                flash("CPF já cadastrado")
-                return redirect (url_for("indexCadastro")) 
-            """
-
             if senha == confirmacaoSenha:
                 if check_password_hash(senhaCriptografada, senha):
                     senhaCriptografada2 = senhaCriptografada
@@ -231,7 +217,7 @@ def indexCadastro():
             cur = mysql.connection.cursor()
 
             #Aqui
-            cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta, gerente_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaEscolhida, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta, gerenteEscolhido))
+            cur.execute("INSERT INTO users (agenciaBancaria, contaBancaria, saldoBancario, nome, cpf, dataAniversario, genero, endereco, senha, confirmacaoSenha, tipoConta, chequeEspecial, gerente_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (agenciaEscolhida, contaBancaria, saldoBancario, name, cpf, dataAniversario, genero, endereco, senhaCriptografada, senhaCriptografada2, tipoConta, [0],gerenteEscolhido))
             
             mysql.connection.commit()
 
@@ -254,8 +240,7 @@ def indexCadastro():
                 app.logger.info(agenciaEscolhida)
                 
                 menorAgencia = int(menorAgencia) + 1
-
-
+                
                 cur.execute("UPDATE agencias SET numero_clientes = %s WHERE numero_agencia = %s", ([menorAgencia], [agenciaEscolhida]))
 
                 cur = mysql.connection.cursor()
@@ -303,16 +288,46 @@ def deposito():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
 
-    """ if chequeEspecial == True:
-        #trazer info do BD
+    chequeEspecial = False
+
+    #trazer dados do BD
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT u.chequeEspecial, c.dataInicial, c.valorNegativo, c.valorTaxa from users u, chequeEspecial c WHERE u.user_id = c.user_id and u.user_id = %s", ([session["idUsuario"]]))
+    retornoSituacaoChequeEspecial = cur.fetchone()
+    situacaoChequeCliente = retornoSituacaoChequeEspecial[0]
+    dataInicialCheque = retornoSituacaoChequeEspecial[1]
+    valorMontanteNegativo = retornoSituacaoChequeEspecial[2]
+    valorMontanteNegativo = float(valorMontanteNegativo)
+    valorTaxaCheque = retornoSituacaoChequeEspecial[3]
+    valorTaxaCheque = float(valorTaxaCheque)
+
+    if situacaoChequeCliente == 1:
+
+        #editando a data para o timestampdiff
+        dataInicialCheque = str(dataInicialCheque)
+        dataInicialChequeEditado = dataInicialCheque[-4:] + dataInicialCheque[2:6] + dataInicialCheque[0:2]
+        dataInicialChequeEditado = dataInicialChequeEditado.replace("/","-")
+
         with open("config.json", "r") as outfile:
             viagemTemporal = json.load(outfile)
-            cur = mysql.connection.cursor
-            cur.execute("SELECT TIMESTAMPDIFF(day,%s,%s)", ([dataInicial], [viagemTemporal]))
-            retornoDiferencaDias = cur.fetchone()
-            diasCobranca = retornoDiferencaDias[0]
+        
+        viagemTemporal = str(viagemTemporal)
+        viagemTemporalEditado = viagemTemporal[-4:] + viagemTemporal[2:6] + viagemTemporal[0:2]
+        viagemTemporalEditado = viagemTemporalEditado.replace("/","-")
 
-            montanteParaPagar = montante * ((1 + jaxaJuros) ** diasCobranca) """
+        app.logger.info(dataInicialChequeEditado, viagemTemporalEditado)
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT TIMESTAMPDIFF(day,%s,%s)", ([str(dataInicialChequeEditado)], [str(viagemTemporalEditado)]))
+        retornoDiferencaDias = cur.fetchone()
+        diasCobranca = retornoDiferencaDias[0]
+
+        app.logger.info(diasCobranca)
+
+        montanteParaPagar = valorMontanteNegativo * ((1 + valorTaxaCheque) ** diasCobranca)
+        montanteParaPagar = '{0:.2f}'.format(montanteParaPagar)
+
+        app.logger.info(montanteParaPagar)
 
     error = None
     tipoSolicitacao = "Depósito"
@@ -320,11 +335,6 @@ def deposito():
     ultimaTransacao = 0
 
     if request.method == "POST":
-
-        session.pop("horaSistema", None)
-        session["horaSistema"] = dataAgora()
-        session.pop("horaSistemaComprovante", None)
-        session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
         userDetails = request.form
         valorDeposito = userDetails["valorDeposito"]
@@ -338,8 +348,26 @@ def deposito():
 
         #Onde antes tinha int troquei pra float para que o depósito e saque de moedas seja permitido.
         if valorDeposito and float(valorDeposito) > 0:
-            saldoFinalConfirmacao = float(saldoAtual) + float(valorDeposito)
-            session["saldoFinalConfirmacao"] = saldoFinalConfirmacao
+            if situacaoChequeCliente == 1:
+                chequeEspecial == True
+                saldoAtualNegativado = float(saldoAtual) - float(montanteParaPagar)
+                session["valorNegativadoComprovante"] = saldoAtualNegativado
+                app.logger.info(saldoAtualNegativado)
+                saldoFinalConfirmacao = float(saldoAtualNegativado) + float(valorDeposito)
+                saldoFinalConfirmacao = '{0:.2f}'.format(saldoFinalConfirmacao)
+                session["saldoFinalConfirmacao"] = saldoFinalConfirmacao
+                app.logger.info(saldoFinalConfirmacao)
+
+            else:
+                saldoFinalConfirmacao = float(saldoAtual) + float(valorDeposito)
+                session["saldoFinalConfirmacao"] = saldoFinalConfirmacao
+
+            session.pop("horaSistema", None)
+            session["horaSistema"] = dataAgora()
+            session.pop("horaSistemaComprovante", None)
+            session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+            cur = mysql.connection.cursor()
 
             cur.execute("UPDATE gerenciamentoUsuarios set ultimaTransacao = 0 where tipoSolicitacao = %s", ([tipoSolicitacao]))
 
@@ -355,6 +383,7 @@ def deposito():
             statusSolicitacao = "Pendente"
             cur.execute("INSERT INTO confirmacaoDeposito (nome, contaBancaria, agenciaBancaria, saldoAtual, valorDeposito, saldoFinal, statusSolicitacao, user_id, solicitacao_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (session["nomeUsuario"], session["contaUsuario"], session["agenciaUsuario"], [saldoAtual], [valorDeposito], [saldoFinalConfirmacao], [statusSolicitacao], session["idUsuario"], [solicitacaoId]))
 
+            cur.connection.commit()
             cur.close()
 
             flash("Depósito realizado. Aguarde a confirmação do depósito pelo Gerente de sua agência! Para ver seu comprovante clique ")
@@ -372,7 +401,7 @@ def deposito():
         session['saldoUsuario'] = saldoFormatado.replace('.',',')
         return redirect (url_for('deposito'))
 
-    return render_template("tela-deposito.html", titulo="Depósito", error = error)
+    return render_template("tela-deposito.html", titulo="Depósito", error = error, chequeEspecial = chequeEspecial)
 
 #Rota para página saque.
 @app.route("/saque", methods=["GET", "POST"])
@@ -411,11 +440,39 @@ def saque():
 
             capitalTotalNovo = float(capitalTotalParcial) - float(valorSaque)
             app.logger.info(float(capitalTotalNovo))
-            
+
             session.pop("horaSistema", None)
             session["horaSistema"] = dataAgora()
             session.pop("horaSistemaComprovante", None)
             session["horaSistemaComprovante"] = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+            if saldoFinal < 0:
+                chequeEspecial = 1
+                montante = saldoFinal * (-1)
+
+                cur = mysql.connection.cursor()
+
+                cur.execute("SELECT taxaJurosCheque from configBanco")
+                retornoTaxaJurosCheque = cur.fetchone()
+                taxaJurosCheque = retornoTaxaJurosCheque[0]
+                taxaJurosCheque = float(taxaJurosCheque)
+
+                cur.execute("SELECT chequeEspecial FROM users WHERE user_id = %s", ([session['idUsuario']]))
+                retornoSituacaoChequeEspecial = cur.fetchone()
+                situacaoChequeCliente = retornoSituacaoChequeEspecial[0]
+
+                if situacaoChequeCliente == 0:
+                    cur = mysql.connection.cursor()
+                    cur.execute("INSERT INTO chequeEspecial (valorNegativo, dataInicial, valorTaxa, user_id) values(%s, %s, %s, %s)", ([montante], session["horaSistema"], [taxaJurosCheque], session['idUsuario']))
+                    cur.execute("UPDATE users SET chequeEspecial = '1' WHERE user_id = %s", ([session['idUsuario']]))
+                    cur.connection.commit()
+
+                else:
+                    cur = mysql.connection.cursor()
+                    cur.execute("UPDATE chequeEspecial SET valorNegativo = %s, valorTaxa = %s WHERE user_id = %s", ([montante], [taxaJurosCheque], [session['idUsuario']]))
+                    cur.connection.commit()
+
+                flash("Atenção! Você está agora em cheque especial. Seu próximo depósito irá ser automaticamente debitado do valor sacado acrescido com juros compostos em base diária.")
 
             cur.execute("UPDATE users SET saldoBancario = %s WHERE user_id= %s", ([saldoFinal], session['idUsuario']))
 
@@ -445,6 +502,16 @@ def saque():
 
 @app.route("/comprovante", methods=["GET", "POST"])
 def comprovante():
+
+    chequeEspecial = False
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT chequeEspecial FROM users WHERE user_id = %s", ([session['idUsuario']]))
+    retornoSituacaoChequeEspecial = cur.fetchone()
+    situacaoChequeCliente = retornoSituacaoChequeEspecial[0]
+    if situacaoChequeCliente == 1:
+        chequeEspecial = True
+
     if request.method == 'POST':
         path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
         config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
@@ -455,7 +522,7 @@ def comprovante():
         response.headers["Content-Type"] = "application/pdf"
         response.headers["Content-Disposition"] = "inline; filename=output.pdf"
         return response  
-    return render_template("tela-comprovante.html", titulo="Comprovante")
+    return render_template("tela-comprovante.html", titulo="Comprovante", chequeEspecial = chequeEspecial)
 
 @app.route("/comprovante-transferencia", methods=["GET", "POST"])
 def comprovanteTransferencia():
@@ -988,7 +1055,6 @@ def alterarDados():
             if novoSenha == novoConfirmacaoSenha:
                 novoSenhaCriptografada2 = novoSenhaCriptografada
                 flash("Uma solicitação de alteração de dados foi enviada ao seu gerente.")
-                return redirect(url_for("alterarDados"))
             else:
                 flash("As senhas precisam ser iguais!")
                 return redirect(url_for ("alterarDados"))
@@ -1426,6 +1492,9 @@ def confirmacaoDeposito():
     cur.execute("SELECT nome, contaBancaria, agenciaBancaria, saldoAtual, valorDeposito, saldoFinal, statusSolicitacao, user_id, deposito_id FROM confirmacaoDeposito WHERE solicitacao_id = %s", ([solicitacaoIdCadastro]))
 
     dadosUsuarioDeposito = cur.fetchone()
+
+    app.logger.info(dadosUsuarioDeposito)
+
     session["nomeUsuario"] = dadosUsuarioDeposito[0]
     session["contaUsuario"] = dadosUsuarioDeposito[1]
     session["agenciaBancariaUsuario"] = dadosUsuarioDeposito[2]
@@ -1469,18 +1538,18 @@ def confirmacaoDeposito():
             cur.execute("UPDATE configBanco SET capitalTotal = %s", ([float(capitalTotalNovo)]))
 
             cur.execute("INSERT INTO movimentacaoConta (dataHoraMovimentacao, tipoMovimentacao, movimentacao, user_id) VALUES (%s, %s, %s, %s)", (session['horaSistema'], [tipoMovimentacao], session["valorDepositoUsuario"], session['userIdUsuario']))
+
             mysql.connection.commit()
             cur.close()
             flash("Confirmação de depósito feita com sucesso!")
-            return redirect(url_for("confirmacaoDeposito"))
         else:
             statusSolicitacao = "Cancelada"
             cur = mysql.connection.cursor()
             cur.execute("UPDATE confirmacaoDeposito SET statusSolicitacao = %s", ([statusSolicitacao]))
+
             mysql.connection.commit()
             cur.close()
             flash("Cancelamento de depósito feito com sucesso!")
-            return redirect(url_for("confirmacaoDeposito"))
         
     return render_template("tela-confirmacao-deposito.html", titulo="Solicitações", statusSolicitacao = statusSolicitacao)
 

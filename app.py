@@ -9,6 +9,8 @@ from datetime import datetime
 import pdfkit
 from dateutil.relativedelta import *
 import json
+import schedule
+import time
 
 #Aqui inicializo o framework Flask e todas as suas funções pela varíavel "app".
 app = Flask(__name__)
@@ -31,8 +33,10 @@ mysql = MySQL(app)
 def dataAgora():
     data = datetime.now().strftime("%d/%m/%Y")
     with open("config.json", "w") as outfile:
-        json.dump(data, outfile) 
+        json.dump(data, outfile)
     return data
+
+schedule.every().day.at("00:00").do(dataAgora)
 
 @app.route("/configuracao-banco", methods=["GET", "POST"])
 def configBanco():
@@ -246,9 +250,11 @@ def indexCadastro():
                 retornoAgenciaEscolhida = cur.fetchone()
                 agenciaEscolhida = retornoAgenciaEscolhida[0]
                 agenciaEscolhida = str(agenciaEscolhida)
-                app.logger.info(agenciaEscolhida)
 
+                app.logger.info(agenciaEscolhida)
+                
                 menorAgencia = int(menorAgencia) + 1
+
 
                 cur.execute("UPDATE agencias SET numero_clientes = %s WHERE numero_agencia = %s", ([menorAgencia], [agenciaEscolhida]))
 
@@ -296,6 +302,17 @@ def indexCadastro():
 def deposito():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
+
+    """ if chequeEspecial == True:
+        #trazer info do BD
+        with open("config.json", "r") as outfile:
+            viagemTemporal = json.load(outfile)
+            cur = mysql.connection.cursor
+            cur.execute("SELECT TIMESTAMPDIFF(day,%s,%s)", ([dataInicial], [viagemTemporal]))
+            retornoDiferencaDias = cur.fetchone()
+            diasCobranca = retornoDiferencaDias[0]
+
+            montanteParaPagar = montante * ((1 + jaxaJuros) ** diasCobranca) """
 
     error = None
     tipoSolicitacao = "Depósito"
@@ -2011,8 +2028,6 @@ def poupanca():
             return redirect(url_for("poupanca")) """
 
     return render_template("poupanca.html", titulo = "Poupança")
-
-
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!
 app.run(debug=True)

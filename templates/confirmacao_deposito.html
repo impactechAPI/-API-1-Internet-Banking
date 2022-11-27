@@ -1,68 +1,60 @@
-{% extends "base-gerente.html" %}
+{% extends 'base_gg.html' %}
 
 {% block contents %}
-<main class="container">
+<main>
 
-    <a href="{{ url_for('gerenciar') }}" class="voltar">&lt voltar</a>
-
-    <form method="post">
-        <h2> Confirmação de depósito</h2>
-        <div class="campo-unico">
-            <div class="info-conta">
-                <label>Nome </label>
-                <span>{{ session["nomeUsuario"] }}</span>
-            </div>
-        </div>
-
-        <div class="campo-duplo">
-            <div class="info-conta">
-                <label>Número da conta</label>
-                <span>{{ session["contaUsuario"] }}</span>
-            </div>
-
-            <div class="info-conta">
-                <label>Agência</label>
-                <span>{{ session["agenciaBancariaUsuario"] }}</span>
-            </div>
-        </div>
-
-        <div class="deposito">
-            <h2>Depósito</h2>
-            <div class="campo-triplo">
+    <div class="container">
+        <a href="{{ url_for('listaAgencias') }}" class="voltar">&lt voltar</a><br><br>
+        <form method="post" action="" class="solicitacao">
+            <div class="campo-duplo">
                 <div class="info-conta">
-                    <label>Saldo Atual</label>
-                    <span>{{ session["saldoAtualUsuario"] }}</span>
+                    <label>Agência</label>
+                        <select name="numAgenciaCadastro" id="numAgencia" class="select">
+                        {% for agencia in listaAgenciasDisponiveis %}
+                            <option value="{{ agencia }}">{{ agencia }}</option>
+                        {% endfor %}
+                        </select>
                 </div>
-
+                <!-- /info-conta -->
                 <div class="info-conta">
-                    <label>Valor de Depósito</label>
-                    <span>{{ session["valorDepositoUsuario"] }}</span>
+                    <label>Número máximo de clientes</label>
+                    <input type="number" value="{{ session['retornoNumeroClientes'] }}" name="numeroClientes">
                 </div>
-
-                <div class="info-conta">
-                    <label>Saldo Final</label>
-                    <span>{{ session["saldoFinalUsuario"] }}</span>
-                </div>
+                <!-- /info-conta -->
             </div>
-        </div>
-        <div class="botoes">
-            {% if statusSolicitacao == "Pendente" %}
-                <input type="submit" name="confirmar" class="confirmar" value="Confirmar">
-                <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
-            {% elif statusSolicitacao != "Pendente" %}
-            {% endif %}
-        </div>
+            <!-- /campo-duplo -->
+            <!-- <div class="campo-unico">
+                <label>Gerente</label>
+                <input type="text" value="{{ session['nomeGerente'] }}" name="nomeGerente">
+            </div> -->
+            <!-- /campo-unico -->
+            <div class="campo-unico">
+                <label>Endereço</label>
+                <input type="text" value="{{ session['retornoEnderecoAgencia'] }}" name="enderecoAgencia">
+            </div>
+            <!-- campo-unico -->
 
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class=flashes>
-            {% for message in messages %}
-            <div class="error">{{ message }}</div>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-    </form>
+            <aside>
+                <p class="data-inicio">Criada em: {{ session['retornoNumeroDataCriacao'] }}</p>
+                <section class="botoes">
+                    <input type="submit" name="confirmar" class="confirmar" value="Salvar">
+                    <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
+                </section>
+                <!-- /botoes -->
+            </aside><br>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <div class="error">{{ message }}</div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+        </form>
+        <!-- /solicitação -->
+    </div>
+    <!-- /container -->
 
 </main>
 {% endblock %}

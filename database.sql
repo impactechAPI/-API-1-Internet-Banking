@@ -21,6 +21,7 @@ CREATE TABLE agencias (
   agencia_id INT PRIMARY KEY AUTO_INCREMENT,
   numero_agencia VARCHAR(20),
   numero_clientes VARCHAR(3),
+  numero_total_clientes VARCHAR(3),
   data_criacao text(6) not null,
   gerente_id int,
   foreign key(gerente_id) references gerenteAgencia (gerente_id),
@@ -53,6 +54,7 @@ CREATE TABLE users (
   contaBancaria VARCHAR(9),
   agenciaBancaria VARCHAR(4),
   saldoBancario DECIMAL(19,2),
+  chequeEspecial tinyint(0),
   gerente_id int,
   foreign key(gerente_id) references gerenteAgencia (gerente_id),
   UNIQUE INDEX contaBancaria_UNIQUE (contaBancaria ASC));
@@ -137,6 +139,8 @@ foreign key(solicitacao_id) references gerenciamentoUsuarios (solicitacao_id));
 
 create table configBanco(
 config_id int primary key auto_increment,
+dataInicializacao text(15),
+dataCorrente text(15),
 capitalTotal decimal(19,2) not null,
 taxaJurosPoupanca decimal(4,4) not null,
 taxaJurosCheque decimal(4,4) not null);
@@ -145,13 +149,24 @@ create table poupanca(
 poupanca_id int primary key auto_increment,
 valorInicial decimal(19,2) not null,
 dataInicial text(15),
-dataProximoMes text(15),
+dataFinal text(15),
 valorTaxa decimal(4,4),
-valorAtualizado decimal(19,2) not null,
+valorAtualizado decimal(19,2),
 user_id int,
 foreign key(user_id) references users (user_id),
 config_id int,
 foreign key(config_id) references configBanco (config_id));
+
+create table chequeEspecial(
+valorSaque decimal(19,2) not null,
+valorNegativoAtualizado decimal(19,2),
+dataInicial text(15),
+dataFinal text(15),
+valorTaxa decimal(4,4),
+valorPago decimal(19,2),
+user_id int,
+foreign key(user_id) references users (user_id));
+
 
 USE flaskapp;
 select * from users;
@@ -167,33 +182,4 @@ select * from gerenteGeral;
 select * from agencias;
 select * from poupanca;
 select * from configBanco;
-
-SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = "1" and u.user_id = g.user_id;
-
-SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = "1" and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC;
-
-
-
-
-
-
-drop table agencias;
-drop table gerenteGeral;
-drop table gerenteAgencia;
-drop table confirmacaoAbertura;
-drop table confirmacaoDeposito;
-drop table gerenciamentoUsuarios;
-drop table movimentacaoConta;
-drop table confirmacaoAlteracao;
-drop table users;
-drop table confirmacaoAlteracao;
-drop table gerenteGeral;
-drop table configBanco;
-drop table poupanca;
-drop table agencias;
-
-
-
-
-
-drop database flaskapp;
+select * from chequeEspecial;

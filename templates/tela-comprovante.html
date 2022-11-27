@@ -19,7 +19,12 @@
             <h4>AGÊNCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
             <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
             <h4>VALOR <span>{{ session["tipoSolicitacao"] }}</span>: {{ session["valorDeposito"] }}</h4>
-            <h4>SALDO DISPONÍVEL: {{ session['saldoUsuarioAntes'] }}</h4>
+            {% if chequeEspecial == True %}
+                <h4>SITUAÇÃO DE CHEQUE ESPECIAL: </h4>
+                <h4>SALDO DISPONÍVEL: {{ session["valorNegativadoComprovante"] }}</h4>
+            {% else %}
+                <h4>SALDO DISPONÍVEL: {{ session['saldoUsuarioAntes'] }}</h4>
+            {% endif %}
             <h4>SALDO FINAL: {{ session["saldoFinalConfirmacao"] }}</h4>
             <h5>* Valor sujeito a conferência.</h5>
             <div class="linha">

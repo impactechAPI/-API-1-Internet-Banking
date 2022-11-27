@@ -1,0 +1,19 @@
+<main class="container">
+    <section>
+        <h2>SIRIUSBANK</h2>
+        <h3> {{ session["horaSistemaComprovante"] }} - Autoatendimento</h3>
+        <div class="linha">
+            <span></span>
+        </div>
+        <h3>COMPROVANTE DE <span>{{ session["tipoSolicitacao"] }}</span></h3>
+    </section>
+    <section>
+        <h4>CLIENTE: <span>{{ session['nomeUsuario'] }}</span></h4>
+        <h4>AGENCIA: <span>{{ session['agenciaUsuario'] }}</span></h4>
+        <h4>CONTA: <span>{{ session['contaUsuario'] }}</span></h4>
+    <section>
+        {% for tabela in tabelas %}
+        {{ titulos[loop.index] }}
+        {{ tabela|safe }}
+        {% endfor %}
+</main>

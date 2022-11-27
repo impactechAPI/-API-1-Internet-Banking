@@ -148,20 +148,21 @@ create table poupanca(
 poupanca_id int primary key auto_increment,
 valorInicial decimal(19,2) not null,
 dataInicial text(15),
-dataProximoMes text(15),
+dataFinal text(15),
 valorTaxa decimal(4,4),
-valorAtualizado decimal(19,2) not null,
+valorAtualizado decimal(19,2),
 user_id int,
 foreign key(user_id) references users (user_id),
 config_id int,
 foreign key(config_id) references configBanco (config_id));
 
 create table chequeEspecial(
-valorNegativo decimal(19,2) not null,
+valorSaque decimal(19,2) not null,
+valorNegativoAtualizado decimal(19,2),
 dataInicial text(15),
 dataFinal text(15),
 valorTaxa decimal(4,4),
-valorAtualizado decimal(19,2),
+valorPago decimal(19,2),
 user_id int,
 foreign key(user_id) references users (user_id));
 
@@ -181,34 +182,3 @@ select * from agencias;
 select * from poupanca;
 select * from configBanco;
 select * from chequeEspecial;
-
-SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = "1" and u.user_id = g.user_id;
-
-SELECT g.dataHoraSolicitacao, g.tipoSolicitacao, g.usuarioDaSolicitacao, g.solicitacao_id FROM gerenciamentoUsuarios g, users u WHERE u.gerente_id = "1" and u.user_id = g.user_id ORDER BY g.solicitacao_id DESC;
-
-
-
-
-
-
-drop table agencias;
-drop table gerenteGeral;
-drop table gerenteAgencia;
-drop table confirmacaoAbertura;
-drop table confirmacaoDeposito;
-drop table gerenciamentoUsuarios;
-drop table movimentacaoConta;
-drop table confirmacaoAlteracao;
-drop table users;
-drop table confirmacaoAlteracao;
-drop table gerenteGeral;
-drop table configBanco;
-drop table poupanca;
-drop table agencias;
-drop table chequeEspecial;
-
-
-
-
-
-drop database flaskapp;

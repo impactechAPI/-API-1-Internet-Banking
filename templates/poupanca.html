@@ -8,7 +8,7 @@
         <div class="campo-duplo">
             <div class="info-conta">
                 <label>Saldo disponível:</label>
-                <span>R$ {{ session["valorAtualizadoUsuarioPoupanca"] }}</span>
+                <span>R$ {{ session['saldoUsuario'] }}</span>
             </div>
 
             <label class="info-conta">Valor:<br>
@@ -16,8 +16,16 @@
             </label>
         </div>
 
+        <div>
+            <div class="info-conta">
+                <label>Simulação:</label>
+                <span>R$ {{ session["montanteParaReceber"] }}</span>
+            </div>
+        </div>
+
         <section class="botoes">
-                <input type="submit" name="poupar" class="button" value="Poupar">
+                <input type="submit" name="poupar" class="confirmar" value="Poupar">
+                <input type="submit" name="retirar" class="cancelar" value="Retirar">
         </section>
 
     <!-- <h2>Simule aqui:</h2>

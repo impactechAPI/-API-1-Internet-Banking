@@ -17,6 +17,14 @@
                     <input type="text" name="valorDeposito" placeholder="R$ 0,00" step="0.01">
                 </label>
             </div>
+            {% if chequeEspecial == True %}
+            <div class="campo-unico">
+                <div class="info-conta">
+                    <label>Cheque Especial</label>
+                    <span>R$ {{ session["valorNegativadoComprovante"] }}</span>
+                </div>
+            </div>
+            {% endif %}
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <ul class=flashes>

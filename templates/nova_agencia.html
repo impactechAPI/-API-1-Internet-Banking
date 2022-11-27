@@ -9,7 +9,7 @@
             <div class="info-conta">
                 <label>Número</label>
                 <select name="numAgencia" id="numAgencia" class="select">
-                    {% for agencia in listaAgencias %}
+                    {% for agencia in listaAgenciasDisponiveis %}
                         <option value="{{ agencia }}">{{ agencia }}</option>
                     {% endfor %}
                 </select>

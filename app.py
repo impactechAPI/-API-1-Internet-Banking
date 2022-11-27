@@ -283,6 +283,14 @@ def deposito():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
 
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT saldoBancario FROM users WHERE user_id = %s", [session['idUsuario']])
+    retornoSaldoAtual = cur.fetchone()
+    saldoAtualUsuario = retornoSaldoAtual[0]
+    session.pop('saldoUsuario', None)
+    saldoFormatado = '{0:.2f}'.format(saldoAtualUsuario)
+    session['saldoUsuario'] = saldoFormatado.replace('.',',')
+
     chequeEspecial = False
 
     #trazer dados do BD
@@ -439,6 +447,14 @@ def deposito():
 def saque():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT saldoBancario FROM users WHERE user_id = %s", [session['idUsuario']])
+    retornoSaldoAtual = cur.fetchone()
+    saldoAtualUsuario = retornoSaldoAtual[0]
+    session.pop('saldoUsuario', None)
+    saldoFormatado = '{0:.2f}'.format(saldoAtualUsuario)
+    session['saldoUsuario'] = saldoFormatado.replace('.',',')
 
     chequeEspecial = False
 
@@ -614,6 +630,13 @@ def home():
     if session["usuarioLogado"] == False:
         return redirect (url_for("indexHome"))
     session['horaSistema'] = dataAgora()
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT saldoBancario FROM users WHERE user_id = %s", [session['idUsuario']])
+    retornoSaldoAtual = cur.fetchone()
+    saldoAtualUsuario = retornoSaldoAtual[0]
+    session.pop('saldoUsuario', None)
+    saldoFormatado = '{0:.2f}'.format(saldoAtualUsuario)
+    session['saldoUsuario'] = saldoFormatado.replace('.',',')
     return render_template("tela-home.html")
 
 #Rotas Transferencia, Extrato, Configurações inicializadas. Mas ainda sem função.
@@ -1185,9 +1208,7 @@ def alterarDadosCliente():
             return redirect (url_for('alterarDadosCliente'))
 
         else:
-            flash("Os dados do cliente não foram alterados.")
-
-            return redirect (url_for('alterarDadosCliente'))
+            pass
 
     return render_template("alterar_dados_cliente.html", listaAgenciasDisponiveis = listaAgenciasDisponiveis)
 
@@ -1625,6 +1646,7 @@ def confirmacaoDeposito():
             mysql.connection.commit()
             cur.close()
             flash("Confirmação de depósito feita com sucesso!")
+            
         else:
             statusSolicitacao = "Cancelada"
             cur = mysql.connection.cursor()
@@ -1764,10 +1786,34 @@ def confirmacaoAlteracao():
 @app.route("/editar-agencia", methods=["GET", "POST"])
 def editarAgencia():
 
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia from agencias")
+
+    listaAgenciasCriadas = []
+
+    for i in cur:
+        listaAgenciasCriadas.append(i[0])
+
+    listaAgenciasDisponiveis = []
+
+    for x in range(1,51):
+        if x <= 9:
+            novaAgencia = "000" + str(x)
+            listaAgenciasDisponiveis.append(novaAgencia)
+        else:
+            novaAgencia = "00" + str(x)
+            listaAgenciasDisponiveis.append(novaAgencia)
+
+    for i in listaAgenciasDisponiveis:
+        for x in listaAgenciasCriadas:
+            if x in listaAgenciasDisponiveis:
+                listaAgenciasDisponiveis.remove(x)
+
+
     if request.method == 'POST':
         if "confirmar" in request.form:
 
-            novoNumeroAgencia = request.form['numeroAgencia']
+            novoNumeroAgencia = request.form['numAgenciaCadastro']
             novoNumeroClientes = request.form['numeroClientes']
             novoEndAgencia = request.form['enderecoAgencia']
             
@@ -1778,8 +1824,7 @@ def editarAgencia():
             flash("Dados atualizados com sucesso!")
             return redirect(url_for("editarAgencia"))
         elif "cancelar" in request.form:
-            flash("Dados não atualizados.")
-            return redirect(url_for("editarAgencia"))
+            return redirect(url_for("homeGerenteGeral"))
         else:
             pass
             return redirect(url_for("editarAgencia"))
@@ -1792,7 +1837,7 @@ def editarAgencia():
     session["retornoNumeroClientes"] = retornoDadosAgencia[1]
     session["retornoNumeroDataCriacao"] = retornoDadosAgencia[2]
     session["retornoEnderecoAgencia"] = retornoDadosAgencia[3]
-    return render_template("editar_agencia.html", titulo="Editar Agência")
+    return render_template("editar_agencia.html", titulo="Editar Agência", listaAgenciasDisponiveis = listaAgenciasDisponiveis)
 
 @app.route("/lista-gerentes", methods=["GET", "POST"])
 def listaGerentes():
@@ -1877,14 +1922,15 @@ def infoAgencia():
     idAgencia = request.args.get("idAgencia")
     #vamos trazer as info do BD e transformalas em session
     cur = mysql.connection.cursor()
-    cur.execute("SELECT numero_agencia, numero_clientes, data_criacao, end_agencia, agencia_id FROM agencias WHERE agencia_id = %s", (idAgencia))
+    cur.execute("SELECT numero_agencia, numero_clientes, numero_total_clientes, data_criacao, end_agencia, agencia_id FROM agencias WHERE agencia_id = %s", (idAgencia))
     retornoDadosAgencia = cur.fetchone()
     app.logger.info(retornoDadosAgencia)
     session["retornoNumeroAgencia"] = retornoDadosAgencia[0]
     session["retornoNumeroClientes"] = retornoDadosAgencia[1]
-    session["retornoNumeroDataCriacao"] = retornoDadosAgencia[2]
-    session["retornoEnderecoAgencia"] = retornoDadosAgencia[3]
-    session["retornoAgenciaId"] = retornoDadosAgencia[4]
+    session["retornoNumeroMaximoClientes"] = retornoDadosAgencia[2]
+    session["retornoNumeroDataCriacao"] = retornoDadosAgencia[3]
+    session["retornoEnderecoAgencia"] = retornoDadosAgencia[4]
+    session["retornoAgenciaId"] = retornoDadosAgencia[5]
 
     return render_template("info_agencia.html", Título="Agência")
 
@@ -2053,24 +2099,36 @@ def editarGerentes():
 @app.route("/cadastroAgencia", methods=["GET", "POST"])
 def cadastroAgencia():
 
-    listaAgencias = []
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT numero_agencia from agencias")
+
+    listaAgenciasCriadas = []
+
+    for i in cur:
+        listaAgenciasCriadas.append(i[0])
+
+    listaAgenciasDisponiveis = []
 
     for x in range(1,51):
         if x <= 9:
             novaAgencia = "000" + str(x)
-            listaAgencias.append(novaAgencia)
+            listaAgenciasDisponiveis.append(novaAgencia)
         else:
             novaAgencia = "00" + str(x)
-            listaAgencias.append(novaAgencia)
+            listaAgenciasDisponiveis.append(novaAgencia)
 
-    app.logger.info(listaAgencias)
+    for i in listaAgenciasDisponiveis:
+        for x in listaAgenciasCriadas:
+            if x in listaAgenciasDisponiveis:
+                listaAgenciasDisponiveis.remove(x)
 
     if request.method == "POST":
         if "cadastrar" in request.form:
             endereco = request.form["enderecoAgencia"] 
             numAgencia = request.form["numAgencia"]
             app.logger.info(numAgencia)
-            numUsuarios = 5
+            numUsuarios = 0
+            numTotalClientes = 10
 
             session.pop("horaSistema", None)
             session["horaSistema"] = dataAgora()
@@ -2080,7 +2138,7 @@ def cadastroAgencia():
                 return redirect (url_for("cadastroAgencia"))
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO agencias (numero_agencia, numero_clientes, data_criacao, end_agencia) VALUES(%s, %s, %s, %s)",(numAgencia, numUsuarios, session["horaSistema"], endereco))
+            cur.execute("INSERT INTO agencias (numero_agencia, numero_clientes, numero_total_clientes, data_criacao, end_agencia) VALUES(%s, %s, %s, %s, %s)",(numAgencia, numUsuarios, numTotalClientes, session["horaSistema"], endereco))
             mysql.connection.commit()
             cur.close()
 
@@ -2088,19 +2146,27 @@ def cadastroAgencia():
 
             return redirect(url_for("cadastroAgencia"))
 
-    return render_template("nova_agencia.html", titulo="Nova Agência", listaAgencias = listaAgencias)
+    return render_template("nova_agencia.html", titulo="Nova Agência", listaAgenciasDisponiveis = listaAgenciasDisponiveis)
+
 
 @app.route("/poupanca", methods=["GET", "POST"])
 def poupanca():
 
-    #try para tentar trazer os dados da poupança, caso o usuario já estiver começado a poupança
     cur = mysql.connection.cursor()
-    cur.execute("SELECT valorInicial, dataInicial, valorTaxa FROM poupanca WHERE user_id = %s", ([session["idUsuario"]]))
-    retornoDadosPoupanca = cur.fetchone()
+    cur.execute("SELECT saldoBancario FROM users WHERE user_id = %s", [session['idUsuario']])
+    retornoSaldoAtual = cur.fetchone()
+    saldoAtualUsuario = retornoSaldoAtual[0]
+    session.pop('saldoUsuario', None)
+    saldoFormatado = '{0:.2f}'.format(saldoAtualUsuario)
+    session['saldoUsuario'] = saldoFormatado.replace('.',',')
+
+    session.pop('montanteParaReceber', None)
+
+    #try para tentar trazer os dados da poupança, caso o usuario já estiver começado a poupança
 
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT valorInicial, dataInicial, valorTaxa, poupanca_id, FROM poupanca WHERE user_id = %s", ([session["idUsuario"]]))
+        cur.execute("SELECT valorInicial, dataInicial, valorTaxa, poupanca_id FROM poupanca WHERE user_id = %s", ([session["idUsuario"]]))
         retornoDadosPoupanca = cur.fetchone()
 
         retornoValorInicial = retornoDadosPoupanca[0]
@@ -2141,6 +2207,7 @@ def poupanca():
         montanteParaReceber = '{0:.2f}'.format(montanteParaReceber)
         app.logger.info(montanteParaReceber)
 
+        session.pop('montanteParaReceber', None)
         session["montanteParaReceber"] = montanteParaReceber
     except Exception as ex:
         pass
@@ -2148,6 +2215,13 @@ def poupanca():
     #trecho para quando o usuario começar a poupança    
     if request.method == 'POST':
         if "poupar" in request.form:
+            try:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT poupanca_id FROM poupanca WHERE user_id = %s", ([session["idUsuario"]]))
+                retornoDadosPoupanca = cur.fetchone()
+                idPoupancaUsuario = retornoDadosPoupanca[0]
+            except Exception as ex:
+                idPoupancaUsuario = None
 
             if idPoupancaUsuario:
                 userDetails = request.form
@@ -2171,6 +2245,15 @@ def poupanca():
                 saldoUsuario = retornoSaldoUsuario[0]
                 app.logger.info(saldoUsuario)
 
+                if float(valorInicial) > float(saldoUsuario):
+                    flash("Faça um depósito na poupança equivalente ao seu saldo em conta!")
+                    return redirect(url_for("poupanca"))
+                if float(valorInicial) <= 0:
+                    flash("Apenas valores positivos e acima de 0 Reais são permitidos!")
+                    return redirect(url_for("poupanca"))
+                if not valorInicial:
+                    flash("Digite um valor para depositar na poupança!")
+
                 saldoNovoUsuario = float(saldoUsuario) - float(valorInicial)
                 app.logger.info(saldoNovoUsuario)
 
@@ -2183,7 +2266,8 @@ def poupanca():
                 mysql.connection.commit()
                 cur.close()
 
-                flash("Poupança confirmada com sucesso!")
+                flash("Adição a poupança confirmada com sucesso!")
+                return redirect(url_for("poupanca"))
             else:
 
                 userDetails = request.form
@@ -2207,6 +2291,15 @@ def poupanca():
                 saldoUsuario = retornoSaldoUsuario[0]
                 app.logger.info(saldoUsuario)
 
+                if float(valorInicial) > float(saldoUsuario):
+                    flash("Faça um depósito na poupança equivalente ao seu saldo em conta!")
+                    return redirect(url_for("poupanca"))
+                if float(valorInicial) <= 0:
+                    flash("Apenas valores positivos e acima de 0 Reais são permitidos!")
+                    return redirect(url_for("poupanca"))
+                if not valorInicial:
+                    flash("Digite um valor para depositar na poupança!")
+
                 saldoNovoUsuario = float(saldoUsuario) - float(valorInicial)
                 app.logger.info(saldoNovoUsuario)
 
@@ -2218,8 +2311,41 @@ def poupanca():
                 cur.close()
 
                 flash("Poupança confirmada com sucesso!")
+                return redirect(url_for("poupanca"))
         else:
-            pass
+
+            cur = mysql.connection.cursor()
+
+            cur.execute("SELECT saldoBancario FROM users WHERE user_id = %s", ([session["idUsuario"]]))
+            retornoSaldoUsuario = cur.fetchone()
+            saldoUsuario = retornoSaldoUsuario[0]
+            app.logger.info(saldoUsuario)
+
+            novoSaldoRetirada = float(saldoUsuario) + float(montanteParaReceber)
+
+            cur.execute("UPDATE users SET saldoBancario = %s where user_id = %s", ([novoSaldoRetirada], [session["idUsuario"]]))
+
+            cur.execute("UPDATE poupanca SET dataFinal = %s, valorAtualizado = %s where user_id = %s", ([viagemTemporalEditado], [montanteParaReceber], [session["idUsuario"]]))
+
+            cur.execute("SELECT capitalTotal FROM configBanco")
+            retornoCapitalTotal = cur.fetchone()
+            capitalTotalParcial = retornoCapitalTotal[0]
+            capitalTotalParcial = float(capitalTotalParcial)
+
+            capitalTotalNovo = float(capitalTotalParcial) - float(montanteParaReceber)
+
+            cur.execute("UPDATE configBanco SET capitalTotal = %s", ([float(capitalTotalNovo)]))
+
+            cur.execute("DELETE FROM poupanca WHERE user_id = %s", ([session["userIdUsuario"]]))
+
+            mysql.connection.commit()
+            cur.close()
+
+            session.pop('montanteParaReceber', None)
+
+            flash("Poupança retirada com sucesso!")
+            return redirect(url_for("poupanca"))
+
     return render_template("poupanca.html", titulo = "Poupança")
 
 #Comando inicia automaticamente o programa, habilitando o debug sempre que algo for atualizado!

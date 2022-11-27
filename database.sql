@@ -21,6 +21,7 @@ CREATE TABLE agencias (
   agencia_id INT PRIMARY KEY AUTO_INCREMENT,
   numero_agencia VARCHAR(20),
   numero_clientes VARCHAR(3),
+  numero_total_clientes VARCHAR(3),
   data_criacao text(6) not null,
   gerente_id int,
   foreign key(gerente_id) references gerenteAgencia (gerente_id),

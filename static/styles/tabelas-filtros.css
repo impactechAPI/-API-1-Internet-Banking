@@ -147,15 +147,16 @@ tr:hover{
         border-collapse: collapse;
         text-align: center;
         padding: 10px;
-        font-size: .9rem;
+        font-size: .7rem;
         margin-top: 2rem;
         width: 100%;
     }
 
     table th, 
-table td {
-    padding: 0.6rem;
-}
+    table td {
+        padding: 0.6rem;
+        text-align: center;
+    }
 
     .tipo-solicitacao {
         display: flex;
@@ -186,7 +187,7 @@ table td {
     .tipo-solicitacao {
         display: flex;
         flex-direction: column;
-        margin-right: .6rem;
+        margin-right: .2rem;
         width: 50%;
     }
     

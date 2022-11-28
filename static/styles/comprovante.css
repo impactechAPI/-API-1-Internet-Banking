@@ -46,3 +46,48 @@
     border: 1px dashed #343434;
     margin-bottom: .2rem;
 }
+
+@media (max-width: 850px) {
+
+    .comprovante {
+        width: 20rem;
+        margin: 0 auto;
+    }
+    
+    .info-transacao {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .comprovante h4,
+    .comprovante h5 {
+        font-family: 'Courier Prime', monospace;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+    
+    .comprovante h2,
+    .comprovante h3,
+    .comprovante span {
+        text-align: center;
+        font-family: 'Courier Prime', monospace;
+        font-weight: 400;
+        font-size: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .comprovante h5 {
+        margin: 1rem 0;
+        font-size: .8rem;
+    }
+        
+    .comprovante section span {
+        text-transform: uppercase;
+    }
+    
+    .linha {
+        border: 1px dashed #343434;
+        margin-bottom: .2rem;
+    }
+     
+}

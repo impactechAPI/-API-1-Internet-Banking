@@ -186,8 +186,9 @@ hr {
     }
 
     .fundo-home-gb {
-        height: 14rem;
-        padding-top: 4rem;
+        height: 13rem;
+        padding-top: 3rem;
+        width: 100%;
     }
 
     .fundo-home .info-usuario,
@@ -195,9 +196,8 @@ hr {
         width: 90%;
     }
 
-    .fundo-home-gb .info-usuario-gb,
     .fundo-home-gb hr {
-        width: 90%;
+        width: 100%;
     }
 
     .fundo-home .info-usuario .info h1,
@@ -205,26 +205,26 @@ hr {
         font-size: 14px;
     }
 
-    .fundo-home-gb .info-usuario-gb .info-gb h1,
-    .fundo-home-gb .info-usuario-gb .info-gb span {
+    .info-gb h1, .info-gb span {
         font-size: 14px;
+        display: flex;
     }
 
     .fundo-home .info-usuario .info label {
         font-size: 15px;
     }
 
-    .fundo-home-gb .info-usuario-gb .info-gb label {
+    .fundo-home-gb {
         font-size: 15px;
-        padding-top: 6rem;
-        padding-right: 8rem;
+        padding-top: 0.5rem;
+        align-items: flex;
     }
 
-    .fundo-home .info-usuario .info h2 {
+    .fundo-home, .info-usuario, .info h2 {
         font-size: 19px;
     }
 
-    .fundo-home-gb .info-usuario-gb .info-gb h2 {
+    .info-gb h2 {
         font-size: 19px;
     }
 
@@ -238,11 +238,12 @@ hr {
     }
 
     .info-usuario-gb {
-        display: inline;
+        display: flex;
         justify-content: space-between;
         width: 50%;
-        margin: 0 auto;
-        padding-top: 6rem;
+        margin: 0;
+        padding-top: 0rem;
+        padding: 0rem 2rem 0rem 1rem;
         color: aliceblue;
     }
     
@@ -251,7 +252,8 @@ hr {
     }
 
     .info-gb {
-        display: inline;
+        display: flex;
+        justify-content: space-between;
     }
     
     /* título "Olá, Cliente" */

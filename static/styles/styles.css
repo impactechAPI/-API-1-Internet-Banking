@@ -88,6 +88,15 @@ body {
     margin: auto 0;
 }
 
+.flashes {
+    min-width: 20rem;
+    padding: 1rem;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 1rem;
+    margin: 0 0 0 0rem;
+}
+
 
 /* RODAPÉ */
 
@@ -105,6 +114,7 @@ footer {
     justify-content: center;
     font-size: 1em;
 }
+
 
 
 /* MEDIA QUERIES */
@@ -148,4 +158,26 @@ footer {
     .container p {
         font-size: 14px;
     }
+
+    .flashes {
+        min-width: 20rem;
+        width: min-content;
+        padding: 1rem 5rem 1rem 0rem;
+        border-radius: 1px;
+        text-align: center;
+        font-size: 1rem;
+        margin: 0 9rem 0 -4rem;
+    }
+
+    .error {
+        width: min-content;
+        min-width: 20rem;
+        padding: 1rem 1rem 1rem 1rem;
+        margin-left: 7rem;
+        border-radius: 3px;
+        text-align: center;
+        align-items: center;
+        font-size: 0.9em;
+    }
+
 }

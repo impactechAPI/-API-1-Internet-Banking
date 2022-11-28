@@ -84,6 +84,14 @@
         <section class="pageContent">
             <!-- conteúdo da página -->
 
+            {% block nav %}
+            <header class="nav">
+                <div class="logo">
+                    <img src="../static/img/logo.png" alt="logo">
+                </div>
+            </header>
+            {% endblock %}
+
             {% block header %}
             <!-- título -->
             <header class="fundo">

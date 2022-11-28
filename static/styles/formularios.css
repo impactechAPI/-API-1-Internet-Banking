@@ -140,6 +140,12 @@ input[type="number"] {
         width: 100%;
     }
 
+    .container .campo-duplo,
+    .container .campo-triplo {
+        display: contents;
+        justify-content: space-between;
+        width: 100%;
+    }
     .container .info-conta {
         min-width: 100%;
     }
@@ -147,6 +153,7 @@ input[type="number"] {
     /* termos de uso tela cadastro */
     .container_cadastro .checkbox {
         font-size: 1rem;
+        justify-content: space-between;
         display: flex;
     }
 

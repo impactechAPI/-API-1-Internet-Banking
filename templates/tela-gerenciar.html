@@ -26,8 +26,8 @@
                         <option value="todos">Todos</option>
                         <option value="abertura">Abertura</option>
                         <option value="fechamento">Fechamento</option>
-                        <option value="alteracoes-de-dados">Alterações de dados</option>
-                        <option value="deposito">Depósito</option>
+                        <option value="alteração de dados">Alteração de dados</option>
+                        <option value="depósito">Depósito</option>
                     </select>
                 </div>
                 <div class="pesquisar">
@@ -56,27 +56,33 @@
                 <td>{{ x }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoDeposito",solicitacaoIdDeposito=x)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoDeposito",solicitacaoIdDeposito=x)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
                 {% endif %}
+                
                 {% if linhas[2] == 'Abertura' %}
                 {% for y in linhas %}
                 {% if loop.index0 != 3 %}
                 <td>{{ y }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoAbertura",solicitacaoIdAbertura=y)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoAbertura",solicitacaoIdAbertura=y)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
+                    
                 {% endif %}
                 {% endfor %}
                 {% endif %}
+
                 {% if linhas[2] == 'Alteração de Dados' %}
                 {% for z in linhas %}
                 {% if loop.index0 != 3 %}
                 <td>{{ z }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoAlteracao",solicitacaoIdAlteracao=z)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoAlteracao",solicitacaoIdAlteracao=z)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
                 {% endif %}
@@ -86,7 +92,8 @@
                 <td>{{ w }}</td>
                 {% endif %}
                 {% if loop.index0 == 3 %}
-                <td><a href={{url_for("confirmacaoFechamento",solicitacaoIdFechamento=w)}}>Ver</a></td>
+                <td><a href={{url_for("confirmacaoFechamento",solicitacaoIdFechamento=w)}}><img class="visualizar"
+                    src="../static/icones/ver.png" alt="Ver"></a></td>
                 {% endif %}
                 {% endfor %}
                 {% endif %}

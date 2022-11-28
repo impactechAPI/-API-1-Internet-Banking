@@ -8,14 +8,16 @@
 {% block contents %}
 <main class="container">
 
-    <!-- filtros -->
-    <section class="filtros">
-        <input type="text" placeholder="Nome" nome="nomeCliente" class="nome">
-        <div class="pesquisar_nome">
-            <img src="../static/icones/lupa.png" alt="lupa" class="lupa">
-            <input type="submit" class="btn_pesquisar" value="" name="pesquisar">
-        </div>
-    </section>
+    <form method="post">
+        <!-- filtros -->
+        <section class="filtros-gerente">
+            <input type="text" placeholder="Nome" nome="nomeCliente" class="nome">
+            <div class="pesquisar_nome">
+                <button type="submit" class="btn_pesquisar"><img src="../static/icones/lupa.png" alt="lupa" class="lupa"></button>
+                <!-- <input type="submit" class="btn_pesquisar" value="" name="pesquisar"> -->
+            </div>
+        </section>
+    </form>
 
     <!-- tabela -->
     <table>
@@ -34,7 +36,7 @@
                 <td>{{ x }}</td>
                 {% endif %}
                 {% if loop.index0 == 1 %}
-                <td><a href={{url_for("infoCliente",idCliente=x)}}></a></td>
+                <td><a href={{url_for("infoCliente",idCliente=x)}}><img src="../static/icones/ver.png" alt="ver" class="visualizar"></a></td>
                 {% endif %}
                 {% endfor %}
             </tr>

@@ -75,10 +75,43 @@ hr {
     font-size: 1.5rem;
 }
 
+/* info gerente*/
+
+.fundo-home-gb {
+    height: 15rem;
+    background-image: linear-gradient(#1A20BD, #22D6C3);
+}
+
 .fundo-home hr {
     width: 75%;
 }
 
+.fundo-home-gb hr {
+    width: 75%;
+}
+
+.info-usuario-gb {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    margin: 0 auto;
+    padding-top: 2rem;
+    color: aliceblue;
+}
+
+.info-gb {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-gb h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+
+.info-gb span {
+    display: flex;
+}
 
 /* CABEÇALHO TELAS LOGIN E CADASTRO */
 
@@ -149,24 +182,110 @@ hr {
     }
 
     .fundo-home {
-        height: 12rem;
+        height: 14rem;
+    }
+
+    .fundo-home-gb {
+        height: 13rem;
+        padding-top: 3rem;
+        width: 100%;
     }
 
     .fundo-home .info-usuario,
     .fundo-home hr {
-        width: 80%;
+        width: 90%;
+    }
+
+    .fundo-home-gb hr {
+        width: 100%;
     }
 
     .fundo-home .info-usuario .info h1,
     .fundo-home .info-usuario .info span {
-        font-size: 20px;
+        font-size: 14px;
+    }
+
+    .info-gb h1, .info-gb span {
+        font-size: 14px;
+        display: flex;
     }
 
     .fundo-home .info-usuario .info label {
-        font-size: 12px;
+        font-size: 15px;
     }
 
-    .fundo-home .info-usuario .info h2 {
-        font-size: 16px;
+    .fundo-home-gb {
+        font-size: 15px;
+        padding-top: 0.5rem;
+        align-items: flex;
+    }
+
+    .fundo-home, .info-usuario, .info h2 {
+        font-size: 19px;
+    }
+
+    .info-gb h2 {
+        font-size: 19px;
+    }
+
+    .info-usuario {
+        display: inline;
+        justify-content: space-between;
+        width: 50%;
+        margin: 0 auto;
+        padding-top: 6rem;
+        color: aliceblue;
+    }
+
+    .info-usuario-gb {
+        display: flex;
+        justify-content: space-between;
+        width: 50%;
+        margin: 0;
+        padding-top: 0rem;
+        padding: 0rem 2rem 0rem 1rem;
+        color: aliceblue;
+    }
+    
+    .info {
+        display: inline;
+    }
+
+    .info-gb {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    /* título "Olá, Cliente" */
+    .info h1 {
+        font-size: 1rem;
+        font-weight: normal;
+    }
+
+    .info-gb h1 {
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    
+    /* info agência e conta */
+    .info span {
+        display: flex;
+    }
+
+    .info-gb span {
+        display: flex;
+    }
+    
+    /* título "Saldo disponível" */
+    .info .saldo_disponivel {
+        font-size: 0.5rem;
+        padding-top: 1rem;
+    }
+    
+    /* valor do saldo em R$ */
+    .info .saldo {
+        display: flex;
+        justify-content: left;
+        font-size: 1rem;
     }
 }

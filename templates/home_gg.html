@@ -4,20 +4,54 @@
 
 {% block contents %}
 <main>
-
+    <form method="post"> 
     <!-- dados usuário -->
-    <section class="fundo-home">
-        <div class="info-usuario">
-            <div class="info">
+    <section class="fundo-home-gb">
+        <div class="info-usuario-gb">
+            <div class="info-gb">
                 <h1>Olá, {{ session['nomeGerente'] }}</h1>
-                <label>Número de matrícula: {{ session['matriculaGerente'] }}</label>
+                <label>Número de Matrícula: {{ session['matriculaGerente'] }}</label>
                 <label>Função: {{ session['funcaoAdministrativa'] }}</label>
             </div>
         </div>
         <hr class="hr">
     </section>
     <section class="container">
+        <div class="campo-triplo">
+            <div class="info-conta">
+                <label>Capital Total do Banco</label>
+                <span>{{ session["capitalTotal"] }}</span>
+            </div>
+            <div class="info-conta">
+                <label>Taxa de Juros da Poupança</label>
+                <input type="text" name="jurosPoupancaEditado" value='{{ session["taxaJurosPoupanca"] }}'>
+            </div>
+            <div class="info-conta">
+                <label>Taxa de Juros do Cheque Especial</label>
+                <input type="text" name="jurosChequeEditado" value='{{ session["taxaJurosCheque"] }}'>
+            </div>
+        </div>
+
+        <aside class="data-botao">
+            <label>Para mudar os valores das taxas, digite o valor desejado e clique em salvar. </label>
+            <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar"> Salvar </button>
+        </aside>
+
     </section>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                            <div class="error">{{ message }}</div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            {% if error %}
+                <p class=error><strong>Erro:</strong> {{ error }}
+            {% endif %}
 
 </main>
 {% endblock %}

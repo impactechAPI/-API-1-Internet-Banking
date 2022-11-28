@@ -1,11 +1,18 @@
-{% extends "base-gerente.html" %}
+{% if session['funcaoAdministrativa'] == 'Gerente Geral' %}
+    {% extends "base_gg.html" %}
+{% endif %}
+
+{% if session['funcaoAdministrativa'] == 'Gerente de Agência' %}
+    {% extends "base-gerente.html" %}
+{% endif %}
 
 {% block contents %}
 <main>
-
+    <form method="post" action="{{ url_for('alterarDadosCliente') }}">
     <div class="container">
         <a href="{{ url_for('clientes') }}" class="voltar">&lt voltar</a><br><br>
         <section>
+            <p class = "info-conta"> Tipo de Conta: {{ session['tipoContaUsuario'] }}</p>
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Nome</label>
@@ -45,10 +52,16 @@
                     <label>Saldo disponível</label>
                     <span>{{ session["saldoBancarioCadastro"] }}</span>
                 </div>
+                
             </div>
-
-            <p class="data_inicio">Cliente desde: {{ session["dataClientela"] }}</p>
         </section>
+        {% if session['funcaoAdministrativa'] == 'Gerente Geral' %}
+            <aside class="data-botao">
+                <p class="data_inicio">Cliente desde: {{ session["dataClientela"] }}</p>
+                <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar">Editar</button>
+            </aside>
+        {% endif %}
+    </form>
     </div>
 
 </main>

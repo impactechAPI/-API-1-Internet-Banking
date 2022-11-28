@@ -14,7 +14,24 @@
     width: 100%;
 }
 
+.filtros-gerente {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+} 
+
 /* filtro por nome */
+
+.filtros-gerente .nome {
+    margin: 0 1rem 0 0;
+    width: 100%;
+    padding: .5rem;
+    border-radius: 3px;
+    border: 1px solid #343434;
+    accent-color: #08c746;
+    outline-color: #08C746;
+}
+
 .filtros .nome {
     margin: 0 1rem 0 0;
     width: 100%;
@@ -41,7 +58,6 @@
     text-transform: capitalize;
 }
 
-/* filtros data */
 .periodo input {
     padding: .5rem;
     margin-top: .5rem;
@@ -100,3 +116,91 @@ tr:nth-child(even) {
 tr:hover{ 
     background-color: #c2c2c2;
 }
+
+@media (max-width: 900px) {
+
+    .barra-pesquisa{
+        display: contents;
+        justify-content: space-between;
+        align-items: flex-end; /* alinhar itens ao fim da div */
+        overflow: hidden; /* conteúdo não ultrapassa a div */ 
+    }
+    
+    .filtros{
+        display: contents;
+        justify-content: space-between;
+        align-items: baseline;
+        width: 100%;
+    }
+
+    .filtros-gerente {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+    } 
+
+    table {
+        table-layout: fixed;
+        border: none;
+        border: 1px solid #C8C8C8;
+        border-collapse: collapse;
+        text-align: center;
+        padding: 10px;
+        font-size: .7rem;
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    table th, 
+    table td {
+        padding: 0.6rem;
+        text-align: center;
+    }
+
+    .tipo-solicitacao {
+        display: flex;
+        flex-direction: column;
+        margin-right: .6rem;
+        width: 50%;
+    }    
+
+    .tipo-transacao select,
+    .tipo-solicitacao select {
+        padding: .5rem;
+        margin-top: .5rem;
+        width: 100%;
+        outline-color: #08C746;
+        background-color: white;
+        border: 1px solid #343434;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .btn_novo-tabela {
+        width: 100%;
+        margin: auto;
+    }
+
+    .periodo,
+    .tipo-transacao,
+    .tipo-solicitacao {
+        display: flex;
+        flex-direction: column;
+        margin-right: .2rem;
+        width: 50%;
+    }
+    
+    .periodo span,
+    .tipo-transacao span,
+    .tipo-solicitacao span {
+        text-transform: capitalize;
+    }
+    
+    .periodo input {
+        padding: .5rem;
+        margin-top: .5rem;
+    }
+
+}
+

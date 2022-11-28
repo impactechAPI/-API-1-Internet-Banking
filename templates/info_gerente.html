@@ -9,33 +9,33 @@
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Nome</label>
-                    <span>{{ session['nomeGerenteAgencia'] }}</span>
+                    <span>{{ session["nomeRetornoGerenteAgencia"] }}</span>
                 </div>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>CPF</label>
-                    <span>{{ session['cpfGerenteAgencia'] }}</span>
+                    <span>{{ session["cpfRetornoGerenteAgencia"] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Data de nascimento</label>
-                    <span>{{ session['nascGerenteAgencia'] }}</span>
+                    <span>{{ session["nascRetornoGerenteAgencia"]}}</span>
                 </div>
                 <div class="info-conta">
                     <label>Gênero</label>
-                    <span>{{ session['generoGerenteAgencia'] }}</span>
+                    <span>{{ session["generoRetornoGerenteAgencia"] }}</span>
                 </div>
             </div>
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Endereço</label>
-                    <span>{{ session['endGerenteAgencia'] }}</span>
+                    <span>{{session["endRetornoGerenteAgencia"] }}</span>
                 </div>
             </div>
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>Número de matrícula</label>
-                    <span>{{ session['matriculaGerenteAgencia'] }}</span>
+                    <span>{{ session["matriculaRetornoGerenteAgencia"] }}</span>
                 </div>
                 <div class="info-conta">
                     <label>Função</label>
@@ -43,12 +43,12 @@
                 </div>
                 <div class="info-conta">
                     <label>Agência</label>
-                    <span>{{ session['numAgenciaGerenteAgencia'] }}</span>
+                    <span>{{ session["numAgenciaRetornoGerenteAgencia"] }}</span>
                 </div>
             </div>
 
             <aside class="data-botao">
-                <p class="data_inicio">Gerente desde: {{ session["dataCriacaoGerenteAgencia"] }}</p>
+                <p class="data_inicio">Gerente desde: {{ session["dataCriacaoRetornoGerenteAgencia"] }}</p>
                 <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar"
                 class="img_editar"> Editar</button>
             </aside>

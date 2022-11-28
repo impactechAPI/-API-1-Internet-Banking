@@ -1,0 +1,20 @@
+{% extends "base-cliente.html" %}
+
+{% block contents %}
+
+<main class="container">
+    <form method="post">
+
+        {% for tabela in tabelas %}
+        {{ titulos[loop.index] }}
+        {{ tabela|safe }}
+        {% endfor %}
+
+        <section class="imprimir">
+            <img src="../static/icones/print.png" alt="print" class="print">
+            <input type="submit" class="btn_imprimir_comprovante" value="Imprimir">
+        </section>
+    </form> 
+</main>
+
+{% endblock %}

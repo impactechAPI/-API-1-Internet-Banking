@@ -8,36 +8,49 @@
         <form method="post" action="" class="solicitacao">
             <div class="campo-duplo">
                 <div class="info-conta">
-                    <label>Número</label>
-                    <input type="number" value="{{ session['numeroAgencia'] }}" name="numeroAgencia">
+                    <label>Agência</label>
+                        <select name="numAgenciaCadastro" id="numAgencia" class="select">
+                        {% for agencia in listaAgenciasDisponiveis %}
+                            <option value="{{ agencia }}">{{ agencia }}</option>
+                        {% endfor %}
+                        </select>
                 </div>
                 <!-- /info-conta -->
                 <div class="info-conta">
-                    <label>Número de clientes</label>
-                    <input type="number" value="{{ session['numeroClientes']}}" name="numeroClientes">
+                    <label>Número máximo de clientes</label>
+                    <input type="number" value="{{ session['retornoNumeroMaximoClientes'] }}" name="numeroClientes">
                 </div>
                 <!-- /info-conta -->
             </div>
             <!-- /campo-duplo -->
-            <div class="campo-unico">
+            <!-- <div class="campo-unico">
                 <label>Gerente</label>
                 <input type="text" value="{{ session['nomeGerente'] }}" name="nomeGerente">
-            </div>
+            </div> -->
             <!-- /campo-unico -->
             <div class="campo-unico">
                 <label>Endereço</label>
-                <input type="text" value="{{ session['enderecoAgencia'] }}" name="enderecoAgencia">
+                <input type="text" value="{{ session['retornoEnderecoAgencia'] }}" name="enderecoAgencia">
             </div>
             <!-- campo-unico -->
 
             <aside>
-                <p class="data-inicio">Criada em: {{ session["dataInicioAgencia"] }}</p>
+                <p class="data-inicio">Criada em: {{ session['retornoNumeroDataCriacao'] }}</p>
                 <section class="botoes">
                     <input type="submit" name="confirmar" class="confirmar" value="Salvar">
                     <input type="submit" name="cancelar" class="cancelar" value="Cancelar">
                 </section>
                 <!-- /botoes -->
-            </aside>
+            </aside><br>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <div class="error">{{ message }}</div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
         </form>
         <!-- /solicitação -->
     </div>

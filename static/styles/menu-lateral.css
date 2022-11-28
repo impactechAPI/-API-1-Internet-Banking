@@ -257,4 +257,11 @@ body {
     .sidebar.active #btn {
         margin-left: 0;
     }
+
+    .sidebar .profileContent .profile .profileDetail .name {
+        font-size: 13px;
+        font-weight: 400;
+        margin-left: 15px;
+        text-transform: capitalize;
+    }
 }

@@ -32,19 +32,19 @@
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Nome</label>
-                <input type="text" name="nome" placeholder="Informe seu nome">
+                <input type="text" name="nome" placeholder="Informe seu nome" required>
             </div>
         </div>
 
         <div class="campo-duplo">
             <div class="info-conta">
                 <label>Data de nascimento</label>
-                <input type="date" class="data" name="dataAniversario">
+                <input type="date" class="data" name="dataAniversario" required>
             </div>
 
             <div class="info-conta">
                 <label>Gênero</label>
-                <select name="genero" id="genero" class="select">
+                <select name="genero" id="genero" class="select" required>
                     <option value="selecione" disabled>Selecione</option>
                     <option value="feminino">Feminino</option>
                     <option value="masculino">Masculino</option>
@@ -56,15 +56,15 @@
         <div class="campo-duplo">
             <div class="info-conta">
                 <label>CPF</label>
-                <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF">
+                <input type="text" maxlength="11" name="cpf" placeholder="Informe seu CPF" required>
             </div>
 
             <div class="info-conta">
                 <label>Tipo de conta</label>
-                <select name="tipoConta" id="tipoConta" class="select">
+                <select name="tipoConta" id="tipoConta" class="select" required>
                     <option value="selecione" disabled>Selecione</option>
-                    <option value="poupanca">Poupança</option>
-                    <option value="conta _corrente">Conta Corrente</option>
+                    <option value="Poupança">Poupança</option>
+                    <option value="Conta Corrente">Conta Corrente</option>
                 </select>
             </div>
         </div>
@@ -72,23 +72,23 @@
         <div class="campo-unico">
             <div class="info-conta">
                 <label>Endereço</label>
-                <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco">
+                <input type="text" placeholder="Informe seu endereço" class="linha-inteira" name="endereco" required>
             </div>
         </div>
 
         <div class="campo-duplo">
             <div class="info-conta">
                 <label>Senha</label>
-                <input type="password" placeholder="Informe sua senha" name="senha">
+                <input type="password" placeholder="Informe sua senha" name="senha" required>
             </div>
             <div class="info-conta">
                 <label>Confirmação de senha</label>
-                <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha">
+                <input type="password" placeholder="Confirme sua senha" name="confirmacaoSenha" required>
             </div>
         </div>
 
         <label class="checkbox">
-            <input type="checkbox" name="consentimentoUsuario"> 
+            <input type="checkbox" name="consentimentoUsuario" required> 
             <span>Li e estou de acordo com os <a href="">Termos de Uso</a>
             e <a href="">Política de Privacidade</a>.</span>
         </label>

@@ -26,18 +26,38 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 
 > Baixar e instalar o Python (https://www.python.org/downloads/).
 
-> Baixar os arquivos deste repositório ou clonar para seu próprio Github.
+> Baixar e instalar o PDFKIT na pasta C: (https://wkhtmltopdf.org/downloads.html)
+
+> Baixar ou clonar os arquivos deste diretório.
 
 > Instalar os requisitos básicos executando o comando abaixo no terminal:
  pip install -r requirements.txt
+ 
+> Crie o banco de dados que está dentro de "database.sql" com o MySQL WorkBench.
+
+> Existe um arquivo chamado "db.yaml". Mude o campo "mysql_password:" para a senha da sua instância local.
 
 > Execute a aplicação via IDE
  python app.py
  
  > No terminal do seu IDE, execute o comando: 
  flask --app app run
+ 
+ > O site abrirá no link: http://localhost:5000/
+ 
+ > Para iniciar a aplicação, é necessário logar com a conta de Gerente Geral e informar algumas configurações do banco.
+ Matrícula: 1
+ Senha: 123
 
-> O site abrirá no link: http://localhost:5000/
+> É necessario criar pelo menos uma agência e um Gerente de Agência para começar o cadastro de usuários.
+
+> A senha padrão de Gerentes de Agência é: 123. Basta pegar o numero gerado da matrícula para acessar.
+
+> Para checagens de juros em situação de cheque especial ou rendimento da poupança é necessário acessar o arquivo "config.json" e mudar a data para o tempo desejado.
+Faça as alterações dentro da página de poupança ou depósito, pois o arquivo "config.json" sempre volta para a data atual.
+
+
+
 ```
 
 <span id="backlogs">
@@ -108,7 +128,8 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 | 02 | Implementação de responsividade na aplicação |
 | 03 | Melhorias na intuitividade da aplicação |
 | 04 | Sistema de Cheque Especial |
-| 05 | Juros ajustáveis pelo Gerente Geral |
+| 05 | Sistema de Poupança |
+| 06 | Juros ajustáveis pelo Gerente Geral |
 
 
 <span id="user-stories">
@@ -136,57 +157,12 @@ O desenvolvimento do projeto tem como objetivo a criação de um sistema de **In
 
 Clicando [aqui](https://www.figma.com/file/fTVQuAtVUTT97mvjmaft1Q/Untitled-(Copy)?node-id=0%3A1) é possível ver as páginas e um protótipo navegavel no Figma.
 
-![](/static/gif/GIF_API_0.gif)
-
-
-![](/static/gif/GIF_API_1.gif)
-
-Confirmação de abertura de conta:
-
-![](/static/gif/confirmação_abertura.gif)
-
-Confirmação de depósito:
-
-![](/static/gif/confirmacao_deposito.gif)
-
-Comprovante de depósito:
-
-![](/static/gif/deposito_comprovante.gif)
-
-Comprovante de saque:
-
-![](/static/gif/saque_comprovante.gif)
-
-Extrato de conta:
-
-![](/static/gif/extrato_conta.gif)
-
-Confirmação de abertura de conta:
-
-![](/static/gif/confirmação_abertura.gif)
-
-Confirmação de depósito:
-
-![](/static/gif/confirmacao_deposito.gif)
-
-Comprovante de depósito:
-
-![](/static/gif/deposito_comprovante.gif)
-
-Comprovante de saque:
-
-![](/static/gif/saque_comprovante.gif)
-
-Extrato de conta:
-
-![](/static/gif/extrato_conta.gif)
-
 
 <span id="tecnologias">
 
 ##  Tecnologias
 
-Essas foram as tecnologias utilizadas, até agora, para desenvolvimento da aplicação:
+Essas foram as tecnologias utilizadas para o desenvolvimento da aplicação:
 
 - [HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML): Estrutura das páginas do site
 - [CSS](https://developer.mozilla.org/pt-BR/docs/Web/CSS): Estilização do site

@@ -8,19 +8,19 @@
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Nome</label>
-                    <input type="text" name="nome" placeholder="Informe o nome">
+                    <input type="text" name="nome" placeholder="Informe o nome" required>
                 </div>
             </div>
 
             <div class="campo-triplo">
                 <div class="info-conta">
                     <label>CPF</label>
-                    <input type="text" maxlength="11" name="cpf" placeholder="Informe o CPF">
+                    <input type="text" maxlength="11" name="cpf" placeholder="Informe o CPF" required>
                 </div>
 
                 <div class="info-conta">
                     <label>Data de nascimento</label>
-                    <input type="date" class="data" name="dataAniversario">
+                    <input type="date" class="data" name="dataAniversario" required>
                 </div>
 
                 <div class="info-conta">
@@ -37,7 +37,7 @@
             <div class="campo-unico">
                 <div class="info-conta">
                     <label>Endereço</label>
-                    <input type="text" placeholder="Informe o endereço" name="endereco">
+                    <input type="text" placeholder="Informe o endereço" name="endereco" required>
                 </div>
             </div>
 
@@ -48,22 +48,27 @@
                 </div>
 
                 <div class="info-conta">
-                    <label>Agência</label>
-                    <input type="number" name="agencia" placeholder="Informe a agência">
+                    <label>Número de agência</label>
+                    <select name="numAgencia" id="numAgencia" class="select">
+                        {% for agencia in listaAgenciasDisponiveis %}
+                            <option value="{{ agencia }}">{{ agencia }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
 
-            <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar">
-    </div>
-    {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                <div class="error">{{ message }}</div>
-                {% endfor %}
-            </ul>
-            {% endif %}
+            <input type="submit" name="confirmar" class="cadastrar" value="Cadastrar"><br>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                        <div class="error">{{ message }}</div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             {% endwith %}
+    
 </form>
 
 </main>

@@ -49,7 +49,7 @@
 
             <div class="info-conta">
                 <label>Agência</label>
-                <input type="number" name="agenciaUsuario" value="{{ session['agenciaBancariaUsuario'] }}">
+                <input type="number" name="agenciaUsuario" value="{{ session['agenciaBancariaUsuario'] }}" disabled>
             </div>
 
             <div class="info-conta">
@@ -63,6 +63,15 @@
             <button type="submit" class="editar"><img src="../static/icones/editar.png" alt="editar" class="img_editar">
                 Editar</button>
         </aside>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="error">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     </form>
 
     <aside class="div_encerrar_conta">
